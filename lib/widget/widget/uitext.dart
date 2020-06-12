@@ -33,7 +33,7 @@ class UIText extends UIWidget {
       String semanticsLabel,
       TextWidthBasis textWidthBasis})
       : this(
-            (context) => context.listen(path,
+            (context) => context.watch(path,
                 defaultValue: defaultValue, filter: filter),
             key: key,
             style: style,

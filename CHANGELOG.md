@@ -1,3 +1,7 @@
+## [0.2.5] - Update README (2020.06.12)
+
+* Changed the data acquisition from UIValue from listen to watch and get to read.
+
 ## [0.2.4] - Update README (2020.06.09)
 
 * Formatting.

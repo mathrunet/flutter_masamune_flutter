@@ -54,7 +54,7 @@ class UIValue {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  T listen<T extends Object>(String path, {T defaultValue, T filter(T value)}) {
+  T watch<T extends Object>(String path, {T defaultValue, T filter(T value)}) {
     path = path?.applyTags();
     if (isEmpty(path)) {
       return filter != null
@@ -76,7 +76,7 @@ class UIValue {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  T get<T extends Object>(String path, {T defaultValue, T filter(T value)}) {
+  T read<T extends Object>(String path, {T defaultValue, T filter(T value)}) {
     path = path?.applyTags();
     if (isEmpty(path)) {
       return filter != null
@@ -97,11 +97,11 @@ class UIValue {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  String listenText(String path,
+  String watchText(String path,
           {String defaultValue = Const.empty, String filter(String value)}) =>
       filter != null
-          ? filter(this.listen<dynamic>(path)?.toString() ?? defaultValue)
-          : (this.listen<dynamic>(path)?.toString() ?? defaultValue);
+          ? filter(this.watch<dynamic>(path)?.toString() ?? defaultValue)
+          : (this.watch<dynamic>(path)?.toString() ?? defaultValue);
 
   /// Get text from pathmap in conjunction with UIWidget.
   ///
@@ -112,11 +112,11 @@ class UIValue {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  String getText(String path,
+  String readText(String path,
           {String defaultValue = Const.empty, String filter(String value)}) =>
       filter != null
-          ? filter(this.get<dynamic>(path)?.toString() ?? defaultValue)
-          : (this.get<dynamic>(path)?.toString() ?? defaultValue);
+          ? filter(this.read<dynamic>(path)?.toString() ?? defaultValue)
+          : (this.read<dynamic>(path)?.toString() ?? defaultValue);
 
   /// Get localized text from pathmap in conjunction with UIWidget.
   ///
@@ -127,13 +127,13 @@ class UIValue {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  String listenLocalized(String path,
+  String watchLocalized(String path,
           {String defaultValue = Const.empty, String filter(String value)}) =>
       filter != null
           ? filter(Localize.get(
-              this.listen<dynamic>(path)?.toString() ?? defaultValue))
+              this.watch<dynamic>(path)?.toString() ?? defaultValue))
           : (Localize.get(
-              this.listen<dynamic>(path)?.toString() ?? defaultValue));
+              this.watch<dynamic>(path)?.toString() ?? defaultValue));
 
   /// Get localized text from pathmap in conjunction with UIWidget.
   ///
@@ -144,12 +144,12 @@ class UIValue {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  String getLocalized(String path,
+  String readLocalized(String path,
           {String defaultValue = Const.empty, String filter(String value)}) =>
       filter != null
           ? filter(
-              Localize.get(this.get<dynamic>(path)?.toString() ?? defaultValue))
-          : (Localize.get(this.get<dynamic>(path)?.toString() ?? defaultValue));
+              Localize.get(this.read<dynamic>(path)?.toString() ?? defaultValue))
+          : (Localize.get(this.read<dynamic>(path)?.toString() ?? defaultValue));
 
   /// Get number from pathmap in conjunction with UIWidget.
   ///
@@ -160,9 +160,9 @@ class UIValue {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  double listenNumber(String path,
+  double watchNumber(String path,
       {double defaultValue = 0, double filter(double value)}) {
-    dynamic tmp = this.listen<dynamic>(path);
+    dynamic tmp = this.watch<dynamic>(path);
     if (tmp is double) return filter != null ? filter(tmp) : tmp;
     if (tmp is int) return filter != null ? filter(tmp as double) : tmp as int;
     if (tmp is bool)
@@ -184,9 +184,9 @@ class UIValue {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  double getNumber(String path,
+  double readNumber(String path,
       {double defaultValue = 0, double filter(double value)}) {
-    dynamic tmp = this.get<dynamic>(path);
+    dynamic tmp = this.read<dynamic>(path);
     if (tmp is double) return filter != null ? filter(tmp) : tmp;
     if (tmp is int) return filter != null ? filter(tmp as double) : tmp as int;
     if (tmp is bool)
@@ -208,9 +208,9 @@ class UIValue {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  bool listenBoolean(String path,
+  bool watchBoolean(String path,
       {bool defaultValue = false, bool filter(bool value)}) {
-    dynamic tmp = this.listen<dynamic>(path);
+    dynamic tmp = this.watch<dynamic>(path);
     if (tmp is bool) return filter != null ? filter(tmp) : tmp;
     if (tmp is double) return filter != null ? filter(tmp != 0) : tmp != 0;
     if (tmp is int) return filter != null ? filter(tmp != 0) : tmp != 0;
@@ -231,9 +231,9 @@ class UIValue {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  bool getBoolean(String path,
+  bool readBoolean(String path,
       {bool defaultValue = false, bool filter(bool value)}) {
-    dynamic tmp = this.get<dynamic>(path);
+    dynamic tmp = this.read<dynamic>(path);
     if (tmp is bool) return filter != null ? filter(tmp) : tmp;
     if (tmp is double) return filter != null ? filter(tmp != 0) : tmp != 0;
     if (tmp is int) return filter != null ? filter(tmp != 0) : tmp != 0;
@@ -251,8 +251,8 @@ class UIValue {
   ///
   /// [path]: The path to get.
   /// [defaultAction]: Default callback when no value exists in path.
-  VoidAction listenAction(String path, {VoidAction defaultAction}) {
-    return this.listen<VoidAction>(path) ?? defaultAction ?? () {};
+  VoidAction watchAction(String path, {VoidAction defaultAction}) {
+    return this.watch<VoidAction>(path) ?? defaultAction ?? () {};
   }
 
   /// Get the action callback from pathmap in conjunction with UIWidget.
@@ -261,8 +261,8 @@ class UIValue {
   ///
   /// [path]: The path to get.
   /// [defaultAction]: Default callback when no value exists in path.
-  VoidAction getAction(String path, {VoidAction defaultAction}) {
-    return this.get<VoidAction>(path) ?? defaultAction ?? () {};
+  VoidAction readAction(String path, {VoidAction defaultAction}) {
+    return this.read<VoidAction>(path) ?? defaultAction ?? () {};
   }
 
   /// Get the form data.

@@ -27,7 +27,7 @@ class UISnackBar {
       bool willShowRepetition = false}) async {
     BuildContext context = UIPage.current?.context;
     if (context == null) return;
-    String text = context.get(dialogTextPath, defaultValue: defaultText);
+    String text = context.read(dialogTextPath, defaultValue: defaultText);
     if (text == null) return;
     bool clicked = false;
     do {
@@ -39,7 +39,7 @@ class UISnackBar {
           .showSnackBar(SnackBar(
               content: Text(text),
               action: SnackBarAction(
-                label: context.get(dialogSubmitTextPath,
+                label: context.read(dialogSubmitTextPath,
                     defaultValue: defaultSubmitText),
                 onPressed: () {
                   PathMap.removeAllPath([
@@ -48,7 +48,7 @@ class UISnackBar {
                     dialogSubmitActionPath,
                     dialogSubmitTextPath
                   ]);
-                  context.getAction(dialogSubmitActionPath,
+                  context.readAction(dialogSubmitActionPath,
                       defaultAction: defaultSubmitAction)();
                   clicked = true;
                 },

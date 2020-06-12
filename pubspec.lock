@@ -120,7 +120,7 @@ packages:
       path: "../masamune_core"
       relative: true
     source: path
-    version: "0.2.8"
+    version: "0.2.9"
   masamune_localize:
     dependency: "direct main"
     description:

@@ -81,8 +81,8 @@ class UIDialog {
       bool popOnPress = true,
       bool willShowRepetition = false}) async {
     if (context == null) return;
-    String title = context.get(dialogTitlePath, defaultValue: defaultTitle);
-    String text = context.get(dialogTextPath, defaultValue: defaultText);
+    String title = context.read(dialogTitlePath, defaultValue: defaultTitle);
+    String text = context.read(dialogTextPath, defaultValue: defaultText);
     if (title == null || text == null) return;
     bool clicked = false;
     OverlayState overlay = context.navigator.overlay;
@@ -98,7 +98,7 @@ class UIDialog {
                   content: Text(text),
                   actions: <Widget>[
                     FlatButton(
-                      child: Text(context.get(dialogSubmitTextPath,
+                      child: Text(context.read(dialogSubmitTextPath,
                           defaultValue: defaultSubmitText)),
                       onPressed: () {
                         PathMap.removeAllPath([
@@ -110,7 +110,7 @@ class UIDialog {
                         ]);
                         if (popOnPress)
                           Navigator.of(context, rootNavigator: true).pop();
-                        context.getAction(dialogSubmitActionPath,
+                        context.readAction(dialogSubmitActionPath,
                             defaultAction: defaultSubmitAction)();
                         clicked = true;
                       },

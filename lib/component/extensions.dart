@@ -11,11 +11,11 @@ extension BuildContextExtension on BuildContext {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  T listen<T extends Object>(String path, {T defaultValue, T filter(T value)}) {
+  T watch<T extends Object>(String path, {T defaultValue, T filter(T value)}) {
     UIValue value = UIValue.of(this);
     if (value == null)
       return filter != null ? filter(defaultValue) : defaultValue;
-    return value.listen<T>(path, defaultValue: defaultValue, filter: filter);
+    return value.watch<T>(path, defaultValue: defaultValue, filter: filter);
   }
 
   /// Get object from pathmap in conjunction with UIWidget.
@@ -27,11 +27,11 @@ extension BuildContextExtension on BuildContext {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  T get<T extends Object>(String path, {T defaultValue, T filter(T value)}) {
+  T read<T extends Object>(String path, {T defaultValue, T filter(T value)}) {
     UIValue value = UIValue.of(this);
     if (value == null)
       return filter != null ? filter(defaultValue) : defaultValue;
-    return value.get<T>(path, defaultValue: defaultValue, filter: filter);
+    return value.read<T>(path, defaultValue: defaultValue, filter: filter);
   }
 
   /// Get text from pathmap in conjunction with UIWidget.
@@ -43,12 +43,12 @@ extension BuildContextExtension on BuildContext {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  String listenText(String path,
+  String watchText(String path,
       {String defaultValue = Const.empty, String filter(String value)}) {
     UIValue value = UIValue.of(this);
     if (value == null)
       return filter != null ? filter(defaultValue) : defaultValue;
-    return value.listenText(path, defaultValue: defaultValue, filter: filter);
+    return value.watchText(path, defaultValue: defaultValue, filter: filter);
   }
 
   /// Get text from pathmap in conjunction with UIWidget.
@@ -60,12 +60,12 @@ extension BuildContextExtension on BuildContext {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  String getText(String path,
+  String readText(String path,
       {String defaultValue = Const.empty, String filter(String value)}) {
     UIValue value = UIValue.of(this);
     if (value == null)
       return filter != null ? filter(defaultValue) : defaultValue;
-    return value.getText(path, defaultValue: defaultValue, filter: filter);
+    return value.readText(path, defaultValue: defaultValue, filter: filter);
   }
 
   /// Get localized text from pathmap in conjunction with UIWidget.
@@ -77,7 +77,7 @@ extension BuildContextExtension on BuildContext {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  String listenLocalized(String path,
+  String watchLocalized(String path,
       {String defaultValue = Const.empty, String filter(String value)}) {
     UIValue value = UIValue.of(this);
     if (value == null) {
@@ -85,7 +85,7 @@ extension BuildContextExtension on BuildContext {
           ? filter(defaultValue?.localize())
           : defaultValue?.localize();
     }
-    return value.listenLocalized(path,
+    return value.watchLocalized(path,
         defaultValue: defaultValue, filter: filter);
   }
 
@@ -98,7 +98,7 @@ extension BuildContextExtension on BuildContext {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  String getLocalized(String path,
+  String readLocalized(String path,
       {String defaultValue = Const.empty, String filter(String value)}) {
     UIValue value = UIValue.of(this);
     if (value == null) {
@@ -106,7 +106,7 @@ extension BuildContextExtension on BuildContext {
           ? filter(defaultValue?.localize())
           : defaultValue?.localize();
     }
-    return value.getLocalized(path, defaultValue: defaultValue, filter: filter);
+    return value.readLocalized(path, defaultValue: defaultValue, filter: filter);
   }
 
   /// Get number from pathmap in conjunction with UIWidget.
@@ -118,7 +118,7 @@ extension BuildContextExtension on BuildContext {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  double listenNumber(
+  double watchNumber(
     String path, {
     double defaultValue = 0,
     double filter(double value),
@@ -126,7 +126,7 @@ extension BuildContextExtension on BuildContext {
     UIValue value = UIValue.of(this);
     if (value == null)
       return filter != null ? filter(defaultValue) : defaultValue;
-    return value.listenNumber(path, defaultValue: defaultValue, filter: filter);
+    return value.watchNumber(path, defaultValue: defaultValue, filter: filter);
   }
 
   /// Get number from pathmap in conjunction with UIWidget.
@@ -138,7 +138,7 @@ extension BuildContextExtension on BuildContext {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  double getNumber(
+  double readNumber(
     String path, {
     double defaultValue = 0,
     double filter(double value),
@@ -146,7 +146,7 @@ extension BuildContextExtension on BuildContext {
     UIValue value = UIValue.of(this);
     if (value == null)
       return filter != null ? filter(defaultValue) : defaultValue;
-    return value.getNumber(path, defaultValue: defaultValue, filter: filter);
+    return value.readNumber(path, defaultValue: defaultValue, filter: filter);
   }
 
   /// Get boolean flag from pathmap in conjunction with UIWidget.
@@ -158,12 +158,12 @@ extension BuildContextExtension on BuildContext {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  bool listenBoolean(String path,
+  bool watchBoolean(String path,
       {bool defaultValue = false, bool filter(bool value)}) {
     UIValue value = UIValue.of(this);
     if (value == null)
       return filter != null ? filter(defaultValue) : defaultValue;
-    return value.listenBoolean(path,
+    return value.watchBoolean(path,
         defaultValue: defaultValue, filter: filter);
   }
 
@@ -176,12 +176,12 @@ extension BuildContextExtension on BuildContext {
   /// [path]: The path to get.
   /// [defaultValue]: Value if none.
   /// [filter]: Filter values.
-  bool getBoolean(String path,
+  bool readBoolean(String path,
       {bool defaultValue = false, bool filter(bool value)}) {
     UIValue value = UIValue.of(this);
     if (value == null)
       return filter != null ? filter(defaultValue) : defaultValue;
-    return value.getBoolean(path, defaultValue: defaultValue, filter: filter);
+    return value.readBoolean(path, defaultValue: defaultValue, filter: filter);
   }
 
   /// Get the action callback from pathmap in conjunction with UIWidget.
@@ -190,10 +190,10 @@ extension BuildContextExtension on BuildContext {
   ///
   /// [path]: The path to get.
   /// [defaultAction]: Default callback when no value exists in path.
-  VoidAction listenAction(String path, {VoidAction defaultAction}) {
+  VoidAction watchAction(String path, {VoidAction defaultAction}) {
     UIValue value = UIValue.of(this);
     if (value == null) return defaultAction ?? () {};
-    return value.listenAction(path, defaultAction: defaultAction);
+    return value.watchAction(path, defaultAction: defaultAction);
   }
 
   /// Get the action callback from pathmap in conjunction with UIWidget.
@@ -202,10 +202,10 @@ extension BuildContextExtension on BuildContext {
   ///
   /// [path]: The path to get.
   /// [defaultAction]: Default callback when no value exists in path.
-  VoidAction getAction(String path, {VoidAction defaultAction}) {
+  VoidAction readAction(String path, {VoidAction defaultAction}) {
     UIValue value = UIValue.of(this);
     if (value == null) return defaultAction ?? () {};
-    return value.getAction(path, defaultAction: defaultAction);
+    return value.readAction(path, defaultAction: defaultAction);
   }
 
   /// Outputs the theme related to the context.
@@ -244,7 +244,7 @@ extension IPathExtension<TPath extends IPath> on TPath {
   /// [context]: BuildContext.
   TPath listenWidget(BuildContext context) {
     if (this == null) return this;
-    context.listen(this.path);
+    context.watch(this.path);
     return this;
   }
 
@@ -265,7 +265,7 @@ extension IPathFutureExtension<TPath extends IPath> on Future<TPath> {
   Future<TPath> listenWidget(BuildContext context) {
     this?.then((value) {
       if (value == null) return value;
-      context.listen(value?.path);
+      context.watch(value?.path);
       return value;
     });
     return this;
