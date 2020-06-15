@@ -106,7 +106,8 @@ extension BuildContextExtension on BuildContext {
           ? filter(defaultValue?.localize())
           : defaultValue?.localize();
     }
-    return value.readLocalized(path, defaultValue: defaultValue, filter: filter);
+    return value.readLocalized(path,
+        defaultValue: defaultValue, filter: filter);
   }
 
   /// Get number from pathmap in conjunction with UIWidget.
@@ -163,8 +164,7 @@ extension BuildContextExtension on BuildContext {
     UIValue value = UIValue.of(this);
     if (value == null)
       return filter != null ? filter(defaultValue) : defaultValue;
-    return value.watchBoolean(path,
-        defaultValue: defaultValue, filter: filter);
+    return value.watchBoolean(path, defaultValue: defaultValue, filter: filter);
   }
 
   /// Get boolean flag from pathmap in conjunction with UIWidget.

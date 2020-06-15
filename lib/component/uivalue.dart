@@ -147,9 +147,10 @@ class UIValue {
   String readLocalized(String path,
           {String defaultValue = Const.empty, String filter(String value)}) =>
       filter != null
-          ? filter(
-              Localize.get(this.read<dynamic>(path)?.toString() ?? defaultValue))
-          : (Localize.get(this.read<dynamic>(path)?.toString() ?? defaultValue));
+          ? filter(Localize.get(
+              this.read<dynamic>(path)?.toString() ?? defaultValue))
+          : (Localize.get(
+              this.read<dynamic>(path)?.toString() ?? defaultValue));
 
   /// Get number from pathmap in conjunction with UIWidget.
   ///
