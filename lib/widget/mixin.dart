@@ -12,3 +12,4 @@ export 'mixin/uilocalcachemixin.dart';
 export 'mixin/uipagedatamixin.dart';
 export 'mixin/uianimatormixin.dart';
 export 'mixin/uitexteditingmixin.dart';
+export 'mixin/uitextfieldcontrollermixin.dart';
