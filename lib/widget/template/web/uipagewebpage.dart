@@ -107,12 +107,20 @@ abstract class UIPageWebPage extends UIPageScaffold {
           appBar: this.appBar(context),
           body: GestureDetector(
               onTap: () => context.unfocus(),
-              child: Scrollbar(
-                  controller: this.scrollController,
-                  child: SingleChildScrollView(
+              child: this.applySafeArea
+                  ? SafeArea(
+                      child: Scrollbar(
+                          controller: this.scrollController,
+                          child: SingleChildScrollView(
+                              controller: this.scrollController,
+                              padding: padding,
+                              child: ResponsiveGridRow(children: children))))
+                  : Scrollbar(
                       controller: this.scrollController,
-                      padding: padding,
-                      child: ResponsiveGridRow(children: children)))),
+                      child: SingleChildScrollView(
+                          controller: this.scrollController,
+                          padding: padding,
+                          child: ResponsiveGridRow(children: children)))),
           floatingActionButton: this.floatingActionButton(context),
           floatingActionButtonLocation: this.floatingActionButtonLocation,
           floatingActionButtonAnimator: this.floatingActionButtonAnimator,

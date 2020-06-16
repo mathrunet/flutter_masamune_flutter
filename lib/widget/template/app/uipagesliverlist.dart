@@ -63,8 +63,12 @@ abstract class UIPageSliverList extends UIPageScaffold {
         key: scaffold,
         body: GestureDetector(
             onTap: () => context.unfocus(),
-            child: CustomScrollView(
-                slivers: <Widget>[this.appBar(context), this.body(context)])),
+            child: CustomScrollView(slivers: <Widget>[
+              this.appBar(context),
+              this.applySafeArea
+                  ? SafeArea(child: this.body(context))
+                  : this.body(context)
+            ])),
         floatingActionButton: this.floatingActionButton(context),
         floatingActionButtonLocation: this.floatingActionButtonLocation,
         floatingActionButtonAnimator: this.floatingActionButtonAnimator,

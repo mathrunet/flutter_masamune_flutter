@@ -128,7 +128,10 @@ abstract class UIPageScaffold extends UIPage {
         key: scaffold,
         appBar: this.appBar(context),
         body: GestureDetector(
-            onTap: () => context.unfocus(), child: this.body(context)),
+            onTap: () => context.unfocus(),
+            child: this.applySafeArea
+                ? SafeArea(child: this.body(context))
+                : this.body(context)),
         floatingActionButton: this.floatingActionButton(context),
         floatingActionButtonLocation: this.floatingActionButtonLocation,
         floatingActionButtonAnimator: this.floatingActionButtonAnimator,

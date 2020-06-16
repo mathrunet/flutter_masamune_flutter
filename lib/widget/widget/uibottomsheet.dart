@@ -89,6 +89,8 @@ class UIBottomSheet extends UIWidget {
   /// [context]: Build context.
   @override
   Widget build(BuildContext context) {
+    double bottom =
+        MediaQuery.of(Scaffold.of(context).context).viewPadding.bottom;
     return SingleChildScrollView(
         child: SolidBottomSheet(
       headerBar: BottomAppBar(
@@ -101,11 +103,13 @@ class UIBottomSheet extends UIWidget {
                 else
                   this.controller.show();
               },
-              child: this.headerBar)),
-      body: this.body,
+              child: Padding(
+                  padding: EdgeInsets.only(bottom: bottom),
+                  child: this.headerBar))),
+      body: Padding(padding: EdgeInsets.only(bottom: bottom), child: this.body),
       controller: this.controller,
       minHeight: this.minHeight,
-      maxHeight: this.maxHeight,
+      maxHeight: this.maxHeight + bottom,
       autoSwiped: this.autoSwiped,
       toggleVisibilityOnTap: this.toggleVisibilityOnTap,
       canUserSwipe: this.canUserSwipe,

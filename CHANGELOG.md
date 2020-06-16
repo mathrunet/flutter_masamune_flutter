@@ -1,3 +1,11 @@
+## [0.2.7] - Update README (2020.06.16)
+
+* Safe area compatible.
+
+## [0.2.6] - Update README (2020.06.16)
+
+* Added UITextFieldControllerMixin.
+
 ## [0.2.5] - Update README (2020.06.12)
 
 * Changed the data acquisition from UIValue from listen to watch and get to read.

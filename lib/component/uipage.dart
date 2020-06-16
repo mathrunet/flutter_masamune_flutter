@@ -15,6 +15,10 @@ abstract class UIPage extends UIWidget with UIPageDataMixin {
   /// [key]: Widget key.
   UIPage({Key key}) : super(key: key, child: null);
 
+  /// True to apply safe area to Body.
+  @protected
+  bool get applySafeArea => true;
+
   /// Creating a body.
   ///
   /// [context]: Build context.
@@ -31,7 +35,10 @@ abstract class UIPage extends UIWidget with UIPageDataMixin {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => context.unfocus(), child: this.body(context));
+        onTap: () => context.unfocus(),
+        child: this.applySafeArea
+            ? SafeArea(child: this.body(context))
+            : this.body(context));
   }
 
   /// Gets the UIValue of current page.

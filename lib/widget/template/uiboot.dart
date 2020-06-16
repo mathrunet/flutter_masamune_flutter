@@ -27,6 +27,12 @@ abstract class UIBoot extends UIPage {
   /// [context]: Build context.
   @override
   Widget body(BuildContext context) {
+    return this.applySafeArea
+        ? SafeArea(child: this._body(context))
+        : this._body(context);
+  }
+
+  Widget _body(BuildContext context) {
     return Container(
         color: context.theme.backgroundColor,
         child: UIAnimatedBuilder(
