@@ -66,7 +66,7 @@ class UIText extends UIWidget {
 
   @override
   List provider(BuildContext context) {
-    return super.provider(context).insertLast([_TextCache()]);
+    return [_TextCache(), ...super.provider(context)];
   }
 
   @override

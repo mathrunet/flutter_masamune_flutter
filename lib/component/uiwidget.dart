@@ -144,7 +144,7 @@ abstract class UIWidget extends StatefulWidget {
   /// [context]: Build context.
   @protected
   @mustCallSuper
-  List provider(BuildContext context) => const [];
+  List provider(BuildContext context) => [];
 
   /// Determines whether to build.
   ///
@@ -307,11 +307,10 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
   @protected
   @mustCallSuper
   List provider(BuildContext context) {
-    List tmp = this.widget.provider(context);
-    if (this.widget._provider != null) {
-      tmp.addAll(this.widget._provider(context));
-    }
-    return tmp;
+    return [
+      ...this.widget.provider(context),
+      if (this.widget._provider != null) ...this.widget._provider(context)
+    ];
   }
 
   /// Determines whether to build.
@@ -452,9 +451,7 @@ class _UIWidgetContainer extends StatefulWidget {
 class _UIWidgetContainerState extends State<_UIWidgetContainer>
     with WidgetsBindingObserver, RouteAware {
   final UIWidgetState _parent;
-  _UIWidgetContainerState(UIWidgetState parent) : this._parent = parent {
-    this._parent._value._container = this;
-  }
+  _UIWidgetContainerState(UIWidgetState parent) : this._parent = parent;
   @override
   Widget build(BuildContext context) {
     if (!this._parent._loaded) return Container();
@@ -464,19 +461,20 @@ class _UIWidgetContainerState extends State<_UIWidgetContainer>
   @override
   void initState() {
     super.initState();
-    if (this._parent.validateOnLoad != null) {
-      String error = this._parent.validateOnLoad(this.context);
-      if (isNotEmpty(error)) {
-        UIDialog.show(this.context, text: error);
-        return;
-      }
-    }
+    this._parent._value._container = this;
     List provided = this._parent.provider(context);
     for (dynamic tmp in provided) {
       if (tmp == null) continue;
       Type type = tmp.runtimeType;
       if (this._parent._value._provided.containsKey(type)) continue;
       this._parent._value._provided[type] = tmp;
+    }
+    if (this._parent.validateOnLoad != null) {
+      String error = this._parent.validateOnLoad(this.context);
+      if (isNotEmpty(error)) {
+        UIDialog.show(this.context, text: error);
+        return;
+      }
     }
     this._parent._loaded = true;
     if (this._parent.onLoad != null) this._parent.onLoad(this.context);
