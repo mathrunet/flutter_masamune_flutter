@@ -1,15 +1,16 @@
 part of masamune.flutter;
 
 /// Widget which extended [MaterialApp] for Path.
-class UIApp extends UIWidget {
+class UIMaterialApp extends UIWidget {
   /// Widget which extended [MaterialApp] for Path.
-  UIApp(
+  UIMaterialApp(
       {BuildEvent load,
       BuildEvent unload,
       BuildEvent pause,
       BuildEvent unpause,
       BuildEvent quit,
       Key key,
+      WidgetBuilder home,
       GlobalKey<NavigatorState> navigatorKey,
       Map<String, RouteConfig> routes = const <String, RouteConfig>{},
       String initialRoute,
@@ -54,12 +55,15 @@ class UIApp extends UIWidget {
               return MaterialApp(
                   key: key,
                   navigatorKey: navigatorKey,
-                  home: null,
-                  onGenerateRoute: (settings) =>
-                      RouteConfig._onGenerateRoute(settings),
-                  onGenerateInitialRoutes: (initialRouteName) =>
-                      RouteConfig._onGenerateInitialRoute(initialRouteName,
-                          boot: onBootRoute),
+                  home: home != null ? home(context) : null,
+                  onGenerateRoute: home != null
+                      ? null
+                      : (settings) => RouteConfig._onGenerateRoute(settings),
+                  onGenerateInitialRoutes: home != null
+                      ? null
+                      : (initialRouteName) =>
+                          RouteConfig._onGenerateInitialRoute(initialRouteName,
+                              boot: onBootRoute),
                   navigatorObservers: navigatorObservers != null
                       ? List<NavigatorObserver>.from(navigatorObservers)
                           .insertLast(UIValue.routeObserver)

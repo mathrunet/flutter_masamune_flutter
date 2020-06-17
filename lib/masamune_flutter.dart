@@ -28,7 +28,7 @@ part 'core/typedef.dart';
 part 'core/defaultpath.dart';
 part 'core/bootstrap.dart';
 
-part 'component/uiapp.dart';
+part 'component/uimaterialapp.dart';
 part 'component/uipage.dart';
 part 'component/extensions.dart';
 part 'component/uiwidget.dart';

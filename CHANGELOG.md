@@ -1,3 +1,7 @@
+## [0.2.8] - Update README (2020.06.16)
+
+* Changed UIApp to UIMaterialApp.
+
 ## [0.2.7] - Update README (2020.06.16)
 
 * Safe area compatible.

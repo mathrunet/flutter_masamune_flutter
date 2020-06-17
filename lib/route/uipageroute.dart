@@ -26,12 +26,21 @@ class UIPageRoute extends PageRouteBuilder {
           fullscreenDialog: fullscreenDialog,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             if (Config.isWeb) {
-              return FadeTransition(
-                  opacity: Tween<double>(
-                    begin: 0,
-                    end: 1,
-                  ).animate(animation),
-                  child: child);
+              if (fullscreenDialog) {
+                return SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 1),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child);
+              } else {
+                return FadeTransition(
+                    opacity: Tween<double>(
+                      begin: 0,
+                      end: 1,
+                    ).animate(animation),
+                    child: child);
+              }
             }
             if (transitionType == null) {
               if (fullscreenDialog) {

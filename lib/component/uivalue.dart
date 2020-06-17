@@ -266,6 +266,25 @@ class UIValue {
     return this.read<VoidAction>(path) ?? defaultAction ?? () {};
   }
 
+  /// Writes the value to the specified path.
+  ///
+  /// It is possible to enter one of the [value] is
+  /// [bool], [int], [double], [String], [Map<String, dynamic>].
+  ///
+  /// [Map] the case of [DataDocument] other than the [DataField] will be saved as.
+  ///
+  /// [path]: The path to write.
+  /// [value]: The value to write.
+  void write(String path, dynamic value) {
+    assert(value != null);
+    if (value == null) return;
+    if (value is bool || value is double || value is int || value is String) {
+      DataField(path, value);
+    } else if (value is Map<String, dynamic>) {
+      DataDocument.fromMap(path, value);
+    }
+  }
+
   /// Get the form data.
   IDataDocument get form {
     if (this._form != null) return this._form;

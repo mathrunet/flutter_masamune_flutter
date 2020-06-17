@@ -208,6 +208,21 @@ extension BuildContextExtension on BuildContext {
     return value.readAction(path, defaultAction: defaultAction);
   }
 
+  /// Writes the value to the specified path.
+  ///
+  /// It is possible to enter one of the [value] is
+  /// [bool], [int], [double], [String], [Map<String, dynamic>].
+  ///
+  /// [Map] the case of [DataDocument] other than the [DataField] will be saved as.
+  ///
+  /// [path]: The path to write.
+  /// [value]: The value to write.
+  void write(String path, dynamic value) {
+    UIValue value = UIValue.of(this);
+    if (value == null) return;
+    return value.write(path, value);
+  }
+
   /// Outputs the theme related to the context.
   ThemeData get theme => Theme.of(this);
 
