@@ -65,13 +65,18 @@ class UIText extends UIWidget {
       : super(key: key);
 
   @override
+  List provider(BuildContext context) {
+    return super.provider(context).insertLast([_TextCache()]);
+  }
+
+  @override
   bool rebuildable(BuildContext context) {
-    return context.cache["text"] != builder(context);
+    return context.consume<_TextCache>()?.text != builder(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Text(context.cache["text"] = builder(context),
+    return Text(context.consume<_TextCache>().text = builder(context),
         key: this.key,
         style: style,
         strutStyle: strutStyle,
@@ -85,4 +90,8 @@ class UIText extends UIWidget {
         semanticsLabel: semanticsLabel,
         textWidthBasis: textWidthBasis);
   }
+}
+
+class _TextCache {
+  String text;
 }

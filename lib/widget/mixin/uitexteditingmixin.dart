@@ -8,13 +8,24 @@ abstract class UITextEditingMixin implements UIWidget {
   final _TextEditingController _textEditingController =
       _TextEditingController();
 
+  /// [provider]: Save the object to UIValue.
+  ///
+  /// The saved value is getting by [context.consume].
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @override
+  @mustCallSuper
+  List provider(BuildContext context) {
+    return [FocusNode(), _FocusState()];
+  }
+
   /// Get the FocusNode.
   ///
   /// [context]: BuildContext.
   FocusNode focusNode(BuildContext context) {
-    if (context.cache[_focusNodeKey] == null)
-      context.cache[_focusNodeKey] = FocusNode();
-    return context.cache[_focusNodeKey];
+    return context.consume<FocusNode>();
   }
 
   /// Executed when the widget is loaded.
@@ -24,7 +35,8 @@ abstract class UITextEditingMixin implements UIWidget {
   /// [context]: Build context.
   void onLoad(BuildContext context) {
     this.focusNode(context).addListener(() {
-      context.cache[_focusKey] = this.focusNode(context).hasFocus;
+      context.consume<_FocusState>().hasFocus =
+          this.focusNode(context).hasFocus;
     });
   }
 
@@ -32,7 +44,7 @@ abstract class UITextEditingMixin implements UIWidget {
   ///
   /// [context]: BuildContext.
   bool hasFocus(BuildContext context) {
-    return context.cache[_focusKey] ?? false;
+    return context.consume<_FocusState>()?.hasFocus ?? false;
   }
 
   /// Text edit controller.
@@ -72,6 +84,10 @@ abstract class UITextEditingMixin implements UIWidget {
               composing: TextRange.empty,
             );
   }
+}
+
+class _FocusState {
+  bool hasFocus;
 }
 
 class _TextEditingController {

@@ -229,6 +229,15 @@ extension BuildContextExtension on BuildContext {
     }
   }
 
+  /// Get the object given by [provider].
+  ///
+  /// Be sure to define the type.
+  T consume<T extends Object>() {
+    UIValue value = UIValue.of(this);
+    if (value == null) return null;
+    return value.consume<T>();
+  }
+
   /// Outputs the theme related to the context.
   ThemeData get theme => Theme.of(this);
 
@@ -237,9 +246,6 @@ extension BuildContextExtension on BuildContext {
 
   /// Set the form data.
   set form(IDataDocument document) => UIValue.of(this)._form = document;
-
-  /// Get the cache tdata.
-  Map<String, dynamic> get cache => UIValue.of(this).cache;
 
   /// Get the Navigator related to context.
   NavigatorState get navigator => Navigator.of(this);

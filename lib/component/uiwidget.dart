@@ -19,6 +19,7 @@ abstract class UIWidget extends StatefulWidget {
   final VoidAction _didPop;
   final VoidAction _didPopNext;
   final ValidateEvent _validateOnLoad;
+  final List Function(BuildContext context) _provider;
   final bool Function(BuildContext context) _rebuildable;
 
   /// Abstract class of widget including listening function equivalent to UIValue.
@@ -35,6 +36,8 @@ abstract class UIWidget extends StatefulWidget {
   /// [child]: Callback when creating a widget.
   /// [pause]: Callback for Application paused.
   /// [unpause]: Callback for Application unpaused.
+  /// [provider]: Save the object to UIValue.
+  /// The saved value is getting by [context.consume<T>].
   /// [rebuildable]: Callback to determine if build is possible.
   /// [quit]: Callback for Application quit.
   /// [didPop]: Callback when the widget is pop.
@@ -54,6 +57,7 @@ abstract class UIWidget extends StatefulWidget {
       VoidAction didPopNext,
       VoidAction didPushNext,
       ValidateEvent validateOnLoad,
+      List provider(BuildContext context),
       bool rebuildable(BuildContext context),
       WidgetBuilder child})
       : this._load = load,
@@ -67,6 +71,7 @@ abstract class UIWidget extends StatefulWidget {
         this._didPushNext = didPushNext,
         this._validateOnLoad = validateOnLoad,
         this._child = child,
+        this._provider = provider,
         this._rebuildable = rebuildable,
         super(key: key);
 
@@ -129,6 +134,17 @@ abstract class UIWidget extends StatefulWidget {
   @protected
   @mustCallSuper
   void onQuit(BuildContext context) {}
+
+  /// [provider]: Save the object to UIValue.
+  ///
+  /// The saved value is getting by [context.consume<T>].
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @protected
+  @mustCallSuper
+  List provider(BuildContext context) => const [];
 
   /// Determines whether to build.
   ///
@@ -279,6 +295,23 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
   void onQuit(BuildContext context) {
     if (this.widget._quit != null) this.widget._quit(context);
     this.widget.onQuit(context);
+  }
+
+  /// [provider]: Save the object to UIValue.
+  ///
+  /// The saved value is getting by [context.consume<T>].
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @protected
+  @mustCallSuper
+  List provider(BuildContext context) {
+    List tmp = this.widget.provider(context);
+    if (this.widget._provider != null) {
+      tmp.addAll(this.widget._provider(context));
+    }
+    return tmp;
   }
 
   /// Determines whether to build.
@@ -437,6 +470,13 @@ class _UIWidgetContainerState extends State<_UIWidgetContainer>
         UIDialog.show(this.context, text: error);
         return;
       }
+    }
+    List provided = this._parent.provider(context);
+    for (dynamic tmp in provided) {
+      if (tmp == null) continue;
+      Type type = tmp.runtimeType;
+      if (this._parent._value._provided.containsKey(type)) continue;
+      this._parent._value._provided[type] = tmp;
     }
     this._parent._loaded = true;
     if (this._parent.onLoad != null) this._parent.onLoad(this.context);

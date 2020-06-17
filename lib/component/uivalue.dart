@@ -23,7 +23,7 @@ class UIValue {
   PathList get willDisposePathList => this._willDisposePathList;
   PathList _willDisposePathList = PathList();
   Map<String, Observer> _data = MapPool.get();
-  Map<String, dynamic> _cache = MapPool.get();
+  Map<Type, dynamic> _provided = MapPool.get();
   UIValue._(UIWidgetState state) : this._state = state;
   _UIWidgetContainerState _container;
   IDataDocument _form;
@@ -285,6 +285,14 @@ class UIValue {
     }
   }
 
+  /// Get the object given by [provider].
+  ///
+  /// Be sure to define the type.
+  T consume<T extends Object>() {
+    if (!this._provided.containsKey(T)) return null;
+    return this._provided[T] as T;
+  }
+
   /// Get the form data.
   IDataDocument get form {
     if (this._form != null) return this._form;
@@ -294,9 +302,6 @@ class UIValue {
 
   /// Set the form data.
   set form(IDataDocument document) => this._form = document;
-
-  /// Get the cache pool.
-  Map<String, dynamic> get cache => this._cache;
 
   /// Gets the current context.
   BuildContext get context => this._container?.context;
@@ -336,7 +341,7 @@ class UIValue {
     for (Observer tmp in this._data.values) tmp.dispose();
     this._willDisposePathList.dispose();
     this._data.release();
-    this._cache.release();
+    this._provided.release();
     this._state = null;
   }
 }

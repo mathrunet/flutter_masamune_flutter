@@ -1,3 +1,7 @@
+## [0.2.10] - Update README (2020.06.17)
+
+* Define provider and consume for UIWidget.
+
 ## [0.2.9] - Update README (2020.06.17)
 
 * Added WidgetData model.

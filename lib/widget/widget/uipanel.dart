@@ -23,12 +23,17 @@ class UIPanel extends UIWidget {
   /// [pause]: Callback for Application paused.
   /// [unpause]: Callback for Application unpaused.
   /// [quit]: Callback for Application quit.
+  /// [provider]: Save the object to UIValue.
+  /// The saved value is getting by [context.consume<T>].
+  /// [rebuildable]: Callback to determine if build is possible.
   const UIPanel(
       {BuildEvent load,
       BuildEvent unload,
       BuildEvent pause,
       BuildEvent unpause,
       BuildEvent quit,
+      List provider(BuildContext context),
+      bool rebuildable(BuildContext context),
       @required WidgetBuilder child})
       : super(
             load: load,
@@ -36,5 +41,7 @@ class UIPanel extends UIWidget {
             pause: pause,
             unpause: unpause,
             quit: quit,
+            provider: provider,
+            rebuildable: rebuildable,
             child: child);
 }
