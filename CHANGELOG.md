@@ -1,3 +1,8 @@
+## [0.2.9] - Update README (2020.06.17)
+
+* Added WidgetData model.
+* Changed the argument name of UIDialog.
+
 ## [0.2.8] - Update README (2020.06.16)
 
 * Changed UIApp to UIMaterialApp.

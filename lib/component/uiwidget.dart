@@ -434,7 +434,7 @@ class _UIWidgetContainerState extends State<_UIWidgetContainer>
     if (this._parent.validateOnLoad != null) {
       String error = this._parent.validateOnLoad(this.context);
       if (isNotEmpty(error)) {
-        UIDialog.show(this.context, defaultText: error);
+        UIDialog.show(this.context, text: error);
         return;
       }
     }

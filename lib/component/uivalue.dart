@@ -275,7 +275,7 @@ class UIValue {
   ///
   /// [path]: The path to write.
   /// [value]: The value to write.
-  void write(String path, dynamic value) {
+  void write<T extends Object>(String path, T value) {
     assert(value != null);
     if (value == null) return;
     if (value is bool || value is double || value is int || value is String) {

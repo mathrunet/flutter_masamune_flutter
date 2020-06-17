@@ -10,13 +10,13 @@ class _UITask {
       String dialogTextPath = DefaultPath.dialogText,
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
-      String defaultSubmitText = "OK",
-      String defaultTitle,
-      String defaultText,
-      VoidAction defaultSubmitAction,
-      String defaultErrorTitle = "ERROR",
-      String defaultAbortTitle = "ABORTED",
-      String defaultTimeoutText}) async {
+      String submitText = "OK",
+      String title,
+      String text,
+      VoidAction submitAction,
+      String errorTitle = "ERROR",
+      String abortTitle = "ABORTED",
+      String timeoutText}) async {
     if (context == null) return;
     if (task != null) {
       if (isShowIndicator) {
@@ -35,48 +35,48 @@ class _UITask {
       }
     }
     if (isShowDialog) {
-      String title = context.read(dialogTitlePath, defaultValue: defaultTitle);
-      String text = context.read(dialogTextPath, defaultValue: defaultText);
+      String _title = context.read(dialogTitlePath, defaultValue: title);
+      String _text = context.read(dialogTextPath, defaultValue: text);
       if (task == null) {
-        title = defaultErrorTitle;
-        text = "This data is invalid.".localize();
+        _title = errorTitle;
+        _text = "This data is invalid.".localize();
       } else if (task is Future<ITask>) {
         ITask tmp = await task;
         if (tmp == null || tmp.isTimeout) {
-          title = defaultErrorTitle;
-          text = defaultTimeoutText ?? tmp?.message ?? "Timed out.".localize();
+          _title = errorTitle;
+          _text = timeoutText ?? tmp?.message ?? "Timed out.".localize();
         } else if (tmp.isError) {
-          title = defaultErrorTitle;
-          text = tmp.message ?? Const.empty;
+          _title = errorTitle;
+          _text = tmp.message ?? Const.empty;
         } else if (tmp.isAbort) {
-          title = defaultAbortTitle;
-          text = tmp.message ?? Const.empty;
+          _title = abortTitle;
+          _text = tmp.message ?? Const.empty;
         }
       } else if (task is Future<List<ITask>>) {
         List<ITask> tmp = await task;
         if (tmp == null || tmp.isTimeout) {
-          title = defaultErrorTitle;
-          text = defaultTimeoutText ?? tmp?.message ?? "Timed out.".localize();
+          _title = errorTitle;
+          _text = timeoutText ?? tmp?.message ?? "Timed out.".localize();
         } else if (tmp.isError) {
-          title = defaultErrorTitle;
-          text = tmp.message ?? Const.empty;
+          _title = errorTitle;
+          _text = tmp.message ?? Const.empty;
         } else if (tmp.isAbort) {
-          title = defaultAbortTitle;
-          text = tmp.message ?? Const.empty;
+          _title = abortTitle;
+          _text = tmp.message ?? Const.empty;
         }
       }
-      if (title == null || text == null) return;
+      if (_title == null || _text == null) return;
       await showDialog(
           context: context,
           barrierDismissible: false,
           builder: (context) {
             return AlertDialog(
-              title: Text(title),
-              content: Text(text),
+              title: Text(_title),
+              content: Text(_text),
               actions: <Widget>[
                 FlatButton(
                   child: Text(context.read(dialogSubmitTextPath,
-                      defaultValue: defaultSubmitText)),
+                      defaultValue: submitText)),
                   onPressed: () {
                     PathMap.removeAllPath([
                       dialogTitlePath,
@@ -86,7 +86,7 @@ class _UITask {
                     ]);
                     Navigator.of(context, rootNavigator: true).pop();
                     context.readAction(dialogSubmitActionPath,
-                        defaultAction: defaultSubmitAction)();
+                        defaultAction: submitAction)();
                   },
                 ),
               ],
@@ -116,13 +116,13 @@ extension UITaskExtension<T extends ITask> on Future<T> {
   /// [dialogTextPath]: Dialog text path.
   /// [dialogSubmitTextPath]: Dialog submit button text path.
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
-  /// [defaultSubmitText]: Default submit button text.
-  /// [defaultSubmitAction]: Default submit button action.
-  /// [dialogTitle]: Default title.
-  /// [dialogText]: Default text.
-  /// [dialogErrorTitle]: Title at the end of error.
-  /// [dialogAbortTitle]: Title at the end of the break.
-  /// [defaultTimeoutText]: Message when timed out.
+  /// [submitText]: Default submit button text.
+  /// [submitAction]: Default submit button action.
+  /// [title]: Default title.
+  /// [text]: Default text.
+  /// [errorTitle]: Title at the end of error.
+  /// [abortTitle]: Title at the end of the break.
+  /// [timeoutText]: Message when timed out.
   Future<T> showIndicatorAndDialog(BuildContext context,
       {bool isShowDialog = true,
       bool isShowIndicator = true,
@@ -130,13 +130,13 @@ extension UITaskExtension<T extends ITask> on Future<T> {
       String dialogTextPath = DefaultPath.dialogText,
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
-      String defaultSubmitText = "OK",
-      String defaultTitle,
-      String defaultText,
-      VoidAction defaultSubmitAction,
-      String defaultErrorTitle = "ERROR",
-      String defaultAbortTitle = "ABORTED",
-      String defaultTimeoutText}) async {
+      String submitText = "OK",
+      String title,
+      String text,
+      VoidAction submitAction,
+      String errorTitle = "ERROR",
+      String abortTitle = "ABORTED",
+      String timeoutText}) async {
     Future.delayed(
         Duration.zero,
         () => _UITask.show(context, this,
@@ -146,14 +146,13 @@ extension UITaskExtension<T extends ITask> on Future<T> {
             dialogTextPath: dialogTextPath,
             dialogSubmitTextPath: dialogSubmitTextPath,
             dialogSubmitActionPath: dialogSubmitActionPath,
-            defaultTitle: defaultTitle,
-            defaultText: defaultText,
-            defaultSubmitAction:
-                defaultSubmitAction ?? () => context.navigator.pop(),
-            defaultSubmitText: defaultSubmitText,
-            defaultErrorTitle: defaultErrorTitle,
-            defaultAbortTitle: defaultAbortTitle,
-            defaultTimeoutText: defaultTimeoutText));
+            title: title,
+            text: text,
+            submitAction: submitAction ?? () => context.navigator.pop(),
+            submitText: submitText,
+            errorTitle: errorTitle,
+            abortTitle: abortTitle,
+            timeoutText: timeoutText));
     return this;
   }
 }
@@ -172,13 +171,13 @@ extension UITaskListExtension<T extends ITask> on Future<List<T>> {
   /// [dialogTextPath]: Dialog text path.
   /// [dialogSubmitTextPath]: Dialog submit button text path.
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
-  /// [defaultSubmitText]: Default submit button text.
-  /// [defaultSubmitAction]: Default submit button action.
-  /// [dialogTitle]: Default title.
-  /// [dialogText]: Default text.
-  /// [dialogErrorTitle]: Title at the end of error.
-  /// [dialogAbortTitle]: Title at the end of the break.
-  /// [defaultTimeoutText]: Message when timed out.
+  /// [submitText]: Default submit button text.
+  /// [submitAction]: Default submit button action.
+  /// [title]: Default title.
+  /// [text]: Default text.
+  /// [errorTitle]: Title at the end of error.
+  /// [abortTitle]: Title at the end of the break.
+  /// [timeoutText]: Message when timed out.
   Future<List<T>> showIndicatorAndDialog(BuildContext context,
       {bool isShowDialog = true,
       bool isShowIndicator = true,
@@ -186,13 +185,13 @@ extension UITaskListExtension<T extends ITask> on Future<List<T>> {
       String dialogTextPath = DefaultPath.dialogText,
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
-      String defaultSubmitText = "OK",
-      String defaultTitle,
-      String defaultText,
-      VoidAction defaultSubmitAction,
-      String defaultErrorTitle = "ERROR",
-      String defaultAbortTitle = "ABORTED",
-      String defaultTimeoutText}) async {
+      String submitText = "OK",
+      String title,
+      String text,
+      VoidAction submitAction,
+      String errorTitle = "ERROR",
+      String abortTitle = "ABORTED",
+      String timeoutText}) async {
     Future.delayed(
         Duration.zero,
         () => _UITask.show(context, this,
@@ -202,13 +201,13 @@ extension UITaskListExtension<T extends ITask> on Future<List<T>> {
             dialogTextPath: dialogTextPath,
             dialogSubmitTextPath: dialogSubmitTextPath,
             dialogSubmitActionPath: dialogSubmitActionPath,
-            defaultTitle: defaultTitle,
-            defaultText: defaultText,
-            defaultSubmitAction: defaultSubmitAction,
-            defaultSubmitText: defaultSubmitText,
-            defaultErrorTitle: defaultErrorTitle,
-            defaultAbortTitle: defaultAbortTitle,
-            defaultTimeoutText: defaultTimeoutText));
+            title: title,
+            text: text,
+            submitAction: submitAction,
+            submitText: submitText,
+            errorTitle: errorTitle,
+            abortTitle: abortTitle,
+            timeoutText: timeoutText));
     return this;
   }
 }

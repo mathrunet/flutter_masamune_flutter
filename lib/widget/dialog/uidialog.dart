@@ -15,10 +15,10 @@ class UIDialog {
   /// [dialogTextPath]: Dialog text path.
   /// [dialogSubmitTextPath]: Dialog submit button text path.
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
-  /// [defaultSubmitText]: Default submit button text.
-  /// [defaultSubmitAction]: Default submit button action.
-  /// [dialogTitle]: Default title.
-  /// [dialogText]: Default text.
+  /// [submitText]: Default submit button text.
+  /// [submitAction]: Default submit button action.
+  /// [title]: Default title.
+  /// [text]: Default text.
   /// [disableBackKey]: True to disable the back key.
   /// [popOnPress]: True if the dialog should be closed together when the button is pressed.
   /// [willShowRepetition]: True if the dialog will continue to be displayed unless you press the regular close button.
@@ -28,10 +28,10 @@ class UIDialog {
       String dialogTextPath = DefaultPath.dialogText,
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
-      String defaultSubmitText = "OK",
-      String defaultTitle = "ERROR",
-      String defaultText = "This data is invalid.",
-      VoidAction defaultSubmitAction,
+      String submitText = "OK",
+      String title = "ERROR",
+      String text = "This data is invalid.",
+      VoidAction submitAction,
       bool disableBackKey = false,
       bool popOnPress = true,
       bool willShowRepetition = false}) async {
@@ -43,11 +43,10 @@ class UIDialog {
             dialogTextPath: dialogTextPath,
             dialogSubmitActionPath: dialogSubmitActionPath,
             dialogSubmitTextPath: dialogSubmitTextPath,
-            defaultSubmitText: defaultSubmitText,
-            defaultTitle: defaultTitle,
-            defaultText: defaultText,
-            defaultSubmitAction:
-                defaultSubmitAction ?? () => context.navigator.pop(),
+            submitText: submitText,
+            title: title,
+            text: text,
+            submitAction: submitAction ?? () => context.navigator.pop(),
             disableBackKey: disableBackKey,
             popOnPress: popOnPress,
             willShowRepetition: willShowRepetition));
@@ -61,10 +60,10 @@ class UIDialog {
   /// [dialogTextPath]: Dialog text path.
   /// [dialogSubmitTextPath]: Dialog submit button text path.
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
-  /// [defaultSubmitText]: Default submit button text.
-  /// [defaultSubmitAction]: Default submit button action.
-  /// [dialogTitle]: Default title.
-  /// [dialogText]: Default text.
+  /// [submitText]: Default submit button text.
+  /// [submitAction]: Default submit button action.
+  /// [title]: Default title.
+  /// [text]: Default text.
   /// [disableBackKey]: True to disable the back key.
   /// [popOnPress]: True if the dialog should be closed together when the button is pressed.
   /// [willShowRepetition]: True if the dialog will continue to be displayed unless you press the regular close button.
@@ -73,17 +72,17 @@ class UIDialog {
       String dialogTextPath = DefaultPath.dialogText,
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
-      String defaultSubmitText = "OK",
-      String defaultTitle,
-      String defaultText,
-      VoidAction defaultSubmitAction,
+      String submitText = "OK",
+      String title,
+      String text,
+      VoidAction submitAction,
       bool disableBackKey = false,
       bool popOnPress = true,
       bool willShowRepetition = false}) async {
     if (context == null) return;
-    String title = context.read(dialogTitlePath, defaultValue: defaultTitle);
-    String text = context.read(dialogTextPath, defaultValue: defaultText);
-    if (title == null || text == null) return;
+    String _title = context.read(dialogTitlePath, defaultValue: title);
+    String _text = context.read(dialogTextPath, defaultValue: text);
+    if (_title == null || _text == null) return;
     bool clicked = false;
     OverlayState overlay = context.navigator.overlay;
     do {
@@ -94,12 +93,12 @@ class UIDialog {
             return WillPopScope(
                 onWillPop: disableBackKey ? () async => null : null,
                 child: AlertDialog(
-                  title: Text(title),
-                  content: Text(text),
+                  title: Text(_title),
+                  content: Text(_text),
                   actions: <Widget>[
                     FlatButton(
                       child: Text(context.read(dialogSubmitTextPath,
-                          defaultValue: defaultSubmitText)),
+                          defaultValue: submitText)),
                       onPressed: () {
                         PathMap.removeAllPath([
                           dialogTitlePath,
@@ -111,7 +110,7 @@ class UIDialog {
                         if (popOnPress)
                           Navigator.of(context, rootNavigator: true).pop();
                         context.readAction(dialogSubmitActionPath,
-                            defaultAction: defaultSubmitAction)();
+                            defaultAction: submitAction)();
                         clicked = true;
                       },
                     )

@@ -217,10 +217,16 @@ extension BuildContextExtension on BuildContext {
   ///
   /// [path]: The path to write.
   /// [value]: The value to write.
-  void write(String path, dynamic value) {
-    UIValue value = UIValue.of(this);
+  void write<T extends Object>(String path, T value) {
+    assert(value != null);
     if (value == null) return;
-    return value.write(path, value);
+    if (value is bool || value is double || value is int || value is String) {
+      DataField(path, value);
+    } else if (value is Map<String, dynamic>) {
+      DataDocument.fromMap(path, value);
+    } else if (!(value is IPath)) {
+      WidgetData<T>(path, this, value);
+    }
   }
 
   /// Outputs the theme related to the context.
