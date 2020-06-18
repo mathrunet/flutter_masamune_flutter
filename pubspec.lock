@@ -117,16 +117,16 @@ packages:
   masamune_core:
     dependency: "direct main"
     description:
-      path: "../masamune_core"
-      relative: true
-    source: path
+      name: masamune_core
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.2.11+1"
   masamune_localize:
     dependency: "direct main"
     description:
-      path: "../masamune_localize"
-      relative: true
-    source: path
+      name: masamune_localize
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.2.6"
   masamune_test:
     dependency: "direct dev"

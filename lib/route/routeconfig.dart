@@ -8,6 +8,11 @@ class RouteConfig {
   /// True to launch in full screen.
   final bool fullScreen;
 
+  /// Route definitions by platform.
+  ///
+  /// By default, the route builder is set.
+  final Map<RoutePlatform, WidgetBuilder> platform;
+
   /// Map for rerouting according to conditions.
   ///
   /// Enter the redirect path in [String] and enter the condition in the callback.
@@ -28,7 +33,11 @@ class RouteConfig {
   /// [builder]: Route builder.
   /// [fullScreen]: True to launch in full screen.
   /// [reroute]: Map for rerouting according to conditions.
-  RouteConfig(this.builder, {this.fullScreen = false, this.reroute = const {}});
+  /// [platform]: Route definitions by platform.
+  RouteConfig(this.builder,
+      {this.fullScreen = false,
+      this.reroute = const {},
+      this.platform = const {}});
 
   static final RegExp _keyRegex = RegExp(r"\{([^\}]+)\}");
   static Map<String, RouteConfig> _routes = MapPool.get();
@@ -111,12 +120,46 @@ class RouteConfig {
         if (tmp.value.keys.length <= i) continue;
         document[tmp.value.keys[i]] = match.group(i + 1) ?? Const.empty;
       }
+      WidgetBuilder builder = tmp.value.builder;
+      for (MapEntry<RoutePlatform, WidgetBuilder> platform
+          in tmp.value.platform.entries) {
+        if (platform.key == null || platform.value == null) continue;
+        switch (platform.key) {
+          case RoutePlatform.web:
+            if (Config.isWeb) builder = platform.value;
+            break;
+          case RoutePlatform.mobile:
+            if (!Config.isWeb) builder = platform.value;
+            break;
+          case RoutePlatform.android:
+            if (Config.isAndroid) builder = platform.value;
+            break;
+          case RoutePlatform.ios:
+            if (Config.isIOS) builder = platform.value;
+            break;
+        }
+      }
       return UIPageRoute(
-          builder: tmp.value.builder,
+          builder: builder,
           settings: settings.copyWith(name: settings.name, arguments: document),
           fullscreenDialog:
               document.containsKey("fullscreen") || tmp.value.fullScreen);
     }
     return null;
   }
+}
+
+/// Platform definition.
+enum RoutePlatform {
+  /// Mobile.
+  mobile,
+
+  /// Web.
+  web,
+
+  /// Android.
+  android,
+
+  /// IOS
+  ios
 }

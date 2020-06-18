@@ -1,3 +1,7 @@
+## [0.2.11] - Update README (2020.06.18)
+
+* Added platform definition to RouteConfig.
+
 ## [0.2.10] - Update README (2020.06.17)
 
 * Define provider and consume for UIWidget.
