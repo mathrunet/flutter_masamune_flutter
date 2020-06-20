@@ -81,8 +81,8 @@ abstract class UIBoot extends UIPage {
               ..playRepeat(),
             builder: (context, child, animator) {
               return LoadingBouncingGrid.circle(
-                size: animator.attr("size"),
-                backgroundColor: animator.attr("color"),
+                size: animator.attr("size", defaultValue: 0),
+                backgroundColor: animator.attr("color", defaultValue: this.indicatorColor ?? Colors.red),
               );
             }));
   }

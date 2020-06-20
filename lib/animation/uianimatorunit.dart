@@ -54,14 +54,17 @@ class UIAnimatorUnit extends Task<Animatable> {
       Log.error("The animation data is invalid.");
       return null;
     }
-    UIAnimatorUnit unit = PathMap.get<UIAnimatorUnit>(path);
-    if (unit != null) {
-      if (animatable != null) unit.data = animatable;
-      if (from != null) unit.from = from;
-      if (to != null) unit.to = to;
-      if (tag != null) unit.tag = tag;
-      if (curve != null) unit.curve = curve;
-      return unit;
+    UIAnimatorUnit unit;
+    if( isNotEmpty(path) ){
+      unit = PathMap.get<UIAnimatorUnit>(path);
+      if (unit != null) {
+        if (animatable != null) unit.data = animatable;
+        if (from != null) unit.from = from;
+        if (to != null) unit.to = to;
+        if (tag != null) unit.tag = tag;
+        if (curve != null) unit.curve = curve;
+        return unit;
+      }
     }
     unit = UIAnimatorUnit._(
         path: path,

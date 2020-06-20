@@ -63,23 +63,27 @@ class UIAnimatorScenario extends TaskCollection<UIAnimatorUnit>
   factory UIAnimatorScenario(
       {String path, Iterable<UIAnimatorUnit> animation}) {
     path = path?.applyTags();
-    UIAnimatorScenario collection = PathMap.get<UIAnimatorScenario>(path);
-    if (collection != null) {
-      if (animation != null) collection._setInternal(animation);
-      return collection;
+    UIAnimatorScenario collection;
+    if( isNotEmpty(path) ){
+      collection = PathMap.get<UIAnimatorScenario>(path);
+      if (collection != null) {
+        if (animation != null) collection._setInternal(animation);
+        return collection;
+      }
     }
     collection =
         UIAnimatorScenario._(path: path, animation: animation ?? const []);
     return collection;
   }
   UIAnimatorScenario._(
-      {String path, Iterable<UIAnimatorUnit> animation, bool isTemporary})
+      {String path, Iterable<UIAnimatorUnit> animation, bool isTemporary = false})
       : super(
             path: path,
             children: animation,
             isTemporary: isEmpty(path) || isTemporary,
             group: 0,
             order: 10) {
+    this._rebuild();
     this.done();
   }
   void _setInternal(Iterable<UIAnimatorUnit> children) {
@@ -89,18 +93,6 @@ class UIAnimatorScenario extends TaskCollection<UIAnimatorUnit>
         this.setInternal(doc);
       }
     }
-  }
-
-  /// Notify object update Notifications spread to related objects.
-  ///
-  /// However, updatedTime is not notified to newer objects.
-  ///
-  /// [updatedTime]: Updated time (ms). If it is less than 0,
-  /// it will be obtained automatically from the application.
-  @override
-  void notifyUpdate([int updatedTime = -1]) {
-    this._rebuild();
-    super.notifyUpdate(updatedTime);
   }
 
   void _rebuild() {
