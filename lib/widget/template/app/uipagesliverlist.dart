@@ -28,12 +28,10 @@ abstract class UIPageSliverList extends UIPageScaffold {
 
   /// Defines the Sliver body.
   ///
-  /// Use [SliverChildListDelegate] or [SliverChildBuilderDelegate].
-  ///
   /// [context]: Build context.
   @protected
-  SliverChildDelegate sliverBody(BuildContext context) {
-    return SliverChildListDelegate(const []);
+  Widget sliverBody(BuildContext context) {
+    return Container();
   }
 
   /// Creating a body.
@@ -41,7 +39,10 @@ abstract class UIPageSliverList extends UIPageScaffold {
   /// [context]: Build context.
   @override
   Widget body(BuildContext context) {
-    return SliverList(delegate: this.sliverBody(context));
+    return SliverToBoxAdapter(
+        child: this.applySafeArea
+            ? SafeArea(child: this.sliverBody(context))
+            : this.sliverBody(context));
   }
 
   /// Creating a app bar.
@@ -63,12 +64,8 @@ abstract class UIPageSliverList extends UIPageScaffold {
         key: scaffold,
         body: GestureDetector(
             onTap: () => context.unfocus(),
-            child: CustomScrollView(slivers: <Widget>[
-              this.appBar(context),
-              this.applySafeArea
-                  ? SafeArea(child: this.body(context))
-                  : this.body(context)
-            ])),
+            child: CustomScrollView(
+                slivers: <Widget>[this.appBar(context), this.body(context)])),
         floatingActionButton: this.floatingActionButton(context),
         floatingActionButtonLocation: this.floatingActionButtonLocation,
         floatingActionButtonAnimator: this.floatingActionButtonAnimator,

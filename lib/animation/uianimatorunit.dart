@@ -55,7 +55,7 @@ class UIAnimatorUnit extends Task<Animatable> {
       return null;
     }
     UIAnimatorUnit unit;
-    if( isNotEmpty(path) ){
+    if (isNotEmpty(path)) {
       unit = PathMap.get<UIAnimatorUnit>(path);
       if (unit != null) {
         if (animatable != null) unit.data = animatable;

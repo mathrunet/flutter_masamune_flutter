@@ -64,7 +64,7 @@ class UIAnimatorScenario extends TaskCollection<UIAnimatorUnit>
       {String path, Iterable<UIAnimatorUnit> animation}) {
     path = path?.applyTags();
     UIAnimatorScenario collection;
-    if( isNotEmpty(path) ){
+    if (isNotEmpty(path)) {
       collection = PathMap.get<UIAnimatorScenario>(path);
       if (collection != null) {
         if (animation != null) collection._setInternal(animation);
@@ -76,7 +76,9 @@ class UIAnimatorScenario extends TaskCollection<UIAnimatorUnit>
     return collection;
   }
   UIAnimatorScenario._(
-      {String path, Iterable<UIAnimatorUnit> animation, bool isTemporary = false})
+      {String path,
+      Iterable<UIAnimatorUnit> animation,
+      bool isTemporary = false})
       : super(
             path: path,
             children: animation,
