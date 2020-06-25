@@ -35,7 +35,11 @@ extension UIFutureExtension<T extends Object> on Future<T> {
       {void actionOnFinish(T value)}) async {
     Future.delayed(Duration.zero,
         () => _UIFuture.show<T>(context, this, actionOnFinish: actionOnFinish));
-    return this;
+    return this.then((value) async {
+      await Future.delayed(Duration.zero);
+      await Future.delayed(Duration.zero);
+      return value;
+    });
   }
 }
 
@@ -53,6 +57,10 @@ extension UIFutureListExtension<T extends Object> on Future<List<T>> {
         Duration.zero,
         () => _UIFuture.show<List<T>>(context, this,
             actionOnFinish: actionOnFinish));
-    return this;
+    return this.then((value) async {
+      await Future.delayed(Duration.zero);
+      await Future.delayed(Duration.zero);
+      return value;
+    });
   }
 }

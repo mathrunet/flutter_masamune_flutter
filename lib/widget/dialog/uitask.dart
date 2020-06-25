@@ -153,7 +153,11 @@ extension UITaskExtension<T extends ITask> on Future<T> {
             errorTitle: errorTitle,
             abortTitle: abortTitle,
             timeoutText: timeoutText));
-    return this;
+    return this.then((value) async {
+      await Future.delayed(Duration.zero);
+      await Future.delayed(Duration.zero);
+      return value;
+    });
   }
 }
 
@@ -208,6 +212,10 @@ extension UITaskListExtension<T extends ITask> on Future<List<T>> {
             errorTitle: errorTitle,
             abortTitle: abortTitle,
             timeoutText: timeoutText));
-    return this;
+    return this.then((value) async {
+      await Future.delayed(Duration.zero);
+      await Future.delayed(Duration.zero);
+      return value;
+    });
   }
 }

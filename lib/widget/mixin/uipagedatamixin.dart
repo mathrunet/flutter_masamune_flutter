@@ -11,6 +11,9 @@ abstract class UIPageDataMixin {
   /// The text passed to this page.
   String get text => PathMap.get<String>("page/data/text");
 
+  /// Gets the redirect path passed to the page.
+  String get redirectTo => this.data?.getString("redirect_to", "/");
+
   /// The data passed to this page.
   IDataDocument get data => PathMap.get<IDataDocument>("page/data");
 }
