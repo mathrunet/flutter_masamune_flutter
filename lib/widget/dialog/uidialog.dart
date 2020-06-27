@@ -94,7 +94,7 @@ class UIDialog {
                 onWillPop: disableBackKey ? () async => null : null,
                 child: AlertDialog(
                   title: Text(_title),
-                  content: Text(_text),
+                  content: SingleChildScrollView(child: Text(_text)),
                   actions: <Widget>[
                     FlatButton(
                       child: Text(context.read(dialogSubmitTextPath,

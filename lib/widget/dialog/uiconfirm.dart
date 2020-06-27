@@ -56,7 +56,7 @@ class UIConfirm {
           builder: (context) {
             return AlertDialog(
               title: Text(_title),
-              content: Text(_text),
+              content: SingleChildScrollView(child: Text(_text)),
               actions: <Widget>[
                 FlatButton(
                   child: Text(context.read(dialogCancelTextPath,
