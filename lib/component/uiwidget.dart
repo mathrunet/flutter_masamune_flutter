@@ -224,8 +224,7 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
   }
 
   Widget _build(BuildContext context) {
-    if (this._cache != null &&
-        (this._notifyObject == null || !this.rebuildable(context))) {
+    if (this._cache != null && !this.rebuildable(context)) {
       this._notifyObject = null;
       return this._cache;
     }
@@ -353,10 +352,11 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
 
   void _didPopNext() {
     this._enabled = true;
-    if (this._willUpdate != null) {
-      this._notifyUpdate(this._willUpdate);
+    if (this._willUpdate) {
+      this._notifyUpdate(this._willUpdateObject);
     }
-    this._willUpdate = null;
+    this._willUpdate = false;
+    this._willUpdateObject = null;
     if (this.widget is UIPage) UIPage._current = this._value;
     if (this.widget._didPopNext != null) this.widget._didPopNext();
     this.widget.didPopNext();
@@ -372,7 +372,8 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
   bool get enabled => this._enabled;
   bool _enabled = true;
   bool _loaded = false;
-  dynamic _willUpdate;
+  bool _willUpdate = false;
+  dynamic _willUpdateObject;
 
   /// Get the UIValue.
   UIValue get value => this._value;
@@ -382,7 +383,8 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
   void _refresh() => this.setState(() {});
   void _notifyUpdate(dynamic object) {
     if (!this.enabled) {
-      this._willUpdate = object;
+      this._willUpdate = true;
+      this._willUpdateObject = object;
       return;
     }
     this._notifyObject = object;
