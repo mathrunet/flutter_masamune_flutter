@@ -1,3 +1,7 @@
+## [0.2.12] - Update README (2020.06.29)
+
+* Added a method to force the widget to update.
+
 ## [0.2.11] - Update README (2020.06.18)
 
 * Added platform definition to RouteConfig.

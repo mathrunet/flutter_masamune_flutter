@@ -2,6 +2,13 @@ part of masamune.flutter;
 
 /// BuildContext extension methods.
 extension BuildContextExtension on BuildContext {
+  /// Forces the widget to update.
+  void refresh() {
+    UIValue value = UIValue.of(this);
+    if (value == null) return;
+    value.refresh();
+  }
+
   /// Get object from pathmap in conjunction with UIWidget.
   ///
   /// You can get any IPath object other than String.

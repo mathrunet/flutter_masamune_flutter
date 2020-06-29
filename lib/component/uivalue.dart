@@ -45,6 +45,9 @@ class UIValue {
     return scope?.target?._value;
   }
 
+  /// Forces the widget to update.
+  void refresh() => this._state?._refresh();
+
   /// Get text from pathmap in conjunction with UIWidget.
   ///
   /// Displays anything as long as Path is Unit and can be converted to text.

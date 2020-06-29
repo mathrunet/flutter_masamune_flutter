@@ -379,6 +379,7 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
   UIValue _value;
   Widget _cache;
   Object _notifyObject;
+  void _refresh() => this.setState(() {});
   void _notifyUpdate(dynamic object) {
     if (!this.enabled) {
       this._willUpdate = object;
