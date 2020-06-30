@@ -89,6 +89,12 @@ class UIBottomSheet extends UIWidget {
   /// [context]: Build context.
   @override
   Widget build(BuildContext context) {
+    bool isOpened = this.showOnAppear || this.controller.isOpened;
+    if (this.key is ValueKey) {
+      isOpened =
+          PathMap.get<bool>(this.key.asType<ValueKey>().value.toString()) ??
+              isOpened;
+    }
     double bottom =
         MediaQuery.of(Scaffold.of(context).context).viewPadding.bottom;
     return SingleChildScrollView(
@@ -116,9 +122,19 @@ class UIBottomSheet extends UIWidget {
       draggableBody: this.draggableBody,
       smoothness: this.smoothness,
       elevation: this.elevation,
-      showOnAppear: this.showOnAppear || this.controller.isOpened,
-      onShow: this.onShow,
-      onHide: this.onHide,
+      showOnAppear: this.showOnAppear || isOpened,
+      onShow: () {
+        if (this.onShow != null) this.onShow();
+        if (this.key is ValueKey) {
+          DataField(this.key.asType<ValueKey>().value.toString(), true);
+        }
+      },
+      onHide: () {
+        if (this.onHide != null) this.onHide();
+        if (this.key is ValueKey) {
+          DataField(this.key.asType<ValueKey>().value.toString(), false);
+        }
+      },
     ));
   }
 }

@@ -49,7 +49,7 @@ class UISelectDialog {
         }
         await showDialog(
             context: context,
-            barrierDismissible: false,
+            barrierDismissible: true,
             builder: (context) {
               return WillPopScope(
                   onWillPop: disableBackKey ? () async => null : null,
