@@ -1,3 +1,7 @@
+## [0.2.13] - Update README (2020.06.30)
+
+* Added UISelectDialog.
+
 ## [0.2.12] - Update README (2020.06.29)
 
 * Added a method to force the widget to update.

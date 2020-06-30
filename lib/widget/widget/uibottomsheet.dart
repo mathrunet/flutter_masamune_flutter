@@ -116,7 +116,7 @@ class UIBottomSheet extends UIWidget {
       draggableBody: this.draggableBody,
       smoothness: this.smoothness,
       elevation: this.elevation,
-      showOnAppear: this.showOnAppear,
+      showOnAppear: this.showOnAppear || this.controller.isOpened,
       onShow: this.onShow,
       onHide: this.onHide,
     ));
