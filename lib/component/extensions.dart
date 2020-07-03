@@ -257,6 +257,9 @@ extension BuildContextExtension on BuildContext {
   /// Get the Navigator related to context.
   NavigatorState get navigator => Navigator.of(this);
 
+  /// Get the Flavor.
+  String get flavor => FlavorScope.of(this)?.flavor;
+
   /// Get the data passed to the page.
   IDataDocument get data =>
       (ModalRoute.of(this)?.settings?.arguments as IDataDocument) ??

@@ -1,3 +1,7 @@
+## [0.2.14] - Update README (2020.07.03)
+
+* Flavor can be specified in UIMateriapApp.
+
 ## [0.2.13] - Update README (2020.06.30)
 
 * Added UISelectDialog.
