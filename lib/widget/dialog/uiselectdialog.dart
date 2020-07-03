@@ -40,9 +40,9 @@ class UISelectDialog {
           if (selector == null) continue;
           options.add(SimpleDialogOption(
               onPressed: () {
+                if (selector.value != null) selector.value();
                 if (popOnPress)
                   Navigator.of(context, rootNavigator: true).pop();
-                if (selector.value != null) selector.value();
                 clicked = true;
               },
               child: Text(selector.key?.localize())));
