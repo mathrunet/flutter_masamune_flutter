@@ -6,7 +6,7 @@ part of masamune.flutter;
 ///
 /// Please use StatelessWidget below this.
 ///
-/// In that case, the value can be obtained instantly by using [value.text()] or [value.get())].
+/// In that case, the value can be obtained instantly by using [value.text()] or [value.read())].
 abstract class UIWidget extends StatefulWidget {
   final BuildEvent _load;
   final BuildEvent _unload;
@@ -28,7 +28,7 @@ abstract class UIWidget extends StatefulWidget {
   ///
   /// Please use StatelessWidget below this.
   ///
-  /// In that case, the value can be obtained instantly by using [value.text()] or [value.get())].
+  /// In that case, the value can be obtained instantly by using [value.text()] or [value.read())].
   ///
   /// [key]: Widget key.
   /// [load]: Callback for widget loading.

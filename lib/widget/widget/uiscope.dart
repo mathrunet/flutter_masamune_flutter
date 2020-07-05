@@ -7,15 +7,15 @@ import 'package:masamune_flutter/masamune_flutter.dart';
 ///
 /// Please use StatelessWidget below this.
 ///
-/// In that case, the value can be obtained instantly by using [value.text()] or [value.get())].
-class UIPanel extends UIWidget {
+/// In that case, the value can be obtained instantly by using [value.text()] or [value.read())].
+class UIScope extends UIWidget {
   /// Class of widget including listening function equivalent to UIValue.
   ///
   /// Inherit and use to create a widget with pass-list functionality.
   ///
   /// Please use StatelessWidget below this.
   ///
-  /// In that case, the value can be obtained instantly by using [value.text()] or [value.get())].
+  /// In that case, the value can be obtained instantly by using [value.text()] or [value.read())].
   ///
   /// [load]: Callback for widget loading.
   /// [unload]: Callback for Widget unloading.
@@ -26,7 +26,7 @@ class UIPanel extends UIWidget {
   /// [provider]: Save the object to UIValue.
   /// The saved value is getting by [context.consume<T>].
   /// [rebuildable]: Callback to determine if build is possible.
-  const UIPanel(
+  const UIScope(
       {BuildEvent load,
       BuildEvent unload,
       BuildEvent pause,

@@ -1,3 +1,7 @@
+## [0.2.15] - Update README (2020.07.05)
+
+* Change UIPanel to UIScope.
+
 ## [0.2.14] - Update README (2020.07.03)
 
 * Flavor can be specified in UIMateriapApp.

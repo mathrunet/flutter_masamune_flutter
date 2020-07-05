@@ -10,7 +10,7 @@ export 'widget/flexibletabcontroller.dart';
 export 'widget/loopablewidget.dart';
 export 'widget/searchablewidget.dart';
 export 'widget/uianimatedbuilder.dart';
-export 'widget/uipanel.dart';
+export 'widget/uiscope.dart';
 export 'widget/uiappbar.dart';
 export 'widget/uisearch.dart';
 export 'widget/uisnackbar.dart';
