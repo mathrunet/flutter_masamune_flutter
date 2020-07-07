@@ -8,6 +8,9 @@ class RouteConfig {
   /// True to launch in full screen.
   final bool fullScreen;
 
+  /// Transition without animation.
+  final bool immediately;
+
   /// Route definitions by platform.
   ///
   /// By default, the route builder is set.
@@ -33,9 +36,11 @@ class RouteConfig {
   /// [builder]: Route builder.
   /// [fullScreen]: True to launch in full screen.
   /// [reroute]: Map for rerouting according to conditions.
+  /// [immediately]: Transition without animation.
   /// [platform]: Route definitions by platform.
   RouteConfig(this.builder,
       {this.fullScreen = false,
+      this.immediately = false,
       this.reroute = const {},
       this.platform = const {}});
 
@@ -143,7 +148,9 @@ class RouteConfig {
           builder: builder,
           settings: settings.copyWith(name: settings.name, arguments: document),
           fullscreenDialog:
-              document.containsKey("fullscreen") || tmp.value.fullScreen);
+              document.containsKey("fullscreen") || tmp.value.fullScreen,
+          immediately:
+              document.containsKey("immediately") || tmp.value.immediately);
     }
     return null;
   }

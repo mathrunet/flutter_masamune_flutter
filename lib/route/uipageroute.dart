@@ -17,6 +17,7 @@ class UIPageRoute extends PageRouteBuilder {
       WidgetBuilder builder,
       bool fullscreenDialog = false,
       RouteSettings settings,
+      bool immediately = false,
       TransitionType transitionType})
       : super(
           settings: settings,
@@ -25,6 +26,9 @@ class UIPageRoute extends PageRouteBuilder {
           },
           fullscreenDialog: fullscreenDialog,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            if (immediately) {
+              return child;
+            }
             if (Config.isWeb) {
               if (fullscreenDialog) {
                 return SlideTransition(
@@ -54,6 +58,13 @@ class UIPageRoute extends PageRouteBuilder {
               transitionType = TransitionType.slideToLeft;
             }
             switch (transitionType) {
+              case TransitionType.none:
+                return FadeTransition(
+                    opacity: Tween<double>(
+                      begin: 0,
+                      end: 1,
+                    ).animate(animation),
+                    child: child);
               case TransitionType.fade:
                 return FadeTransition(
                     opacity: Tween<double>(
@@ -96,6 +107,9 @@ class UIPageRoute extends PageRouteBuilder {
 
 /// Defines the transition type.
 enum TransitionType {
+  /// None.
+  none,
+
   /// Fade.
   fade,
 

@@ -1,3 +1,7 @@
+## [0.2.16] - Update README (2020.07.06)
+
+* Added the option not to transition.
+
 ## [0.2.15] - Update README (2020.07.05)
 
 * Change UIPanel to UIScope.
