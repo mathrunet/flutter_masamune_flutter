@@ -12,7 +12,10 @@ class UIText extends UIWidget {
   final bool softWrap;
   final TextOverflow overflow;
   final double textScaleFactor;
+  final double fontSize;
   final int maxLines;
+  final Color color;
+  final FontWeight fontWeight;
   final String semanticsLabel;
   final TextWidthBasis textWidthBasis;
 
@@ -21,7 +24,10 @@ class UIText extends UIWidget {
       {String defaultValue,
       String filter(String value),
       Key key,
+      double fontSize,
+      Color color,
       TextStyle style,
+      FontWeight fontWeight,
       StrutStyle strutStyle,
       TextAlign textAlign,
       TextDirection textDirection,
@@ -37,6 +43,9 @@ class UIText extends UIWidget {
                 context.watch(path, defaultValue: defaultValue, filter: filter),
             key: key,
             style: style,
+            color: color,
+            fontSize: fontSize,
+            fontWeight: fontWeight,
             strutStyle: strutStyle,
             textAlign: textAlign,
             textDirection: textDirection,
@@ -52,6 +61,9 @@ class UIText extends UIWidget {
   UIText(this.builder,
       {Key key,
       this.style,
+      this.color,
+      this.fontWeight,
+      this.fontSize,
       this.strutStyle,
       this.textAlign,
       this.textDirection,
@@ -78,7 +90,9 @@ class UIText extends UIWidget {
   Widget build(BuildContext context) {
     return Text(context.consume<_TextCache>().text = builder(context),
         key: this.key,
-        style: style,
+        style: style?.copyWith(
+                fontSize: fontSize, fontWeight: fontWeight, color: color) ??
+            TextStyle(color: color, fontSize: fontSize, fontWeight: fontWeight),
         strutStyle: strutStyle,
         textAlign: textAlign,
         textDirection: textDirection,
