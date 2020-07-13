@@ -12,7 +12,17 @@ abstract class UITextFieldControllerMixin {
   void init(Map<String, String> data) {
     data?.forEach((key, value) {
       if (isEmpty(key)) return;
-      controllers[key] = TextEditingController(text: value);
+      controllers[key] = TextEditingController(text: value ?? Const.empty);
+    });
+  }
+
+  /// Upload the controller text all at once.
+  ///
+  /// [data]: Enter the controller key in the key and the update value in the value.
+  void update(Map<String, String> data) {
+    data?.forEach((key, value) {
+      if (isEmpty(key) || !controllers.containsKey(key)) return;
+      controllers[key].text = value ?? Const.empty;
     });
   }
 }
