@@ -21,3 +21,4 @@ export 'widget/uibottomsheet.dart';
 export 'widget/responsivelisttile.dart';
 export 'widget/conditionbuilder.dart';
 export 'widget/screenfitgridview.dart';
+export 'widget/uibottomnavigationbar.dart';

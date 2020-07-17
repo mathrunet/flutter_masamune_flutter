@@ -1,3 +1,7 @@
+## [0.2.17] - Update README (2020.07.16)
+
+* Added UIBottomNavigationBar.
+
 ## [0.2.16] - Update README (2020.07.06)
 
 * Added the option not to transition.
