@@ -1,3 +1,7 @@
+## [0.2.18] - Update README (2020.07.17)
+
+* Added two forms.
+
 ## [0.2.17] - Update README (2020.07.16)
 
 * Added UIBottomNavigationBar.
