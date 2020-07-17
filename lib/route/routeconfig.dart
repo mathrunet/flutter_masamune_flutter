@@ -123,7 +123,10 @@ class RouteConfig {
           ?.forEach((key, value) => document[key] = value ?? Const.empty);
       for (int i = 0; i < match.groupCount; i++) {
         if (tmp.value.keys.length <= i) continue;
-        document[tmp.value.keys[i]] = match.group(i + 1) ?? Const.empty;
+        String key = tmp.value.keys[i];
+        String value = match.group(i + 1) ?? Const.empty;
+        document[key] = value;
+        PathTag.set(key, value);
       }
       WidgetBuilder builder = tmp.value.builder;
       for (MapEntry<RoutePlatform, WidgetBuilder> platform
