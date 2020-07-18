@@ -192,7 +192,8 @@ class UIValue {
       {double defaultValue = 0, double filter(double value)}) {
     dynamic tmp = this.read<dynamic>(path);
     if (tmp is double) return filter != null ? filter(tmp) : tmp;
-    if (tmp is int) return filter != null ? filter(tmp as double) : tmp as int;
+    if (tmp is int)
+      return filter != null ? filter(tmp?.toDouble()) : tmp?.toDouble();
     if (tmp is bool)
       return filter != null ? filter(tmp ? 1 : 0) : (tmp ? 1 : 0);
     if (tmp is String) {
