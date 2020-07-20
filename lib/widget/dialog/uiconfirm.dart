@@ -22,8 +22,8 @@ class UIConfirm {
   /// [dialogCancelActionPath]: The path of action when the cancel button of the dialog is pressed.
   /// [submitText]: Default submit button text.
   /// [cancelText]: Default cancel button text.
-  /// [submitAction]: Default submit button action.
-  /// [cancelAction]: Default cancel button action.
+  /// [onSubmit]: Default submit button action.
+  /// [onCancel]: Default cancel button action.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [popOnPress]: True if the dialog should be closed together when the button is pressed.
@@ -39,8 +39,8 @@ class UIConfirm {
       String cacnelText = "No",
       String title,
       String text,
-      VoidAction submitAction,
-      VoidAction cancelAction,
+      VoidAction onSubmit,
+      VoidAction onCancel,
       bool popOnPress = true,
       bool willShowRepetition = false}) async {
     if (context == null) return;
@@ -74,7 +74,7 @@ class UIConfirm {
                     if (popOnPress)
                       Navigator.of(context, rootNavigator: true).pop();
                     context.readAction(dialogCancelActionPath,
-                        defaultAction: cancelAction)();
+                        defaultAction: onCancel)();
                     clicked = true;
                   },
                 ),
@@ -94,7 +94,7 @@ class UIConfirm {
                     if (popOnPress)
                       Navigator.of(context, rootNavigator: true).pop();
                     context.readAction(dialogSubmitActionPath,
-                        defaultAction: submitAction)();
+                        defaultAction: onSubmit)();
                     clicked = true;
                   },
                 )

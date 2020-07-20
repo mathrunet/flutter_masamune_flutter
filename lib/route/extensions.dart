@@ -12,4 +12,15 @@ extension NavigatorStateExtension on NavigatorState {
       return route.settings.name.applyTags() == name;
     });
   }
+
+  /// Reset all history and go to a specific page.
+  ///
+  /// Ideal for moving after logging out.
+  ///
+  /// [newRouteName]: New root path.
+  /// [arguments]: An array to pass to the new page.
+  Future<T> resetAndPushNamed<T extends Object>(String newRouteName,
+          {Object arguments}) =>
+      this.pushNamedAndRemoveUntil(newRouteName, (route) => false,
+          arguments: arguments);
 }

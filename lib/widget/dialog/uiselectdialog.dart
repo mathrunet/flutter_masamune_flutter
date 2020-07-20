@@ -13,18 +13,13 @@ class UISelectDialog {
   ///
   /// [context]: Build context.
   /// [dialogTitlePath]: Dialog title path.
-  /// [dialogTextPath]: Dialog text path.
-  /// [dialogSubmitTextPath]: Dialog submit button text path.
-  /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [title]: Default title.
-  /// [text]: Default text.
   /// [disableBackKey]: True to disable the back key.
   /// [popOnPress]: True if the dialog should be closed together when the button is pressed.
   /// [willShowRepetition]: True if the dialog will continue to be displayed unless you press the regular close button.
   static Future show(BuildContext context,
       {String dialogTitlePath = DefaultPath.dialogTitle,
       String title,
-      String text,
       @required Map<String, VoidAction> selectors,
       bool disableBackKey = false,
       bool popOnPress = true,

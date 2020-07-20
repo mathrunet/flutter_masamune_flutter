@@ -16,7 +16,7 @@ class UIDialog {
   /// [dialogSubmitTextPath]: Dialog submit button text path.
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [submitText]: Default submit button text.
-  /// [submitAction]: Default submit button action.
+  /// [onSubmit]: Default submit button action.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [disableBackKey]: True to disable the back key.
@@ -31,7 +31,7 @@ class UIDialog {
       String submitText = "OK",
       String title = "ERROR",
       String text = "This data is invalid.",
-      VoidAction submitAction,
+      VoidAction onSubmit,
       bool disableBackKey = false,
       bool popOnPress = true,
       bool willShowRepetition = false}) async {
@@ -46,7 +46,7 @@ class UIDialog {
             submitText: submitText,
             title: title,
             text: text,
-            submitAction: submitAction ?? () => context.navigator.pop(),
+            onSubmit: onSubmit ?? () => context.navigator.pop(),
             disableBackKey: disableBackKey,
             popOnPress: popOnPress,
             willShowRepetition: willShowRepetition));
@@ -61,7 +61,7 @@ class UIDialog {
   /// [dialogSubmitTextPath]: Dialog submit button text path.
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [submitText]: Default submit button text.
-  /// [submitAction]: Default submit button action.
+  /// [onSubmit]: Default submit button action.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [disableBackKey]: True to disable the back key.
@@ -75,7 +75,7 @@ class UIDialog {
       String submitText = "OK",
       String title,
       String text,
-      VoidAction submitAction,
+      VoidAction onSubmit,
       bool disableBackKey = false,
       bool popOnPress = true,
       bool willShowRepetition = false}) async {
@@ -110,7 +110,7 @@ class UIDialog {
                         if (popOnPress)
                           Navigator.of(context, rootNavigator: true).pop();
                         context.readAction(dialogSubmitActionPath,
-                            defaultAction: submitAction)();
+                            defaultAction: onSubmit)();
                         clicked = true;
                       },
                     )

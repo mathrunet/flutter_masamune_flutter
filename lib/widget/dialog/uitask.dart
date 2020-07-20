@@ -13,7 +13,7 @@ class _UITask {
       String submitText = "OK",
       String title,
       String text,
-      VoidAction submitAction,
+      VoidAction onSubmit,
       String errorTitle = "ERROR",
       String abortTitle = "ABORTED",
       String timeoutText}) async {
@@ -90,7 +90,7 @@ class _UITask {
                     ]);
                     Navigator.of(context, rootNavigator: true).pop();
                     context.readAction(dialogSubmitActionPath,
-                        defaultAction: submitAction)();
+                        defaultAction: onSubmit)();
                   },
                 ),
               ],
@@ -121,7 +121,7 @@ extension UITaskExtension<T extends IPath> on Future<T> {
   /// [dialogSubmitTextPath]: Dialog submit button text path.
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [submitText]: Default submit button text.
-  /// [submitAction]: Default submit button action.
+  /// [onSubmit]: Default submit button action.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [errorTitle]: Title at the end of error.
@@ -137,7 +137,7 @@ extension UITaskExtension<T extends IPath> on Future<T> {
       String submitText = "OK",
       String title,
       String text,
-      VoidAction submitAction,
+      VoidAction onSubmit,
       String errorTitle = "ERROR",
       String abortTitle = "ABORTED",
       String timeoutText}) async {
@@ -152,7 +152,7 @@ extension UITaskExtension<T extends IPath> on Future<T> {
             dialogSubmitActionPath: dialogSubmitActionPath,
             title: title,
             text: text,
-            submitAction: submitAction ?? () => context.navigator.pop(),
+            onSubmit: onSubmit ?? () => context.navigator.pop(),
             submitText: submitText,
             errorTitle: errorTitle,
             abortTitle: abortTitle,
@@ -180,7 +180,7 @@ extension UITaskPathListExtension<T extends IPath> on Future<List<T>> {
   /// [dialogSubmitTextPath]: Dialog submit button text path.
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [submitText]: Default submit button text.
-  /// [submitAction]: Default submit button action.
+  /// [onSubmit]: Default submit button action.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [errorTitle]: Title at the end of error.
@@ -196,7 +196,7 @@ extension UITaskPathListExtension<T extends IPath> on Future<List<T>> {
       String submitText = "OK",
       String title,
       String text,
-      VoidAction submitAction,
+      VoidAction onSubmit,
       String errorTitle = "ERROR",
       String abortTitle = "ABORTED",
       String timeoutText}) async {
@@ -211,7 +211,7 @@ extension UITaskPathListExtension<T extends IPath> on Future<List<T>> {
             dialogSubmitActionPath: dialogSubmitActionPath,
             title: title,
             text: text,
-            submitAction: submitAction,
+            onSubmit: onSubmit,
             submitText: submitText,
             errorTitle: errorTitle,
             abortTitle: abortTitle,
@@ -239,7 +239,7 @@ extension UITaskTaskListExtension<T extends ITask> on Future<List<T>> {
   /// [dialogSubmitTextPath]: Dialog submit button text path.
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [submitText]: Default submit button text.
-  /// [submitAction]: Default submit button action.
+  /// [onSubmit]: Default submit button action.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [errorTitle]: Title at the end of error.
@@ -255,7 +255,7 @@ extension UITaskTaskListExtension<T extends ITask> on Future<List<T>> {
       String submitText = "OK",
       String title,
       String text,
-      VoidAction submitAction,
+      VoidAction onSubmit,
       String errorTitle = "ERROR",
       String abortTitle = "ABORTED",
       String timeoutText}) async {
@@ -270,7 +270,7 @@ extension UITaskTaskListExtension<T extends ITask> on Future<List<T>> {
             dialogSubmitActionPath: dialogSubmitActionPath,
             title: title,
             text: text,
-            submitAction: submitAction,
+            onSubmit: onSubmit,
             submitText: submitText,
             errorTitle: errorTitle,
             abortTitle: abortTitle,
