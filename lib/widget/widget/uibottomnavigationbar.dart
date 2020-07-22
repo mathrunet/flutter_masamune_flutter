@@ -48,7 +48,7 @@ class UIBottomNavigationBar extends StatelessWidget {
       key: this.key,
       items: this.items,
       onTap: (index) {
-        if (this.items == null || this.items.length <= index || index <= 0)
+        if (this.items == null || this.items.length <= index || index < 0)
           return;
         if (this.items[index]?.onTap == null) return;
         this.items[index]?.onTap();
