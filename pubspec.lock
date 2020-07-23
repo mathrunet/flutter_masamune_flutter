@@ -148,7 +148,7 @@ packages:
       name: masamune_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.14+5"
+    version: "0.3.0"
   masamune_localize:
     dependency: "direct main"
     description:

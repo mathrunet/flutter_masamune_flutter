@@ -6,6 +6,7 @@
 ///
 /// [mathru.net]: https://mathru.net
 /// [YouTube]: https://www.youtube.com/c/mathrunetchannel
+export 'widget/space.dart';
 export 'widget/flexibletabcontroller.dart';
 export 'widget/loopablewidget.dart';
 export 'widget/searchablewidget.dart';
