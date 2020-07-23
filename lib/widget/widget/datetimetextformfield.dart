@@ -4,12 +4,40 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart' show TextInputFormatter;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:masamune_core/masamune_core.dart';
 
 /// Date and time selection form that can be handled like TextField.
 class DateTimeTextFormField extends StatelessWidget {
+  /// Calculate formatted datetime string from [millisecondsSinceEpoch].
+  static String formatDateTime(int millisecondsSinceEpoch,
+      {String format = "yyyy/MM/dd(E) HH:mm:ss", String defaultValue = ""}) {
+    if (isEmpty(format) ||
+        millisecondsSinceEpoch == null ||
+        millisecondsSinceEpoch <= 0) return defaultValue;
+    return DateFormat(format).format(value(millisecondsSinceEpoch));
+  }
+
+  /// Calculate formatted date string from [millisecondsSinceEpoch].
+  static String formatDate(int millisecondsSinceEpoch,
+      {String format = "yyyy/MM/dd(E)", String defaultValue = ""}) {
+    if (isEmpty(format) ||
+        millisecondsSinceEpoch == null ||
+        millisecondsSinceEpoch <= 0) return defaultValue;
+    return DateFormat(format).format(value(millisecondsSinceEpoch));
+  }
+
+  /// Calculate formatted time string from [millisecondsSinceEpoch].
+  static String formatTime(int millisecondsSinceEpoch,
+      {String format = "HH:mm:ss", String defaultValue = ""}) {
+    if (isEmpty(format) ||
+        millisecondsSinceEpoch == null ||
+        millisecondsSinceEpoch <= 0) return defaultValue;
+    return DateFormat(format).format(value(millisecondsSinceEpoch));
+  }
+
   /// Calculate DateTime from [millisecondsSinceEpoch].
   static DateTime value(int millisecondsSinceEpoch) {
-    return millisecondsSinceEpoch == null
+    return millisecondsSinceEpoch == null || millisecondsSinceEpoch <= 0
         ? DateTime.now()
         : DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
   }
