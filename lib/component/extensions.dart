@@ -245,6 +245,18 @@ extension BuildContextExtension on BuildContext {
     return value.consume<T>();
   }
 
+  /// True if the next data is available.
+  ///
+  /// The next data is acquired by [next()].
+  ///
+  /// [path]: The target path.
+  /// The path object must be [IDataCollection].
+  bool canNext(String path) {
+    assert(path != null);
+    if (path == null) return false;
+    return this.watch<IDataCollection>(path)?.canNext() ?? false;
+  }
+
   /// Outputs the theme related to the context.
   ThemeData get theme => Theme.of(this);
 

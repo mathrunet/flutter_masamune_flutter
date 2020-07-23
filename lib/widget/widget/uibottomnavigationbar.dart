@@ -20,12 +20,14 @@ class UIBottomNavigationBar extends StatelessWidget {
   final TextStyle unselectedLabelStyle;
   final bool showSelectedLabels;
   final bool showUnselectedLabels;
+  final bool disableOnTapWhenInitialIndex;
 
   /// Wrapper for BottomNavigationBar.
   UIBottomNavigationBar(
       {Key key,
       this.items,
       this.initialIndex = 0,
+      this.disableOnTapWhenInitialIndex = true,
       this.elevation = 8.0,
       this.type = BottomNavigationBarType.fixed,
       this.fixedColor,
@@ -51,6 +53,8 @@ class UIBottomNavigationBar extends StatelessWidget {
         if (this.items == null || this.items.length <= index || index < 0)
           return;
         if (this.items[index]?.onTap == null) return;
+        if (this.disableOnTapWhenInitialIndex && index == this.initialIndex)
+          return;
         this.items[index]?.onTap();
       },
       currentIndex: this.initialIndex,

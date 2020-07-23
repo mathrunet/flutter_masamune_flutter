@@ -1,3 +1,7 @@
+## [0.3.0] - Update README (2020.07.24)
+
+* Form widget added.
+
 ## [0.2.18] - Update README (2020.07.17)
 
 * Added two forms.
