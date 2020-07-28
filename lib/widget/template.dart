@@ -12,3 +12,5 @@ export 'template/uipagetabscaffold.dart';
 export 'template/web/uipagewebpage.dart';
 export 'template/web/uipagewebhome.dart';
 export 'template/app/uipagesliverlist.dart';
+export 'template/app/uipagephotoview.dart';
+export 'template/app/uipagephotogallery.dart';

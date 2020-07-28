@@ -236,6 +236,40 @@ extension BuildContextExtension on BuildContext {
     }
   }
 
+  /// Increase or decrease the int number for a particular path.
+  ///
+  /// Enter a negative value to decrease it.
+  ///
+  /// [path]: Target path.
+  /// [value]: The value to increase or decrease.
+  void incrementInt(String path, int value) {
+    assert(value != null);
+    if (value == null) return;
+    IDataField field = PathMap.get<IDataField>(path);
+    if (field == null) {
+      DataField(path, value);
+    } else {
+      field.data = (field.data as int) + value.toInt();
+    }
+  }
+
+  /// Increase or decrease the double number for a particular path.
+  ///
+  /// Enter a negative value to decrease it.
+  ///
+  /// [path]: Target path.
+  /// [value]: The value to increase or decrease.
+  void incrementDouble(String path, double value) {
+    assert(value != null);
+    if (value == null) return;
+    IDataField field = PathMap.get<IDataField>(path);
+    if (field == null) {
+      DataField(path, value);
+    } else {
+      field.data = (field.data as double) + value;
+    }
+  }
+
   /// Get the object given by [provider].
   ///
   /// Be sure to define the type.
