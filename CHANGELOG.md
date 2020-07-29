@@ -1,3 +1,7 @@
+## [0.3.1] - Update README (2020.07.29)
+
+* Add RouteQuery.
+
 ## [0.3.0] - Update README (2020.07.24)
 
 * Form widget added.

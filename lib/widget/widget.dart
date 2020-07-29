@@ -26,6 +26,7 @@ export 'widget/uibottomnavigationbar.dart';
 export 'widget/dropdowntextformfield.dart';
 export 'widget/datetimetextformfield.dart';
 export 'widget/loadnext.dart';
+export 'widget/loadbuilder.dart';
 
 export 'widget/form/formbuilder.dart';
 export 'widget/form/avatarimageformitem.dart';

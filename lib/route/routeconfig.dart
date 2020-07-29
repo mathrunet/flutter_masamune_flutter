@@ -107,6 +107,15 @@ class RouteConfig {
       IDataDocument document;
       if (settings.arguments is IDataDocument) {
         document = settings.arguments as IDataDocument;
+      } else if (settings.arguments is RouteQuery) {
+        RouteQuery query = settings.arguments as RouteQuery;
+        document = query._data;
+        if (document == null) {
+          document = DataDocument(DefaultPath.pageData);
+          document.clear();
+        }
+        if (query._fullscreen) document["fullscreen"] = true;
+        if (query._immediately) document["immediately"] = true;
       } else {
         document = DataDocument(DefaultPath.pageData);
         document.clear();

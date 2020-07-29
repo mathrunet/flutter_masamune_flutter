@@ -41,6 +41,7 @@ part 'key/uipagestoragekey.dart';
 part 'route/extensions.dart';
 part 'route/routeconfig.dart';
 part 'route/uipageroute.dart';
+part 'route/routequery.dart';
 
 part 'animation/uianimatorscenario.dart';
 part 'animation/uianimatorunit.dart';
