@@ -23,9 +23,7 @@ abstract class UIPage extends UIWidget with UIPageDataMixin {
   ///
   /// [context]: Build context.
   @protected
-  Widget body(BuildContext context) {
-    return null;
-  }
+  Widget body(BuildContext context);
 
   /// Callback for building.
   ///
