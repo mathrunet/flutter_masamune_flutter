@@ -69,10 +69,11 @@ class UIMaterialApp extends UIWidget {
                               RouteConfig._onGenerateInitialRoute(
                                   initialRouteName,
                                   boot: onBootRoute),
-                      navigatorObservers: navigatorObservers != null
-                          ? List<NavigatorObserver>.from(navigatorObservers)
-                              .insertLast(UIValue.routeObserver)
-                          : [UIValue.routeObserver],
+                      navigatorObservers: [
+                        if (navigatorObservers != null) ...navigatorObservers,
+                        UIValue.routeObserver,
+                        UIRouteObserver()
+                      ],
                       builder: null,
                       title: title,
                       onUnknownRoute: onUnknownRoute == null

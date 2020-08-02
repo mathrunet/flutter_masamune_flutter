@@ -65,8 +65,17 @@ class RouteConfig {
     IDataDocument document;
     if (settings.arguments is IDataDocument) {
       document = settings.arguments as IDataDocument;
+    } else if (settings.arguments is RouteQuery) {
+      RouteQuery query = settings.arguments as RouteQuery;
+      document = query._data;
+      if (document == null) {
+        document = TemporaryDocument();
+        document.clear();
+      }
+      if (query._fullscreen) document["fullscreen"] = true;
+      if (query._immediately) document["immediately"] = true;
     } else {
-      document = DataDocument(DefaultPath.pageData);
+      document = TemporaryDocument();
       document.clear();
     }
     for (MapEntry<String, bool Function()> reroute in config.reroute.entries) {
@@ -85,7 +94,7 @@ class RouteConfig {
   static List<Route> _onGenerateInitialRoute(String initialRouteName,
       {RouteConfig boot}) {
     if (boot == null) return null;
-    IDataDocument document = DataDocument(DefaultPath.pageData);
+    IDataDocument document = TemporaryDocument();
     document["redirect_to"] = initialRouteName;
     return [
       UIPageRoute(
@@ -111,13 +120,13 @@ class RouteConfig {
         RouteQuery query = settings.arguments as RouteQuery;
         document = query._data;
         if (document == null) {
-          document = DataDocument(DefaultPath.pageData);
+          document = TemporaryDocument();
           document.clear();
         }
         if (query._fullscreen) document["fullscreen"] = true;
         if (query._immediately) document["immediately"] = true;
       } else {
-        document = DataDocument(DefaultPath.pageData);
+        document = TemporaryDocument();
         document.clear();
       }
       for (MapEntry<String, bool Function()> reroute
@@ -135,7 +144,6 @@ class RouteConfig {
         String key = tmp.value.keys[i];
         String value = match.group(i + 1) ?? Const.empty;
         document[key] = value;
-        PathTag.set(key, value);
       }
       WidgetBuilder builder = tmp.value.builder;
       for (MapEntry<RoutePlatform, WidgetBuilder> platform
@@ -182,3 +190,4 @@ enum RoutePlatform {
   /// IOS
   ios
 }
+

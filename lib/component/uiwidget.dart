@@ -14,10 +14,10 @@ abstract class UIWidget extends StatefulWidget {
   final BuildEvent _pause;
   final BuildEvent _unpause;
   final BuildEvent _quit;
-  final VoidAction _didPush;
-  final VoidAction _didPushNext;
-  final VoidAction _didPop;
-  final VoidAction _didPopNext;
+  final BuildEvent _didPush;
+  final BuildEvent _didPushNext;
+  final BuildEvent _didPop;
+  final BuildEvent _didPopNext;
   final ValidateEvent _validateOnLoad;
   final List Function(BuildContext context) _provider;
   final bool Function(BuildContext context) _rebuildable;
@@ -52,10 +52,10 @@ abstract class UIWidget extends StatefulWidget {
       BuildEvent pause,
       BuildEvent unpause,
       BuildEvent quit,
-      VoidAction didPop,
-      VoidAction didPush,
-      VoidAction didPopNext,
-      VoidAction didPushNext,
+      BuildEvent didPop,
+      BuildEvent didPush,
+      BuildEvent didPopNext,
+      BuildEvent didPushNext,
       ValidateEvent validateOnLoad,
       List provider(BuildContext context),
       bool rebuildable(BuildContext context),
@@ -168,30 +168,38 @@ abstract class UIWidget extends StatefulWidget {
   /// Executed when the widget is push.
   ///
   /// Override and use.
+  ///
+  /// [context]: Build context.
   @protected
   @mustCallSuper
-  void didPush() {}
+  void didPush(BuildContext context) {}
 
   /// Executed when the widget is pop.
   ///
   /// Override and use.
+  ///
+  /// [context]: Build context.
   @protected
   @mustCallSuper
-  void didPop() {}
+  void didPop(BuildContext context) {}
 
   /// Executed when the next widget is push.
   ///
   /// Override and use.
+  ///
+  /// [context]: Build context.
   @protected
   @mustCallSuper
-  void didPushNext() {}
+  void didPushNext(BuildContext context) {}
 
   /// Executed when the next widget is pop.
   ///
   /// Override and use.
+  ///
+  /// [context]: Build context.
   @protected
   @mustCallSuper
-  void didPopNext() {}
+  void didPopNext(BuildContext context) {}
 }
 
 /// State class for UIWidget.
@@ -338,19 +346,19 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
     return this.widget.validateOnLoad(context);
   }
 
-  void _didPop() {
-    if (this.widget._didPop != null) this.widget._didPop();
-    this.widget.didPop();
+  void _didPop(BuildContext context) {
+    if (this.widget._didPop != null) this.widget._didPop(context);
+    this.widget.didPop(context);
   }
 
-  void _didPush() {
+  void _didPush(BuildContext context) {
     this._enabled = true;
     if (this.widget is UIPage) UIPage._current = this._value;
-    if (this.widget._didPush != null) this.widget._didPush();
-    this.widget.didPush();
+    if (this.widget._didPush != null) this.widget._didPush(context);
+    this.widget.didPush(context);
   }
 
-  void _didPopNext() {
+  void _didPopNext(BuildContext context) {
     this._enabled = true;
     if (this._willUpdate) {
       this._notifyUpdate(this._willUpdateObject);
@@ -358,14 +366,14 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
     this._willUpdate = false;
     this._willUpdateObject = null;
     if (this.widget is UIPage) UIPage._current = this._value;
-    if (this.widget._didPopNext != null) this.widget._didPopNext();
-    this.widget.didPopNext();
+    if (this.widget._didPopNext != null) this.widget._didPopNext(context);
+    this.widget.didPopNext(context);
   }
 
-  void _didPushNext() {
+  void _didPushNext(BuildContext context) {
     this._enabled = false;
-    if (this.widget._didPushNext != null) this.widget._didPushNext();
-    this.widget.didPushNext();
+    if (this.widget._didPushNext != null) this.widget._didPushNext(context);
+    this.widget.didPushNext(context);
   }
 
   /// True if the widget is valid.
@@ -465,7 +473,7 @@ class _UIWidgetContainerState extends State<_UIWidgetContainer>
   void initState() {
     super.initState();
     this._parent._value._container = this;
-    List provided = this._parent.provider(context);
+    List provided = this._parent.provider(this.context);
     for (dynamic tmp in provided) {
       if (tmp == null) continue;
       Type type = tmp.runtimeType;
@@ -518,28 +526,28 @@ class _UIWidgetContainerState extends State<_UIWidgetContainer>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    ModalRoute route = ModalRoute.of(context);
+    ModalRoute route = ModalRoute.of(this.context);
     if (route == null) return;
     UIValue.routeObserver.subscribe(this, route);
   }
 
   @override
   void didPop() {
-    this._parent._didPop();
+    this._parent._didPop(this.context);
   }
 
   @override
   void didPopNext() {
-    this._parent._didPopNext();
+    this._parent._didPopNext(this.context);
   }
 
   @override
   void didPushNext() {
-    this._parent._didPushNext();
+    this._parent._didPushNext(this.context);
   }
 
   @override
   void didPush() {
-    this._parent._didPush();
+    this._parent._didPush(this.context);
   }
 }
