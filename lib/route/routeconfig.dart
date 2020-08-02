@@ -190,4 +190,3 @@ enum RoutePlatform {
   /// IOS
   ios
 }
-
