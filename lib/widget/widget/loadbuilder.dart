@@ -37,16 +37,15 @@ class LoadBuilder<T extends IPath> extends UIWidget {
       this.empty,
       this.indicatorColor,
       this.waiting,
-      @required this.builder})
-      : assert(
-            (path != null && task == null) || (path == null && task != null));
+      @required this.builder});
 
   /// Build method.
   ///
   /// [BuildContext]: Build Context.
   @override
   Widget build(BuildContext context) {
-    T task = this.task ?? context.watch<T>(this.path);
+    T task =
+        this.task ?? (this.path != null ? context.watch<T>(this.path) : null);
     if (task == null) {
       return this._buildInternal(context);
     } else if (task is ITask && !task.isDone) {
