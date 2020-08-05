@@ -243,14 +243,9 @@ extension BuildContextExtension on BuildContext {
   /// [path]: Target path.
   /// [value]: The value to increase or decrease.
   void incrementInt(String path, int value) {
-    assert(value != null);
-    if (value == null) return;
-    IDataField field = PathMap.get<IDataField>(path);
-    if (field == null) {
-      DataField(path, value);
-    } else {
-      field.data = (field.data as int) + value.toInt();
-    }
+    UIValue uiValue = UIValue.of(this);
+    if (uiValue == null) return;
+    uiValue.incrementInt(path, value);
   }
 
   /// Increase or decrease the double number for a particular path.
@@ -260,14 +255,18 @@ extension BuildContextExtension on BuildContext {
   /// [path]: Target path.
   /// [value]: The value to increase or decrease.
   void incrementDouble(String path, double value) {
-    assert(value != null);
-    if (value == null) return;
-    IDataField field = PathMap.get<IDataField>(path);
-    if (field == null) {
-      DataField(path, value);
-    } else {
-      field.data = (field.data as double) + value;
-    }
+    UIValue uiValue = UIValue.of(this);
+    if (uiValue == null) return;
+    uiValue.incrementDouble(path, value);
+  }
+
+  /// True if data is present in the path.
+  /// 
+  /// [path]: The path you want to check.
+  bool exists(String path) {
+    UIValue value = UIValue.of(this);
+    if (value == null) return false;
+    return value.exists(path);
   }
 
   /// Get the object given by [provider].

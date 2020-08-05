@@ -288,6 +288,56 @@ class UIValue {
       DataDocument.fromMap(path, value);
     }
   }
+    /// Increase or decrease the int number for a particular path.
+  ///
+  /// Enter a negative value to decrease it.
+  ///
+  /// [path]: Target path.
+  /// [value]: The value to increase or decrease.
+  void incrementInt(String path, int value) {
+    assert(value != null);
+    if (value == null) return;
+    IDataField field = PathMap.get<IDataField>(path);
+    if (field == null) {
+      DataField(path, value);
+    } else {
+      field.data = (field.data as int) + value.toInt();
+    }
+  }
+
+  /// Increase or decrease the double number for a particular path.
+  ///
+  /// Enter a negative value to decrease it.
+  ///
+  /// [path]: Target path.
+  /// [value]: The value to increase or decrease.
+  void incrementDouble(String path, double value) {
+    assert(value != null);
+    if (value == null) return;
+    IDataField field = PathMap.get<IDataField>(path);
+    if (field == null) {
+      DataField(path, value);
+    } else {
+      field.data = (field.data as double) + value;
+    }
+  }
+
+
+  /// True if data is present in the path.
+  /// 
+  /// [path]: The path you want to check.
+  bool exists(String path) {
+    final tmp = PathMap.get(path);
+    if (tmp is ICollection) {
+      return tmp.length > 0;
+    } else if (tmp is IDocument) {
+      return tmp.length > 0;
+    } else if (tmp is IUnit) {
+      return tmp.data != null;
+    } else {
+      return tmp != null;
+    }
+  }
 
   /// Get the object given by [provider].
   ///
