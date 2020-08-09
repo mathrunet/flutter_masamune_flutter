@@ -1,3 +1,11 @@
+## [0.4.1] - Update README (2020.08.08)
+
+* Added some list widgets.
+
+## [0.4.0] - Update README (2020.08.07)
+
+* Corresponding to the version upgrade of masaune_core.
+
 ## [0.3.1] - Update README (2020.07.29)
 
 * Add RouteQuery.

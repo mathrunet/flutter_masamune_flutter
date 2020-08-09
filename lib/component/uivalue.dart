@@ -288,7 +288,8 @@ class UIValue {
       DataDocument.fromMap(path, value);
     }
   }
-    /// Increase or decrease the int number for a particular path.
+
+  /// Increase or decrease the int number for a particular path.
   ///
   /// Enter a negative value to decrease it.
   ///
@@ -322,9 +323,8 @@ class UIValue {
     }
   }
 
-
   /// True if data is present in the path.
-  /// 
+  ///
   /// [path]: The path you want to check.
   bool exists(String path) {
     final tmp = PathMap.get(path);

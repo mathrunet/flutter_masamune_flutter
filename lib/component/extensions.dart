@@ -261,7 +261,7 @@ extension BuildContextExtension on BuildContext {
   }
 
   /// True if data is present in the path.
-  /// 
+  ///
   /// [path]: The path you want to check.
   bool exists(String path) {
     UIValue value = UIValue.of(this);
