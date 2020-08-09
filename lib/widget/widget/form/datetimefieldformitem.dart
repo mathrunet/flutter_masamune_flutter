@@ -68,7 +68,10 @@ class DateTimeFieldFormItem extends FormItem {
       this.onSave})
       : this._format = format,
         this._onShowPicker = onShowPicker {
-    this.controller.text = this.format.format(this.initialDateTime);
+    if (this.controller == null) return;
+    this.controller.text = this.format == null
+        ? this.initialDateTime.toIso8601String()
+        : this.format.format(this.initialDateTime);
   }
 
   @override
@@ -85,6 +88,7 @@ class DateTimeFieldFormItem extends FormItem {
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             hintText: this.hintText,
+            counterText: this.counterText,
             labelText: this.labelText,
             prefix: this.prefix,
             suffix: this.suffix,
@@ -101,7 +105,8 @@ class DateTimeFieldFormItem extends FormItem {
             if (isEmpty(value)) return;
             if (this.onSave != null) this.onSave(value);
           },
-          onShowPicker: this.onShowPicker,
+          onShowPicker:
+              this.onShowPicker ?? DateTimeTextFormField.dateTimePicker(),
         ));
   }
 }

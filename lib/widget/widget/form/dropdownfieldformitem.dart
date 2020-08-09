@@ -12,9 +12,8 @@ class DropdownFieldFormItem extends FormItem {
   final Map<String, String> items;
   final Widget prefix;
   final Widget suffix;
-  final bool readOnly;
-  final bool obscureText;
   final void Function(String value) onSave;
+  final void Function(String value) onChanged;
 
   DropdownFieldFormItem(
       {@required this.controller,
@@ -23,10 +22,9 @@ class DropdownFieldFormItem extends FormItem {
       this.labelText = "",
       this.prefix,
       this.suffix,
-      this.readOnly = false,
-      this.obscureText = false,
       this.counterText = "",
-      this.onSave});
+      this.onSave,
+      this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +35,7 @@ class DropdownFieldFormItem extends FormItem {
             items: this.items,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
+              contentPadding: const EdgeInsets.all(17.5),
               hintText: this.hintText,
               labelText: this.labelText,
               counterText: this.counterText,
@@ -47,6 +46,9 @@ class DropdownFieldFormItem extends FormItem {
             validator: (value) {
               if (isEmpty(value)) return this.hintText;
               return null;
+            },
+            onChanged: (value) {
+              if (this.onChanged != null) this.onChanged(value);
             },
             onSaved: (value) {
               if (isEmpty(value)) return;

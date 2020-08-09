@@ -1,15 +1,15 @@
 import 'package:flutter/widgets.dart';
-import 'package:masamune_flutter/widget/widget/form/formitem.dart';
 
 class FormBuilder extends StatelessWidget {
-  final GlobalKey<FormState> key;
-  final List<FormItem> children;
+  final GlobalKey<FormState> _key;
+  final List<Widget> children;
 
-  FormBuilder({@required this.key, @required this.children});
+  FormBuilder({@required GlobalKey<FormState> key, @required this.children})
+      : this._key = key;
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: this.key,
+        key: this._key,
         child: ListView(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             children: this.children));

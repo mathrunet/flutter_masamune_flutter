@@ -79,7 +79,7 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
   @override
   void dispose() {
     this._controller.removeListener(this._listener);
-    this._controller.dispose();
+    if (this.widget.controller == null) this._controller.dispose();
     super.dispose();
   }
 
