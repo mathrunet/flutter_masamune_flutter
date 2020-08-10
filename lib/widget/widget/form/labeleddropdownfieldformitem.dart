@@ -37,7 +37,10 @@ class LabeledDropdownFieldFormItem extends StatelessWidget implements FormItem {
               child: DropdownTextFormField(
                   controller: this.controller,
                   items: this.items,
-                  style: TextStyle(fontSize: 20, height: 1.25),
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Theme.of(context).textTheme.bodyText1.color,
+                      height: 1.25),
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       disabledBorder: InputBorder.none,

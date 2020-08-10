@@ -53,7 +53,7 @@ class SuggestionOverlayBuilder extends StatefulWidget {
       this.elevation,
       @required this.controller,
       this.onTap,
-      this.showOnTap})
+      this.showOnTap = true})
       : assert(builder != null);
   @override
   State<StatefulWidget> createState() => _SuggestionOverlayBuilderState();

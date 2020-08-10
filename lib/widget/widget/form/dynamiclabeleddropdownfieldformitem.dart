@@ -146,7 +146,11 @@ class _DynamicLabeledDropdownFieldFormItemState
                       child: DropdownTextFormField(
                           controller: this._dropdownController,
                           items: this.widget.items,
-                          style: TextStyle(fontSize: 20, height: 1.25),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color:
+                                  Theme.of(context).textTheme.bodyText1.color,
+                              height: 1.25),
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               disabledBorder: InputBorder.none,

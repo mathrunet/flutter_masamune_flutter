@@ -34,6 +34,7 @@ export 'widget/loadnext.dart';
 export 'widget/loadbuilder.dart';
 export 'widget/suggestionoverlaybuilder.dart';
 export 'widget/appendablebuilder.dart';
+export 'widget/appendablebuilderitem.dart';
 
 export 'widget/form/formbuilder.dart';
 export 'widget/form/formheadline.dart';
