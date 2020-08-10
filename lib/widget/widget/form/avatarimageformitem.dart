@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 import 'formitem.dart';
 
-class AvatarImageFormItem extends FormItem {
+class AvatarImageFormItem extends StatelessWidget implements FormItem {
   final ImageProvider image;
   final Widget label;
   final VoidAction onPressed;

@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
+import 'formitem.dart';
 
 /// Widget that displays a dropdown button and generates an action when tapped.
-class DropdownButtonItem extends StatelessWidget {
+class DropdownButtonItem extends StatelessWidget implements FormItem {
   /// Action when tapped.
   final VoidAction onTap;
 

@@ -32,6 +32,8 @@ export 'widget/dropdowntextformfield.dart';
 export 'widget/datetimetextformfield.dart';
 export 'widget/loadnext.dart';
 export 'widget/loadbuilder.dart';
+export 'widget/suggestionoverlaybuilder.dart';
+export 'widget/appendablebuilder.dart';
 
 export 'widget/form/formbuilder.dart';
 export 'widget/form/formheadline.dart';
@@ -42,3 +44,4 @@ export 'widget/form/submitformitem.dart';
 export 'widget/form/textfieldformitem.dart';
 export 'widget/form/dropdownbuttonitem.dart';
 export 'widget/form/labeleddropdownfieldformitem.dart';
+export 'widget/form/dynamiclabeleddropdownfieldformitem.dart';

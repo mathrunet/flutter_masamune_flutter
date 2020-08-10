@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
+import 'formitem.dart';
 
 /// Form-headline widget.
-class FormHeadline extends StatelessWidget {
+class FormHeadline extends StatelessWidget implements FormItem {
   /// Border designation.
   final BorderSide bottomBorder;
 

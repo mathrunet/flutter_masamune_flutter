@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:masamune_core/masamune_core.dart';
 import 'formitem.dart';
+import '../suggestionoverlaybuilder.dart';
 
-class TextFieldFormItem extends FormItem {
+class TextFieldFormItem extends StatelessWidget implements FormItem {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final int maxLength;
@@ -16,6 +17,7 @@ class TextFieldFormItem extends FormItem {
   final Widget suffix;
   final bool readOnly;
   final bool obscureText;
+  final List<String> suggestion;
   final void Function(String value) onSave;
 
   TextFieldFormItem(
@@ -28,6 +30,7 @@ class TextFieldFormItem extends FormItem {
       this.labelText = "",
       this.prefix,
       this.suffix,
+      this.suggestion,
       this.readOnly = false,
       this.obscureText = false,
       this.counterText = "",
@@ -35,32 +38,36 @@ class TextFieldFormItem extends FormItem {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: TextFormField(
-            controller: this.controller,
-            keyboardType: TextInputType.text,
-            maxLength: this.maxLength,
-            maxLines: this.maxLines,
-            minLines: this.minLines,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              hintText: this.hintText,
-              labelText: this.labelText,
-              counterText: this.counterText,
-              prefix: this.prefix,
-              suffix: this.suffix,
-            ),
-            obscureText: this.obscureText,
-            readOnly: this.readOnly,
-            autovalidate: false,
-            validator: (value) {
-              if (isEmpty(value)) return this.hintText;
-              return null;
-            },
-            onSaved: (value) {
-              if (isEmpty(value)) return;
-              if (this.onSave != null) this.onSave(value);
-            }));
+    return SuggestionOverlayBuilder(
+        items: this.suggestion,
+        controller: this.controller,
+        builder: (context, controller, onTap) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: TextFormField(
+                controller: controller,
+                keyboardType: TextInputType.text,
+                maxLength: this.maxLength,
+                maxLines: this.maxLines,
+                minLines: this.minLines,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: this.hintText,
+                  labelText: this.labelText,
+                  counterText: this.counterText,
+                  prefix: this.prefix,
+                  suffix: this.suffix,
+                ),
+                obscureText: this.obscureText,
+                readOnly: this.readOnly,
+                autovalidate: false,
+                onTap: onTap,
+                validator: (value) {
+                  if (isEmpty(value)) return this.hintText;
+                  return null;
+                },
+                onSaved: (value) {
+                  if (isEmpty(value)) return;
+                  if (this.onSave != null) this.onSave(value);
+                })));
   }
 }

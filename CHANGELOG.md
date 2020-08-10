@@ -1,3 +1,7 @@
+## [0.4.2] - Update README (2020.08.10)
+
+* Appendable Builder added.
+
 ## [0.4.1] - Update README (2020.08.08)
 
 * Added some list widgets.

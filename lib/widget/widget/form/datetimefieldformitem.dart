@@ -5,7 +5,7 @@ import 'package:masamune_core/masamune_core.dart';
 import 'package:masamune_flutter/widget/widget/datetimetextformfield.dart';
 import 'formitem.dart';
 
-class DateTimeFieldFormItem extends FormItem {
+class DateTimeFieldFormItem extends StatelessWidget implements FormItem {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final int maxLength;
