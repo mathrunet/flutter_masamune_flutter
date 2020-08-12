@@ -5,7 +5,7 @@ import 'package:masamune_flutter/widget/widget/dropdowntextformfield.dart';
 import '../suggestionoverlaybuilder.dart';
 import 'formitem.dart';
 
-class DynamicLabeledDropdownFieldFormItem extends StatefulWidget
+class FormItemDynamicLabeledDropdownField extends StatefulWidget
     implements FormItem {
   final TextEditingController controller;
   final String labelText;
@@ -26,7 +26,7 @@ class DynamicLabeledDropdownFieldFormItem extends StatefulWidget
   final String separator;
   final List<String> suggestion;
 
-  DynamicLabeledDropdownFieldFormItem(
+  FormItemDynamicLabeledDropdownField(
       {@required this.controller,
       @required this.items,
       this.labelText = "",
@@ -48,11 +48,11 @@ class DynamicLabeledDropdownFieldFormItem extends StatefulWidget
 
   @override
   State<StatefulWidget> createState() =>
-      _DynamicLabeledDropdownFieldFormItemState();
+      _FormItemDynamicLabeledDropdownFieldState();
 }
 
-class _DynamicLabeledDropdownFieldFormItemState
-    extends State<DynamicLabeledDropdownFieldFormItem> {
+class _FormItemDynamicLabeledDropdownFieldState
+    extends State<FormItemDynamicLabeledDropdownField> {
   TextEditingController _textController;
   TextEditingController _dropdownController;
 

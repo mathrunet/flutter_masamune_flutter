@@ -4,7 +4,7 @@ import 'package:masamune_flutter/masamune_flutter.dart';
 import 'formitem.dart';
 
 /// Widget that displays a dropdown button and generates an action when tapped.
-class DropdownButtonItem extends StatelessWidget implements FormItem {
+class FormItemDropdownButton extends StatelessWidget implements FormItem {
   /// Action when tapped.
   final VoidAction onTap;
 
@@ -27,7 +27,7 @@ class DropdownButtonItem extends StatelessWidget implements FormItem {
   /// [controller]: Text edit controller.
   /// [initialValue]: First value.
   /// [decoration]: Input form decoration.
-  DropdownButtonItem(
+  FormItemDropdownButton(
       {@required this.onTap,
       this.controller,
       this.initialValue,

@@ -4,7 +4,7 @@ import 'package:masamune_core/masamune_core.dart';
 import 'package:masamune_flutter/widget/widget/dropdowntextformfield.dart';
 import 'formitem.dart';
 
-class LabeledDropdownFieldFormItem extends StatelessWidget implements FormItem {
+class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
   final TextEditingController controller;
   final String labelText;
   final Map<String, String> items;
@@ -13,7 +13,7 @@ class LabeledDropdownFieldFormItem extends StatelessWidget implements FormItem {
   final void Function(String value) onSave;
   final void Function(String value) onChanged;
 
-  LabeledDropdownFieldFormItem(
+  FormItemLabeledDropdownField(
       {@required this.controller,
       @required this.items,
       this.labelText = "",

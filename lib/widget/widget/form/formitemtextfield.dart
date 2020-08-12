@@ -4,7 +4,7 @@ import 'package:masamune_core/masamune_core.dart';
 import 'formitem.dart';
 import '../suggestionoverlaybuilder.dart';
 
-class TextFieldFormItem extends StatelessWidget implements FormItem {
+class FormItemTextField extends StatelessWidget implements FormItem {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final int maxLength;
@@ -20,7 +20,7 @@ class TextFieldFormItem extends StatelessWidget implements FormItem {
   final List<String> suggestion;
   final void Function(String value) onSave;
 
-  TextFieldFormItem(
+  FormItemTextField(
       {@required this.controller,
       this.keyboardType = TextInputType.text,
       this.maxLength = 100,

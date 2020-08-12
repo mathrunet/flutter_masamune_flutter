@@ -3,10 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 import 'formitem.dart';
 
-class SubmitFormItem extends StatelessWidget implements FormItem {
+class FormItemSubmit extends StatelessWidget implements FormItem {
   final Widget label;
   final VoidAction onPressed;
-  SubmitFormItem({this.label, this.onPressed});
+  FormItemSubmit({this.label, this.onPressed});
   @override
   Widget build(BuildContext context) {
     return Padding(

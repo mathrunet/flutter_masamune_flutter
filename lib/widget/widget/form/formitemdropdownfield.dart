@@ -4,7 +4,7 @@ import 'package:masamune_core/masamune_core.dart';
 import 'package:masamune_flutter/widget/widget/dropdowntextformfield.dart';
 import 'formitem.dart';
 
-class DropdownFieldFormItem extends StatelessWidget implements FormItem {
+class FormItemDropdownField extends StatelessWidget implements FormItem {
   final TextEditingController controller;
   final String hintText;
   final String labelText;
@@ -15,7 +15,7 @@ class DropdownFieldFormItem extends StatelessWidget implements FormItem {
   final void Function(String value) onSave;
   final void Function(String value) onChanged;
 
-  DropdownFieldFormItem(
+  FormItemDropdownField(
       {@required this.controller,
       this.hintText = "",
       @required this.items,

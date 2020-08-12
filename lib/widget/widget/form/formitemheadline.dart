@@ -3,7 +3,7 @@ import 'package:masamune_flutter/masamune_flutter.dart';
 import 'formitem.dart';
 
 /// Form-headline widget.
-class FormHeadline extends StatelessWidget implements FormItem {
+class FormItemHeadline extends StatelessWidget implements FormItem {
   /// Border designation.
   final BorderSide bottomBorder;
 
@@ -18,7 +18,7 @@ class FormHeadline extends StatelessWidget implements FormItem {
   /// [bottomBorder]: Border designation.
   /// [icon]: Icon data.
   /// [title]: Headline title.
-  FormHeadline(
+  FormItemHeadline(
     this.title, {
     this.bottomBorder,
     this.icon,

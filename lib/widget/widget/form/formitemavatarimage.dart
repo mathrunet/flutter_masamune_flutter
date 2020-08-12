@@ -3,11 +3,11 @@ import 'package:flutter/widgets.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 import 'formitem.dart';
 
-class AvatarImageFormItem extends StatelessWidget implements FormItem {
+class FormItemAvatarImage extends StatelessWidget implements FormItem {
   final ImageProvider image;
   final Widget label;
   final VoidAction onPressed;
-  AvatarImageFormItem({this.image, this.label, this.onPressed});
+  FormItemAvatarImage({this.image, this.label, this.onPressed});
   @override
   Widget build(BuildContext context) {
     return Container(

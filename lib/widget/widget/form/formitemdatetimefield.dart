@@ -5,7 +5,47 @@ import 'package:masamune_core/masamune_core.dart';
 import 'package:masamune_flutter/widget/widget/datetimetextformfield.dart';
 import 'formitem.dart';
 
-class DateTimeFieldFormItem extends StatelessWidget implements FormItem {
+class FormItemDateTimeField extends StatelessWidget implements FormItem {
+  /// Calculate formatted datetime string from [millisecondsSinceEpoch].
+  static String formatDateTime(int millisecondsSinceEpoch,
+          {String format = "yyyy/MM/dd(E) HH:mm:ss",
+          String defaultValue = ""}) =>
+      DateTimeTextFormField.formatDateTime(millisecondsSinceEpoch,
+          format: format, defaultValue: defaultValue);
+
+  /// Calculate formatted date string from [millisecondsSinceEpoch].
+  static String formatDate(int millisecondsSinceEpoch,
+          {String format = "yyyy/MM/dd(E)", String defaultValue = ""}) =>
+      DateTimeTextFormField.formatDate(millisecondsSinceEpoch,
+          format: format, defaultValue: defaultValue);
+
+  /// Calculate formatted time string from [millisecondsSinceEpoch].
+  static String formatTime(int millisecondsSinceEpoch,
+          {String format = "HH:mm:ss", String defaultValue = ""}) =>
+      DateTimeTextFormField.formatTime(millisecondsSinceEpoch,
+          format: format, defaultValue: defaultValue);
+
+  /// Calculate DateTime from [millisecondsSinceEpoch].
+  static DateTime value(int millisecondsSinceEpoch) =>
+      DateTimeTextFormField.value(millisecondsSinceEpoch);
+
+  /// Picker definition that selects only dates.
+  static Future<DateTime> Function(BuildContext, DateTime) datePicker(
+          {DateTime startDate, DateTime currentDate, DateTime endDate}) =>
+      DateTimeTextFormField.datePicker(
+          startDate: startDate, currentDate: currentDate, endDate: endDate);
+
+  /// Definition of a picker to select time.
+  static Future<DateTime> Function(BuildContext, DateTime) timePicker(
+          {DateTime currentTime}) =>
+      DateTimeTextFormField.timePicker(currentTime: currentTime);
+
+  /// Picker definition that selects the date and time.
+  static Future<DateTime> Function(BuildContext, DateTime) dateTimePicker(
+          {DateTime startDate, DateTime current, DateTime endDate}) =>
+      DateTimeTextFormField.dateTimePicker(
+          startDate: startDate, current: current, endDate: endDate);
+
   final TextEditingController controller;
   final TextInputType keyboardType;
   final int maxLength;
@@ -20,16 +60,16 @@ class DateTimeFieldFormItem extends StatelessWidget implements FormItem {
   final bool obscureText;
   final DateTime initialDateTime;
   final DateFormat _format;
-  final DateTimeFieldFormItemPickerType type;
+  final FormItemDateTimeFieldPickerType type;
   final Future<DateTime> Function(BuildContext, DateTime) _onShowPicker;
   final void Function(DateTime value) onSave;
 
   Future<DateTime> Function(BuildContext, DateTime) get onShowPicker {
     if (this._onShowPicker != null) return this._onShowPicker;
     switch (this.type) {
-      case DateTimeFieldFormItemPickerType.date:
+      case FormItemDateTimeFieldPickerType.date:
         return DateTimeTextFormField.datePicker();
-      case DateTimeFieldFormItemPickerType.time:
+      case FormItemDateTimeFieldPickerType.time:
         return DateTimeTextFormField.timePicker();
       default:
         return DateTimeTextFormField.dateTimePicker();
@@ -39,16 +79,16 @@ class DateTimeFieldFormItem extends StatelessWidget implements FormItem {
   DateFormat get format {
     if (this._format != null) return this._format;
     switch (this.type) {
-      case DateTimeFieldFormItemPickerType.date:
+      case FormItemDateTimeFieldPickerType.date:
         return DateFormat("yyyy/MM/dd(E)");
-      case DateTimeFieldFormItemPickerType.time:
+      case FormItemDateTimeFieldPickerType.time:
         return DateFormat("HH:mm:ss");
       default:
         return DateFormat("yyyy/MM/dd(E) HH:mm:ss");
     }
   }
 
-  DateTimeFieldFormItem(
+  FormItemDateTimeField(
       {@required this.controller,
       this.keyboardType = TextInputType.text,
       this.maxLength = 100,
@@ -61,7 +101,7 @@ class DateTimeFieldFormItem extends StatelessWidget implements FormItem {
       this.suffix,
       this.readOnly = false,
       this.obscureText = false,
-      this.type = DateTimeFieldFormItemPickerType.dateTime,
+      this.type = FormItemDateTimeFieldPickerType.dateTime,
       @required this.initialDateTime,
       DateFormat format,
       Future<DateTime> onShowPicker(BuildContext context, DateTime dateTime),
@@ -111,4 +151,4 @@ class DateTimeFieldFormItem extends StatelessWidget implements FormItem {
   }
 }
 
-enum DateTimeFieldFormItemPickerType { date, time, dateTime }
+enum FormItemDateTimeFieldPickerType { date, time, dateTime }
