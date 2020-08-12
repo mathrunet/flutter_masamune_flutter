@@ -40,4 +40,7 @@ class DefaultPath {
 
   /// Double tap event during loop.
   static const String loopTapDouble = "loop/tap/double";
+
+  /// Form data on the page.
+  static const String formData = "page/form";
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
@@ -8,21 +10,37 @@ abstract class UITextFieldControllerMixin {
 
   /// Initialize the controller.
   ///
-  /// [data]: Enter the controller key in the key and the initial value in the value.
-  void init(Map<String, String> data) {
-    data?.forEach((key, value) {
+  /// [initial]: Enter the controller key in the key and
+  /// the initial value in the value.
+  /// [document]: The document to read.
+  /// The value of the controller is updated when reading is completed.
+  Future init(
+      {Map<String, String> initial, FutureOr<IDataDocument> document}) async {
+    initial?.forEach((key, value) {
       if (isEmpty(key)) return;
       controllers[key] = TextEditingController(text: value ?? Const.empty);
     });
-  }
-
-  /// Upload the controller text all at once.
-  ///
-  /// [data]: Enter the controller key in the key and the update value in the value.
-  void update(Map<String, String> data) {
-    data?.forEach((key, value) {
-      if (isEmpty(key) || !controllers.containsKey(key)) return;
-      controllers[key].text = value ?? Const.empty;
-    });
+    if (document is Future<IDataDocument>) {
+      IDataDocument doc = await document;
+      doc?.forEach((key, value) {
+        if (isEmpty(key)) return;
+        if (!controllers.containsKey(key)) {
+          controllers[key] =
+              TextEditingController(text: value?.toString() ?? Const.empty);
+        } else {
+          controllers[key].text = value?.toString() ?? Const.empty;
+        }
+      });
+    } else if (document is IDataDocument) {
+      document?.forEach((key, value) {
+        if (isEmpty(key)) return;
+        if (!controllers.containsKey(key)) {
+          controllers[key] =
+              TextEditingController(text: value?.toString() ?? Const.empty);
+        } else {
+          controllers[key].text = value?.toString() ?? Const.empty;
+        }
+      });
+    }
   }
 }
