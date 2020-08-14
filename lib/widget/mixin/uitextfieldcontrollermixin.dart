@@ -14,8 +14,10 @@ abstract class UITextFieldControllerMixin {
   /// the initial value in the value.
   /// [document]: The document to read.
   /// The value of the controller is updated when reading is completed.
-  Future init(
-      {Map<String, String> initial, FutureOr<IDataDocument> document}) async {
+  /// [filter]: Callback when the document is updated.
+  Future init(Map<String, String> initial,
+      {FutureOr<IDataDocument> document,
+      Map<String, String Function(String value)> filter}) async {
     initial?.forEach((key, value) {
       if (isEmpty(key)) return;
       controllers[key] = TextEditingController(text: value ?? Const.empty);
@@ -24,21 +26,25 @@ abstract class UITextFieldControllerMixin {
       IDataDocument doc = await document;
       doc?.forEach((key, value) {
         if (isEmpty(key)) return;
+        String val = filter != null && filter.containsKey(key)
+            ? filter[key](value.data)
+            : value.data?.toString() ?? Const.empty;
         if (!controllers.containsKey(key)) {
-          controllers[key] =
-              TextEditingController(text: value?.toString() ?? Const.empty);
+          controllers[key] = TextEditingController(text: val);
         } else {
-          controllers[key].text = value?.toString() ?? Const.empty;
+          controllers[key].text = val;
         }
       });
     } else if (document is IDataDocument) {
       document?.forEach((key, value) {
         if (isEmpty(key)) return;
+        String val = filter != null && filter.containsKey(key)
+            ? filter[key](value.data)
+            : value.data?.toString() ?? Const.empty;
         if (!controllers.containsKey(key)) {
-          controllers[key] =
-              TextEditingController(text: value?.toString() ?? Const.empty);
+          controllers[key] = TextEditingController(text: val);
         } else {
-          controllers[key].text = value?.toString() ?? Const.empty;
+          controllers[key].text = val;
         }
       });
     }

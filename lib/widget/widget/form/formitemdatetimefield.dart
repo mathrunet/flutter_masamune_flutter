@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:masamune_core/masamune_core.dart';
-import 'package:masamune_flutter/widget/widget/datetimetextformfield.dart';
+import 'package:masamune_flutter/widget/widget/component/datetimetextformfield.dart';
 import 'formitem.dart';
 
 class FormItemDateTimeField extends StatelessWidget implements FormItem {

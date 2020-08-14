@@ -1,3 +1,7 @@
+## [0.4.4] - Update README (2020.08.14)
+
+* Added FormItemImage.
+
 ## [0.4.3] - Update README (2020.08.12)
 
 * Renamed FormItem.

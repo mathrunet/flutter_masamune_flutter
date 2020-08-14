@@ -14,7 +14,7 @@ abstract class UIPageForm extends UIPageScaffold
   @mustCallSuper
   void onLoad(BuildContext context) {
     super.onLoad(context);
-    this.init(initial: this.define(context), document: this.loader(context));
+    this.init(this.define(context), document: this.loader(context));
   }
 
   /// Creating a floating action button.

@@ -10,18 +10,58 @@ abstract class UIPageTabScaffold extends UIPageScaffold {
   final _UITabData _tabData = _UITabData();
 
   /// Source data for tab.
-  Iterable get source => this._tabData.collection;
-
-  /// Source data for tab.
-  ///
-  /// [collection]: Source data.
-  set source(Iterable collection) => this._tabData.collection = collection;
+  Iterable get source;
 
   /// Tab controller.
   TabController get tabController => this._tabData.controller;
 
   /// Abstract class for creating pages.
   UIPageTabScaffold({Key key}) : super(key: key);
+
+  /// View of tabs.
+  ///
+  /// [context]: Build context.
+  List<Widget> tabView(BuildContext context);
+
+  /// The color of the indicator on the tab.
+  ///
+  /// [context]: Build context.
+  Color indicatorColor(BuildContext context) => context.theme.accentColor;
+
+  /// Tab label style.
+  ///
+  /// [context]: Build context.
+  TextStyle labelStyle(BuildContext context) =>
+      context.theme.textTheme.bodyText1;
+
+  /// Tab.
+  ///
+  /// [context]: Build context.
+  List<Widget> tabs(BuildContext context) {
+    return this.source.mapAndRemoveEmpty((item) => Text(item));
+  }
+
+  /// Tab bar. Place this in the bottom of the AppBar.
+  ///
+  /// [context]: Build context.
+  TabBar tabBar(BuildContext context) {
+    return TabBar(
+        indicatorColor: this.indicatorColor(context),
+        controller: this.tabController,
+        labelStyle: this.labelStyle(context),
+        labelPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+        isScrollable: true,
+        tabs: this.tabs(context));
+  }
+
+  /// Creating a body.
+  ///
+  /// [context]: Build context.
+  @override
+  Widget body(BuildContext context) {
+    return TabBarView(
+        controller: this.tabController, children: this.tabView(context));
+  }
 
   /// Callback for building.
   ///
@@ -42,5 +82,4 @@ abstract class UIPageTabScaffold extends UIPageScaffold {
 
 class _UITabData {
   TabController controller;
-  Iterable collection;
 }

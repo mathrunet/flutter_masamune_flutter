@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:masamune_core/masamune_core.dart';
-import 'package:masamune_flutter/widget/widget/dropdowntextformfield.dart';
+import 'package:masamune_flutter/widget/widget/component/dropdowntextformfield.dart';
 import 'formitem.dart';
 
 class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {

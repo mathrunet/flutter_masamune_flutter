@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
-import 'formitem.dart';
 
-class FormItemAvatarImage extends StatelessWidget implements FormItem {
+class AvatarImage extends StatelessWidget {
   final ImageProvider image;
   final String label;
   final VoidAction onPressed;
   final Color textColor;
   final Color backgroundColor;
-  FormItemAvatarImage(
+  AvatarImage(
       {@required this.image,
       this.label,
       this.onPressed,

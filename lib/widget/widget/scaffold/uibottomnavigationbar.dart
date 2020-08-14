@@ -6,6 +6,7 @@ class UIBottomNavigationBar extends StatelessWidget {
   final List<UIBottomNavigationBarItem> items;
   final int initialIndex;
   final double elevation;
+  final Widget top;
   final BottomNavigationBarType type;
   final Color fixedColor;
   final Color backgroundColor;
@@ -26,6 +27,7 @@ class UIBottomNavigationBar extends StatelessWidget {
   UIBottomNavigationBar(
       {Key key,
       this.items,
+      this.top,
       this.initialIndex = 0,
       this.disableOnTapWhenInitialIndex = true,
       this.elevation = 8.0,
@@ -46,37 +48,44 @@ class UIBottomNavigationBar extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      key: this.key,
-      items: this.items,
-      onTap: (index) {
-        if (this.items == null || this.items.length <= index || index < 0)
-          return;
-        if (this.items[index]?.onTap == null) return;
-        if (this.disableOnTapWhenInitialIndex && index == this.initialIndex)
-          return;
-        this.items[index]?.onTap();
-      },
-      currentIndex: this.initialIndex,
-      elevation: this.elevation,
-      type: this.type,
-      fixedColor: this.fixedColor,
-      backgroundColor:
-          this.backgroundColor ?? Theme.of(context)?.bottomAppBarColor,
-      iconSize: this.iconSize,
-      selectedItemColor:
-          this.selectedItemColor ?? Theme.of(context)?.primaryColor,
-      unselectedItemColor: this.unselectedItemColor ??
-          Theme.of(context)?.bottomAppBarTheme?.color,
-      selectedIconTheme: this.selectedIconTheme,
-      unselectedIconTheme: this.unselectedIconTheme,
-      selectedFontSize: this.selectedFontSize,
-      unselectedFontSize: this.unselectedFontSize,
-      selectedLabelStyle: this.selectedLabelStyle,
-      unselectedLabelStyle: this.unselectedLabelStyle,
-      showSelectedLabels: this.showSelectedLabels,
-      showUnselectedLabels: this.showUnselectedLabels,
-    );
+    return Column(mainAxisSize: MainAxisSize.min, children: [
+      if (this.top != null) ...[
+        Divider(height: 1),
+        this.top,
+        Divider(height: 1),
+      ],
+      BottomNavigationBar(
+        key: this.key,
+        items: this.items,
+        onTap: (index) {
+          if (this.items == null || this.items.length <= index || index < 0)
+            return;
+          if (this.items[index]?.onTap == null) return;
+          if (this.disableOnTapWhenInitialIndex && index == this.initialIndex)
+            return;
+          this.items[index]?.onTap();
+        },
+        currentIndex: this.initialIndex,
+        elevation: this.elevation,
+        type: this.type,
+        fixedColor: this.fixedColor,
+        backgroundColor:
+            this.backgroundColor ?? Theme.of(context)?.bottomAppBarColor,
+        iconSize: this.iconSize,
+        selectedItemColor:
+            this.selectedItemColor ?? Theme.of(context)?.primaryColor,
+        unselectedItemColor: this.unselectedItemColor ??
+            Theme.of(context)?.bottomAppBarTheme?.color,
+        selectedIconTheme: this.selectedIconTheme,
+        unselectedIconTheme: this.unselectedIconTheme,
+        selectedFontSize: this.selectedFontSize,
+        unselectedFontSize: this.unselectedFontSize,
+        selectedLabelStyle: this.selectedLabelStyle,
+        unselectedLabelStyle: this.unselectedLabelStyle,
+        showSelectedLabels: this.showSelectedLabels,
+        showUnselectedLabels: this.showUnselectedLabels,
+      )
+    ]);
   }
 }
 

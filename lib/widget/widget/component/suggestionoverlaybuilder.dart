@@ -65,7 +65,7 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
   @override
   void initState() {
     super.initState();
-    this.widget.controller.addListener(this._listener);
+    this.widget.controller?.addListener(this._listener);
   }
 
   void _listener() {
@@ -86,7 +86,7 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
   @override
   void dispose() {
     super.dispose();
-    this.widget.controller.removeListener(this._listener);
+    this.widget.controller?.removeListener(this._listener);
   }
 
   @override
@@ -198,7 +198,7 @@ class _SuggestionOverlayState extends State<_SuggestionOverlay> {
   @override
   void dispose() {
     super.dispose();
-    this.widget.controller.removeListener(this._listener);
+    this.widget.controller?.removeListener(this._listener);
   }
 
   @override

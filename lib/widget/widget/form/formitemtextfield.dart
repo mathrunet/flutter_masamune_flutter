@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:masamune_core/masamune_core.dart';
 import 'formitem.dart';
-import '../suggestionoverlaybuilder.dart';
+import '../component/suggestionoverlaybuilder.dart';
 
 class FormItemTextField extends StatelessWidget implements FormItem {
   final TextEditingController controller;
