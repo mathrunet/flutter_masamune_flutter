@@ -102,8 +102,9 @@ class _FormItemImageState extends FormFieldState<String> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return GestureDetector(
+    return InkWell(
       onTap: () {
+        if (!this.widget.enabled) return;
         if (this.widget.onTap != null) this.widget.onTap(this._onUpdate);
       },
       child: this._buildImage(context),

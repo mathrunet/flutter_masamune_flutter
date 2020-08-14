@@ -120,7 +120,7 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
     final height = textFieldSize.height;
     this._overlay = OverlayEntry(
         builder: (context) => Stack(children: [
-              GestureDetector(
+              InkWell(
                   onTap: () {
                     this._overlay?.remove();
                     this._overlay = null;
@@ -210,7 +210,7 @@ class _SuggestionOverlayState extends State<_SuggestionOverlay> {
           e != this._wordList.last &&
           !e.toLowerCase().startsWith(this._wordList.last.toLowerCase()))
         return null;
-      return GestureDetector(
+      return InkWell(
           onTap: () {
             if (this._wordList.length > 0) {
               this._wordList[this._wordList.length - 1] = e;

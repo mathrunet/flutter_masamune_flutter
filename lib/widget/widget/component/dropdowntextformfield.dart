@@ -17,6 +17,7 @@ class DropdownTextFormField extends StatefulWidget {
   final void Function(String) onSaved;
   final String Function(String) validator;
   final bool autovalidate;
+  final bool enabled;
   final Widget disabledHint;
   final int elevation;
   final TextStyle style;
@@ -46,6 +47,7 @@ class DropdownTextFormField extends StatefulWidget {
       this.onTap,
       this.decoration = const InputDecoration(),
       this.onSaved,
+      this.enabled = true,
       this.validator,
       this.autovalidate = false,
       this.disabledHint,
@@ -103,12 +105,19 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
             validator: this.widget.validator,
             onTap: this.widget.onTap,
             onSaved: this.widget.onSaved,
-            onChanged: (value) {
-              this._controller.text = value;
-              if (this.widget.onChanged != null) this.widget.onChanged(value);
-            },
+            onChanged: this.widget.enabled
+                ? (value) {
+                    this._controller.text = value;
+                    if (this.widget.onChanged != null)
+                      this.widget.onChanged(value);
+                  }
+                : null,
             autovalidate: this.widget.autovalidate,
-            disabledHint: this.widget.disabledHint,
+            disabledHint: this.widget.disabledHint ??
+                Text(isNotEmpty(this._controller?.text) &&
+                        this.widget.items.containsKey(this._controller.text)
+                    ? this.widget.items[this._controller.text]
+                    : this.widget.items.values.first ?? Const.empty),
             elevation: this.widget.elevation,
             style: this.widget.style,
             icon: this.widget.icon,
@@ -120,7 +129,10 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
             itemHeight: this.widget.itemHeight,
             selectedItemBuilder: this.widget.selectedItemBuilder ??
                 (context) {
-                  return this.widget.items?.toList((String key, String value) {
+                  return this
+                          .widget
+                          .items
+                          ?.toList<Widget>((String key, String value) {
                         return Container(
                             alignment: Alignment.center,
                             child: Text(value,

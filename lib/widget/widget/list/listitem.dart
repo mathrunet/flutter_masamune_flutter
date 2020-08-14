@@ -26,6 +26,9 @@ class ListItem extends StatelessWidget {
   /// List tile padding.
   final EdgeInsetsGeometry padding;
 
+  /// Processing when tapped.
+  final Function onTap;
+
   /// List item.
   ///
   /// [leading]: Leading widget for items.
@@ -35,8 +38,10 @@ class ListItem extends StatelessWidget {
   /// [dense]: List tile dense.
   /// [padding]: List tile padding.
   /// [trailing]: List trailing.
+  /// [onTap]: Processing when tapped.
   ListItem(
       {this.leading,
+      this.onTap,
       @required this.title,
       this.text,
       this.dense = false,
@@ -50,6 +55,7 @@ class ListItem extends StatelessWidget {
     return ListTile(
       leading: this.leading,
       dense: this.dense,
+      onTap: this.onTap,
       contentPadding: this.padding,
       title: Row(children: [
         Expanded(

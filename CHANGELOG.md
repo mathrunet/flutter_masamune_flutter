@@ -1,3 +1,7 @@
+## [0.4.5] - Update README (2020.08.14)
+
+* Maintenance of Theme Color.
+
 ## [0.4.4] - Update README (2020.08.14)
 
 * Added FormItemImage.

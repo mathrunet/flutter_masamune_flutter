@@ -20,6 +20,9 @@ class FormItemDropdownButton extends StatelessWidget implements FormItem {
   /// Input form decoration.
   final Decoration decoration;
 
+  /// True if enabled.
+  final bool enabled;
+
   /// Widget that displays a dropdown button and generates an action when tapped.
   ///
   /// [onTap]: Action when tapped.
@@ -30,6 +33,7 @@ class FormItemDropdownButton extends StatelessWidget implements FormItem {
   FormItemDropdownButton(
       {@required this.onTap,
       this.controller,
+      this.enabled = true,
       this.initialValue,
       this.onLongPress,
       this.decoration});
@@ -39,8 +43,8 @@ class FormItemDropdownButton extends StatelessWidget implements FormItem {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: InkWell(
-        onLongPress: this.onLongPress,
-        onTap: this.onTap,
+        onLongPress: this.enabled ? this.onLongPress : null,
+        onTap: this.enabled ? this.onTap : null,
         child: Container(
           height: 60,
           alignment: Alignment.centerLeft,
@@ -52,10 +56,12 @@ class FormItemDropdownButton extends StatelessWidget implements FormItem {
               ),
           child: Stack(alignment: Alignment.centerLeft, children: [
             Text(this.controller?.text ?? this.initialValue ?? Const.empty,
-                style: context.theme.inputDecorationTheme.helperStyle),
+                style: context.theme.inputDecorationTheme.helperStyle.copyWith(
+                    color: this.enabled ? null : context.theme.disabledColor)),
             Align(
               alignment: Alignment.centerRight,
-              child: Icon(Icons.arrow_drop_down),
+              child: Icon(Icons.arrow_drop_down,
+                  color: this.enabled ? null : context.theme.disabledColor),
             )
           ]),
         ),

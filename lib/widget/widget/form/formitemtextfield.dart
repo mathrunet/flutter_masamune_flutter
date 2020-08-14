@@ -14,6 +14,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final String labelText;
   final String counterText;
   final Widget prefix;
+  final bool enabled;
   final Widget suffix;
   final bool readOnly;
   final bool obscureText;
@@ -31,6 +32,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.prefix,
       this.suffix,
       this.suggestion,
+      this.enabled = true,
       this.readOnly = false,
       this.obscureText = false,
       this.counterText = "",
@@ -44,6 +46,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
         builder: (context, controller, onTap) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: TextFormField(
+                enabled: this.enabled,
                 controller: controller,
                 keyboardType: TextInputType.text,
                 maxLength: this.maxLength,
@@ -60,7 +63,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                 obscureText: this.obscureText,
                 readOnly: this.readOnly,
                 autovalidate: false,
-                onTap: onTap,
+                onTap: this.enabled ? onTap : null,
                 validator: (value) {
                   if (isEmpty(value)) return this.hintText;
                   return null;

@@ -21,8 +21,8 @@ class UIMaterialApp extends UIWidget {
       RouteConfig onUnknownRoute,
       RouteConfig onBootRoute,
       Color color,
-      ThemeData theme,
-      ThemeData darkTheme,
+      ThemeColor theme,
+      ThemeColor darkTheme,
       ThemeMode themeMode = ThemeMode.system,
       Locale locale,
       Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates,
@@ -81,8 +81,8 @@ class UIMaterialApp extends UIWidget {
                           : (settings) => RouteConfig._onSingleRoute(
                               settings, onUnknownRoute),
                       color: color,
-                      theme: theme,
-                      darkTheme: darkTheme,
+                      theme: theme?.toThemeData(),
+                      darkTheme: darkTheme?.toThemeData(),
                       themeMode: themeMode,
                       localizationsDelegates: localizationsDelegates,
                       localeListResolutionCallback:

@@ -60,7 +60,7 @@ abstract class UIPageForm extends UIPageScaffold
   @override
   Widget body(BuildContext context) {
     return FormBuilder(
-        center: this.center,
+        type: FormBuilderType.listView,
         key: this.formKey,
         children: this.formBody(context, this.controllers, this.form));
   }

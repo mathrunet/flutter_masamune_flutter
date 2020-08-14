@@ -25,6 +25,7 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
   final bool obscureText;
   final String separator;
   final List<String> suggestion;
+  final bool enabled;
 
   FormItemDynamicLabeledDropdownField(
       {@required this.controller,
@@ -34,6 +35,7 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
       this.suffix,
       this.onSave,
       this.onChanged,
+      this.enabled = true,
       this.suggestion,
       this.validator,
       this.separator = Const.colon,
@@ -96,6 +98,7 @@ class _FormItemDynamicLabeledDropdownFieldState
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Stack(children: [
               TextFormField(
+                  enabled: this.widget.enabled,
                   controller: controller,
                   keyboardType: TextInputType.text,
                   maxLength: this.widget.maxLength,
@@ -113,7 +116,7 @@ class _FormItemDynamicLabeledDropdownFieldState
                   obscureText: this.widget.obscureText,
                   readOnly: this.widget.readOnly,
                   autovalidate: false,
-                  onTap: onTap,
+                  onTap: this.widget.enabled ? onTap : null,
                   validator: (value) {
                     if (isEmpty(value)) return this.widget.hintText;
 
@@ -146,6 +149,7 @@ class _FormItemDynamicLabeledDropdownFieldState
                       child: DropdownTextFormField(
                           controller: this._dropdownController,
                           items: this.widget.items,
+                          enabled: this.widget.enabled,
                           style: TextStyle(
                               fontSize: 20,
                               color:

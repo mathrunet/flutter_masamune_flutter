@@ -12,6 +12,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
   final Map<String, String> items;
   final Widget prefix;
   final Widget suffix;
+  final bool enabled;
   final void Function(String value) onSave;
   final void Function(String value) onChanged;
 
@@ -19,6 +20,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
       {@required this.controller,
       this.hintText = "",
       @required this.items,
+      this.enabled = true,
       this.labelText = "",
       this.prefix,
       this.suffix,
@@ -33,6 +35,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
         child: DropdownTextFormField(
             controller: this.controller,
             items: this.items,
+            enabled: this.enabled,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               contentPadding: const EdgeInsets.all(17.5),

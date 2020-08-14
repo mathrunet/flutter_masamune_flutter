@@ -32,6 +32,7 @@ export 'widget/scaffold/uibottomnavigationbar.dart';
 
 export 'widget/list/avatarimage.dart';
 export 'widget/list/appendablebuilder.dart';
+export 'widget/list/messagebox.dart';
 export 'widget/list/smallheadline.dart';
 export 'widget/list/rightbutton.dart';
 export 'widget/list/smallgallery.dart';

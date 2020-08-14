@@ -60,6 +60,7 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
   final bool obscureText;
   final DateTime initialDateTime;
   final DateFormat _format;
+  final bool enabled;
   final FormItemDateTimeFieldPickerType type;
   final Future<DateTime> Function(BuildContext, DateTime) _onShowPicker;
   final void Function(DateTime value) onSave;
@@ -97,6 +98,7 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
       this.hintText = "",
       this.labelText = "",
       this.counterText = "",
+      this.enabled = true,
       this.prefix,
       this.suffix,
       this.readOnly = false,
@@ -124,6 +126,7 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
           initialValue: this.initialDateTime,
           maxLength: this.maxLength,
           maxLines: this.maxLines,
+          enabled: this.enabled,
           minLines: this.minLines,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),

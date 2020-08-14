@@ -9,12 +9,14 @@ class FormItemAvatarImage extends StatelessWidget implements FormItem {
   final VoidAction onPressed;
   final Color textColor;
   final Color backgroundColor;
+  final bool enabled;
   FormItemAvatarImage(
       {@required this.image,
       this.label,
       this.onPressed,
       this.textColor,
-      this.backgroundColor});
+      this.backgroundColor,
+      this.enabled = true});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,8 +38,10 @@ class FormItemAvatarImage extends StatelessWidget implements FormItem {
                       style: TextStyle(
                           color:
                               this.textColor ?? context.theme.backgroundColor)),
-                  onPressed: this.onPressed,
-                  color: this.backgroundColor ?? context.theme.primaryColor)
+                  onPressed: this.enabled ? this.onPressed : null,
+                  color: this.enabled
+                      ? (this.backgroundColor ?? context.theme.primaryColor)
+                      : context.theme.disabledColor)
           ],
         ));
   }

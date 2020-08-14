@@ -28,6 +28,8 @@ part 'core/typedef.dart';
 part 'core/defaultpath.dart';
 part 'core/bootstrap.dart';
 
+part 'theme/themecolor.dart';
+
 part 'component/uimaterialapp.dart';
 part 'component/widgetdata.dart';
 part 'component/uipage.dart';
