@@ -23,6 +23,9 @@ class FormItemDropdownButton extends StatelessWidget implements FormItem {
   /// True if enabled.
   final bool enabled;
 
+  /// True for dense.
+  final bool dense;
+
   /// Widget that displays a dropdown button and generates an action when tapped.
   ///
   /// [onTap]: Action when tapped.
@@ -30,18 +33,22 @@ class FormItemDropdownButton extends StatelessWidget implements FormItem {
   /// [controller]: Text edit controller.
   /// [initialValue]: First value.
   /// [decoration]: Input form decoration.
+  /// [dense]: True for dense.
   FormItemDropdownButton(
       {@required this.onTap,
       this.controller,
       this.enabled = true,
       this.initialValue,
+      this.dense = false,
       this.onLongPress,
       this.decoration});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      padding: this.dense
+          ? const EdgeInsets.symmetric(horizontal: 20)
+          : const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: InkWell(
         onLongPress: this.enabled ? this.onLongPress : null,
         onTap: this.enabled ? this.onTap : null,
@@ -51,7 +58,9 @@ class FormItemDropdownButton extends StatelessWidget implements FormItem {
           padding: const EdgeInsets.all(12),
           decoration: this.decoration ??
               BoxDecoration(
-                border: Border.all(color: context.theme.disabledColor),
+                border: Border.all(
+                    color: context.theme.disabledColor,
+                    style: this.dense ? BorderStyle.none : BorderStyle.solid),
                 borderRadius: BorderRadius.circular(4.0),
               ),
           child: Stack(alignment: Alignment.centerLeft, children: [

@@ -11,14 +11,16 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
   final Widget prefix;
   final bool enabled;
   final Widget suffix;
+  final bool dense;
   final void Function(String value) onSave;
   final void Function(String value) onChanged;
 
   FormItemLabeledDropdownField(
-      {@required this.controller,
+      {this.controller,
       @required this.items,
       this.labelText = "",
       this.prefix,
+      this.dense = false,
       this.enabled = true,
       this.suffix,
       this.onSave,
@@ -28,9 +30,13 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).disabledColor),
+            border: Border.all(
+                color: Theme.of(context).disabledColor,
+                style: this.dense ? BorderStyle.none : BorderStyle.solid),
             borderRadius: BorderRadius.circular(4.0)),
-        margin: const EdgeInsets.symmetric(vertical: 10),
+        margin: this.dense
+            ? const EdgeInsets.all(0)
+            : const EdgeInsets.symmetric(vertical: 10),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4.5),
         child: Row(children: [
           Expanded(

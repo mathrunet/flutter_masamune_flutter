@@ -39,6 +39,8 @@ class FormItemAvatarImage extends StatelessWidget implements FormItem {
                           color:
                               this.textColor ?? context.theme.backgroundColor)),
                   onPressed: this.enabled ? this.onPressed : null,
+                  disabledColor: context.theme.disabledColor,
+                  disabledTextColor: context.theme.backgroundColor,
                   color: this.enabled
                       ? (this.backgroundColor ?? context.theme.primaryColor)
                       : context.theme.disabledColor)

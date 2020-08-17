@@ -17,7 +17,7 @@ abstract class UITextFieldControllerMixin {
   /// [filter]: Callback when the document is updated.
   Future init(Map<String, String> initial,
       {FutureOr<IDataDocument> document,
-      Map<String, String Function(String value)> filter}) async {
+      Map<String, String Function(dynamic value)> filter}) async {
     initial?.forEach((key, value) {
       if (isEmpty(key)) return;
       controllers[key] = TextEditingController(text: value ?? Const.empty);

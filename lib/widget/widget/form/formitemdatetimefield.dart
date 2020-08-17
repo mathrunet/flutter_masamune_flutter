@@ -50,6 +50,7 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
   final TextInputType keyboardType;
   final int maxLength;
   final int maxLines;
+  final bool dense;
   final int minLines;
   final String hintText;
   final String labelText;
@@ -63,7 +64,7 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
   final bool enabled;
   final FormItemDateTimeFieldPickerType type;
   final Future<DateTime> Function(BuildContext, DateTime) _onShowPicker;
-  final void Function(DateTime value) onSave;
+  final void Function(DateTime value) onSaved;
 
   Future<DateTime> Function(BuildContext, DateTime) get onShowPicker {
     if (this._onShowPicker != null) return this._onShowPicker;
@@ -90,7 +91,7 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
   }
 
   FormItemDateTimeField(
-      {@required this.controller,
+      {this.controller,
       this.keyboardType = TextInputType.text,
       this.maxLength = 100,
       this.maxLines = 1,
@@ -98,6 +99,7 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
       this.hintText = "",
       this.labelText = "",
       this.counterText = "",
+      this.dense = false,
       this.enabled = true,
       this.prefix,
       this.suffix,
@@ -107,7 +109,7 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
       @required this.initialDateTime,
       DateFormat format,
       Future<DateTime> onShowPicker(BuildContext context, DateTime dateTime),
-      this.onSave})
+      this.onSaved})
       : this._format = format,
         this._onShowPicker = onShowPicker {
     if (this.controller == null) return;
@@ -119,7 +121,9 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: this.dense
+            ? const EdgeInsets.all(0)
+            : const EdgeInsets.symmetric(vertical: 10),
         child: DateTimeTextFormField(
           controller: this.controller,
           keyboardType: TextInputType.text,
@@ -129,7 +133,18 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
           enabled: this.enabled,
           minLines: this.minLines,
           decoration: InputDecoration(
-            border: const OutlineInputBorder(),
+            border: OutlineInputBorder(
+                borderSide: this.dense ? BorderSide.none : const BorderSide()),
+            enabledBorder: OutlineInputBorder(
+                borderSide: this.dense ? BorderSide.none : const BorderSide()),
+            disabledBorder: OutlineInputBorder(
+                borderSide: this.dense ? BorderSide.none : const BorderSide()),
+            errorBorder: OutlineInputBorder(
+                borderSide: this.dense ? BorderSide.none : const BorderSide()),
+            focusedBorder: OutlineInputBorder(
+                borderSide: this.dense ? BorderSide.none : const BorderSide()),
+            focusedErrorBorder: OutlineInputBorder(
+                borderSide: this.dense ? BorderSide.none : const BorderSide()),
             hintText: this.hintText,
             counterText: this.counterText,
             labelText: this.labelText,
@@ -146,7 +161,7 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
           },
           onSaved: (value) {
             if (isEmpty(value)) return;
-            if (this.onSave != null) this.onSave(value);
+            if (this.onSaved != null) this.onSaved(value);
           },
           onShowPicker:
               this.onShowPicker ?? DateTimeTextFormField.dateTimePicker(),

@@ -12,6 +12,9 @@ class FormItemImage extends FormField<String> {
   /// Icon if you have not uploaded an image.
   final IconData icon;
 
+  /// True for dense.
+  final bool dense;
+
   /// Form item for uploading an image.
   ///
   /// [key]: Key.
@@ -24,11 +27,13 @@ class FormItemImage extends FormField<String> {
   /// [validator]: Processing when validated.
   /// [autovalidate]: True to automatically validate.
   /// [enabled]: True to enable.
+  /// [dense]: True for dense.
   FormItemImage(
       {Key key,
       this.controller,
       @required this.onTap,
       this.color,
+      this.dense = false,
       this.icon = Icons.add_a_photo,
       void onSaved(String value),
       String validator(String value),
@@ -83,7 +88,7 @@ class _FormItemImageState extends FormFieldState<String> {
   }
 
   @override
-  void didUpdateWidget(TextFormField oldWidget) {
+  void didUpdateWidget(FormItemImage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
       oldWidget.controller?.removeListener(_handleControllerChanged);
@@ -114,40 +119,50 @@ class _FormItemImageState extends FormFieldState<String> {
   Widget _buildImage(BuildContext context) {
     if (this._data != null) {
       return Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: this.widget.dense
+              ? const EdgeInsets.all(0)
+              : const EdgeInsets.symmetric(vertical: 10),
           constraints: const BoxConstraints.expand(height: 200),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(this.widget.dense ? 0 : 8.0),
             child: Image.file(this._data, fit: BoxFit.cover),
           ));
     } else if (isNotEmpty(this.widget.initialValue)) {
       if (this.widget.initialValue.startsWith("http")) {
         return Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: this.widget.dense
+                ? const EdgeInsets.all(0)
+                : const EdgeInsets.symmetric(vertical: 10),
             constraints: const BoxConstraints.expand(height: 200),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(this.widget.dense ? 0 : 8.0),
               child: Image.network(this.widget.initialValue, fit: BoxFit.cover),
             ));
       } else {
         if (this._local == null) this._local = File(this.widget.initialValue);
         return Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: this.widget.dense
+                ? const EdgeInsets.all(0)
+                : const EdgeInsets.symmetric(vertical: 10),
             constraints: const BoxConstraints.expand(height: 200),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(this.widget.dense ? 0 : 8.0),
               child: Image.file(this._local, fit: BoxFit.cover),
             ));
       }
     } else {
       return Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: this.widget.dense
+              ? const EdgeInsets.all(0)
+              : const EdgeInsets.symmetric(vertical: 10),
           child: Container(
             constraints: const BoxConstraints.expand(height: 160),
             decoration: BoxDecoration(
                 border: Border.all(
-                  color: this.widget.color ?? Theme.of(context).disabledColor,
-                ),
+                    color: this.widget.color ?? Theme.of(context).disabledColor,
+                    style: this.widget.dense
+                        ? BorderStyle.none
+                        : BorderStyle.solid),
                 borderRadius: BorderRadius.circular(8.0)),
             child: Icon(this.widget.icon,
                 size: 56,

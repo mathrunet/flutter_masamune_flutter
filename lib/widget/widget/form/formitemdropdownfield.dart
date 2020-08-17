@@ -13,14 +13,16 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
   final Widget prefix;
   final Widget suffix;
   final bool enabled;
+  final bool dense;
   final void Function(String value) onSave;
   final void Function(String value) onChanged;
 
   FormItemDropdownField(
-      {@required this.controller,
+      {this.controller,
       this.hintText = "",
       @required this.items,
       this.enabled = true,
+      this.dense = false,
       this.labelText = "",
       this.prefix,
       this.suffix,
@@ -31,13 +33,32 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: this.dense
+            ? const EdgeInsets.all(0)
+            : const EdgeInsets.symmetric(vertical: 10),
         child: DropdownTextFormField(
             controller: this.controller,
             items: this.items,
             enabled: this.enabled,
             decoration: InputDecoration(
-              border: const OutlineInputBorder(),
+              border: OutlineInputBorder(
+                  borderSide:
+                      this.dense ? BorderSide.none : const BorderSide()),
+              enabledBorder: OutlineInputBorder(
+                  borderSide:
+                      this.dense ? BorderSide.none : const BorderSide()),
+              disabledBorder: OutlineInputBorder(
+                  borderSide:
+                      this.dense ? BorderSide.none : const BorderSide()),
+              errorBorder: OutlineInputBorder(
+                  borderSide:
+                      this.dense ? BorderSide.none : const BorderSide()),
+              focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      this.dense ? BorderSide.none : const BorderSide()),
+              focusedErrorBorder: OutlineInputBorder(
+                  borderSide:
+                      this.dense ? BorderSide.none : const BorderSide()),
               contentPadding: const EdgeInsets.all(17.5),
               hintText: this.hintText,
               labelText: this.labelText,

@@ -24,16 +24,18 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
   final bool readOnly;
   final bool obscureText;
   final String separator;
+  final bool dense;
   final List<String> suggestion;
   final bool enabled;
 
   FormItemDynamicLabeledDropdownField(
-      {@required this.controller,
+      {this.controller,
       @required this.items,
       this.labelText = "",
       this.prefix,
       this.suffix,
       this.onSave,
+      this.dense = false,
       this.onChanged,
       this.enabled = true,
       this.suggestion,
@@ -75,6 +77,7 @@ class _FormItemDynamicLabeledDropdownFieldState
   }
 
   void _listener() {
+    if (this.widget.controller == null) return;
     String dropDown = isEmpty(this._dropdownController.text)
         ? (this.widget.items?.entries?.first?.key ?? Const.empty)
         : this._dropdownController.text;
@@ -95,7 +98,9 @@ class _FormItemDynamicLabeledDropdownFieldState
         items: this.widget.suggestion,
         controller: this._textController,
         builder: (context, controller, onTap) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: this.widget.dense
+                ? const EdgeInsets.all(0)
+                : const EdgeInsets.symmetric(vertical: 10),
             child: Stack(children: [
               TextFormField(
                   enabled: this.widget.enabled,
@@ -105,7 +110,30 @@ class _FormItemDynamicLabeledDropdownFieldState
                   maxLines: this.widget.maxLines,
                   minLines: this.widget.minLines,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                        borderSide: this.widget.dense
+                            ? BorderSide.none
+                            : const BorderSide()),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: this.widget.dense
+                            ? BorderSide.none
+                            : const BorderSide()),
+                    disabledBorder: OutlineInputBorder(
+                        borderSide: this.widget.dense
+                            ? BorderSide.none
+                            : const BorderSide()),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: this.widget.dense
+                            ? BorderSide.none
+                            : const BorderSide()),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: this.widget.dense
+                            ? BorderSide.none
+                            : const BorderSide()),
+                    focusedErrorBorder: OutlineInputBorder(
+                        borderSide: this.widget.dense
+                            ? BorderSide.none
+                            : const BorderSide()),
                     hintText: this.widget.hintText,
                     labelText: this.widget.labelText,
                     counterText: this.widget.counterText,

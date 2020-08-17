@@ -10,18 +10,22 @@ class FormItemSubmit extends StatelessWidget implements FormItem {
   final Color color;
   final IconData icon;
   final bool enabled;
+  final bool dense;
   FormItemSubmit(
       {this.label,
       this.onPressed,
       this.backgroundColor,
       this.color,
+      this.dense = false,
       this.enabled = true,
       this.icon});
   @override
   Widget build(BuildContext context) {
     return Container(
         constraints: BoxConstraints.expand(height: 80),
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: this.dense
+            ? const EdgeInsets.all(0)
+            : const EdgeInsets.symmetric(vertical: 10),
         child: this.icon != null
             ? FlatButton.icon(
                 padding: const EdgeInsets.all(10),
@@ -29,7 +33,8 @@ class FormItemSubmit extends StatelessWidget implements FormItem {
                     ? (this.backgroundColor ?? context.theme.primaryColor)
                     : context.theme.disabledColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(this.dense ? 0 : 8.0)),
                 ),
                 icon: Icon(this.icon,
                     size: 32,
@@ -45,7 +50,8 @@ class FormItemSubmit extends StatelessWidget implements FormItem {
                     ? (this.backgroundColor ?? context.theme.primaryColor)
                     : context.theme.disabledColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(this.dense ? 0 : 8.0)),
                 ),
                 child: Text(this.label,
                     style: TextStyle(

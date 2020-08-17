@@ -51,7 +51,7 @@ class SuggestionOverlayBuilder extends StatefulWidget {
       this.color = Colors.black,
       this.backgroundColor = Colors.white,
       this.elevation,
-      @required this.controller,
+      this.controller,
       this.onTap,
       this.showOnTap = true})
       : assert(builder != null);
@@ -61,18 +61,20 @@ class SuggestionOverlayBuilder extends StatefulWidget {
 
 class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
   OverlayEntry _overlay;
+  TextEditingController _controller;
   final LayerLink _layerLink = LayerLink();
   @override
   void initState() {
     super.initState();
-    this.widget.controller?.addListener(this._listener);
+    this._controller = this.widget.controller ?? TextEditingController();
+    this._controller.addListener(this._listener);
   }
 
   void _listener() {
     if (this._overlay != null) return;
-    if (this.widget.controller == null) return;
+    if (this._controller == null) return;
     if (this.widget.items == null || this.widget.items.length <= 0) return;
-    String search = this.widget.controller.text;
+    String search = this._controller.text;
     List<String> wordList = search == null ? [] : search.split(Const.space);
     if (!this.widget.items.any((element) =>
         isNotEmpty(element) &&
@@ -86,15 +88,13 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
   @override
   void dispose() {
     super.dispose();
-    this.widget.controller?.removeListener(this._listener);
+    this._controller.removeListener(this._listener);
   }
 
   @override
   Widget build(BuildContext context) {
     if (this.widget.items == null || this.widget.items.length <= 0) {
-      return this
-          .widget
-          .builder(context, this.widget.controller, this.widget.onTap);
+      return this.widget.builder(context, this._controller, this.widget.onTap);
     }
     return WillPopScope(
         onWillPop: () {
@@ -108,7 +108,7 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
         },
         child: CompositedTransformTarget(
             link: this._layerLink,
-            child: this.widget.builder(context, this.widget.controller, () {
+            child: this.widget.builder(context, this._controller, () {
               if (this.widget.showOnTap) this._updateOverlay();
               if (this.widget.onTap != null) this.widget.onTap();
             })));
@@ -141,7 +141,7 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
                             color: this.widget.color,
                             onDeleteSuggestion: this.widget.onDeleteSuggestion,
                             backgroundColor: this.widget.backgroundColor,
-                            controller: this.widget.controller,
+                            controller: this._controller,
                             elevation: this.widget.elevation,
                             onTap: () {
                               this._overlay?.remove();
@@ -163,7 +163,7 @@ class _SuggestionOverlay extends StatefulWidget {
   final Function onTap;
   _SuggestionOverlay(
       {@required this.items,
-      @required this.controller,
+      this.controller,
       this.onDeleteSuggestion,
       this.elevation = 8.0,
       this.color = Colors.black,
@@ -177,19 +177,21 @@ class _SuggestionOverlay extends StatefulWidget {
 
 class _SuggestionOverlayState extends State<_SuggestionOverlay> {
   String _search;
+  TextEditingController _controller;
   List<String> _wordList = [];
   @override
   void initState() {
     super.initState();
-    this._search = this.widget.controller.text;
+    this._controller = this.widget.controller ?? TextEditingController();
+    this._search = this._controller.text;
     this._wordList =
         this._search == null ? [] : this._search.split(Const.space);
-    this.widget.controller.addListener(this._listener);
+    this._controller.addListener(this._listener);
   }
 
   void _listener() {
     this.setState(() {
-      this._search = this.widget.controller.text;
+      this._search = this._controller.text;
       this._wordList =
           this._search == null ? [] : this._search.split(Const.space);
     });
@@ -198,7 +200,7 @@ class _SuggestionOverlayState extends State<_SuggestionOverlay> {
   @override
   void dispose() {
     super.dispose();
-    this.widget.controller?.removeListener(this._listener);
+    this._controller.removeListener(this._listener);
   }
 
   @override
@@ -216,11 +218,11 @@ class _SuggestionOverlayState extends State<_SuggestionOverlay> {
               this._wordList[this._wordList.length - 1] = e;
             }
             String text = this._wordList.join(Const.space);
-            this.widget.controller.clearComposing();
-            this.widget.controller.clear();
-            this.widget.controller.text = text;
-            this.widget.controller.selection = TextSelection.fromPosition(
-                TextPosition(offset: this.widget.controller.text.length));
+            this._controller.clearComposing();
+            this._controller.clear();
+            this._controller.text = text;
+            this._controller.selection = TextSelection.fromPosition(
+                TextPosition(offset: this._controller.text.length));
             if (this.widget.onTap != null) this.widget.onTap();
           },
           child: Container(

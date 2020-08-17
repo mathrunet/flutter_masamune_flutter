@@ -35,7 +35,7 @@ class ThemeColor {
   /// Color when successful.
   final Color success;
 
-  /// Color such as text color.
+  /// Background color of dialogs, etc.
   final Color surface;
 
   /// Background color.
@@ -87,7 +87,7 @@ class ThemeColor {
       this.warning = Colors.amber,
       this.info = Colors.blue,
       this.success = Colors.green,
-      this.surface = Colors.black,
+      this.surface = Colors.white,
       this.background = Colors.white,
       this.onPrimary = Colors.white,
       this.onSecondary = Colors.white,
@@ -97,7 +97,7 @@ class ThemeColor {
       this.onWeak = Colors.white,
       this.onError = Colors.white,
       this.onInfo = Colors.white,
-      this.onSuccess = Colors.white,
+      this.onSuccess = Colors.black,
       this.onWarning = Colors.white,
       this.brightness = Brightness.light});
 
@@ -114,12 +114,12 @@ class ThemeColor {
           Color warning = Colors.amber,
           Color info = Colors.blue,
           Color success = Colors.green,
-          Color surface = Colors.black,
+          Color surface = Colors.white,
           Color background = Colors.white,
           Color onPrimary = Colors.white,
           Color onSecondary = Colors.white,
           Color onDisabled = Colors.white,
-          Color onSurface = Colors.white,
+          Color onSurface = Colors.black,
           Color onBackground = Colors.black,
           Color onWeak = Colors.white,
           Color onError = Colors.white,
@@ -165,12 +165,12 @@ class ThemeColor {
           Color warning = Colors.amber,
           Color info = Colors.blue,
           Color success = Colors.green,
-          Color surface = Colors.white,
-          Color background = Colors.black12,
+          Color surface = Colors.black12,
+          Color background = Colors.black26,
           Color onPrimary = Colors.white,
           Color onSecondary = Colors.white,
           Color onDisabled = Colors.white,
-          Color onSurface = Colors.black87,
+          Color onSurface = Colors.white,
           Color onBackground = Colors.white,
           Color onWeak = Colors.white,
           Color onError = Colors.white,
@@ -207,22 +207,28 @@ class ThemeColor {
   ThemeData toThemeData() {
     switch (this.brightness) {
       case Brightness.dark:
+        final colorScheme = ColorScheme.dark().copyWith(
+            primary: this.primary,
+            primaryVariant: this.primaryVariant,
+            secondary: this.secondary,
+            secondaryVariant: this.secondaryVariant,
+            surface: this.surface,
+            background: this.background,
+            error: this.error,
+            onPrimary: this.onPrimary,
+            onSecondary: this.onSecondary,
+            onBackground: this.onBackground,
+            onSurface: this.onSurface,
+            onError: this.onError,
+            brightness: this.brightness);
         return ThemeData.dark().copyWith(
             platform: TargetPlatform.iOS,
-            colorScheme: ColorScheme.dark().copyWith(
-                primary: this.primary,
-                primaryVariant: this.primaryVariant,
-                secondary: this.secondary,
-                secondaryVariant: this.secondaryVariant,
-                surface: this.surface,
-                background: this.background,
-                error: this.error,
-                onPrimary: this.onPrimary,
-                onSecondary: this.onSecondary,
-                onBackground: this.onBackground,
-                onSurface: this.onSurface,
-                onError: this.onError,
-                brightness: this.brightness),
+            colorScheme: colorScheme,
+            buttonColor: this.primary,
+            buttonTheme: ThemeData.dark().buttonTheme.copyWith(
+                buttonColor: this.primary,
+                disabledColor: this.disabled,
+                colorScheme: colorScheme),
             inputDecorationTheme: ThemeData.dark()
                 .inputDecorationTheme
                 .copyWith(
@@ -231,8 +237,8 @@ class ThemeColor {
                   hintStyle: TextStyle(color: this.weak),
                   counterStyle: TextStyle(color: this.weak),
                   errorStyle: TextStyle(color: this.error),
-                  prefixStyle: TextStyle(color: this.surface),
-                  suffixStyle: TextStyle(color: this.surface),
+                  prefixStyle: TextStyle(color: this.onBackground),
+                  suffixStyle: TextStyle(color: this.onBackground),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: this.weak, width: 2)),
                   enabledBorder: OutlineInputBorder(
@@ -257,22 +263,28 @@ class ThemeColor {
             backgroundColor: this.background,
             canvasColor: this.canvas);
       default:
+        final colorScheme = ColorScheme.light().copyWith(
+            primary: this.primary,
+            primaryVariant: this.primaryVariant,
+            secondary: this.secondary,
+            secondaryVariant: this.secondaryVariant,
+            surface: this.surface,
+            background: this.background,
+            error: this.error,
+            onPrimary: this.onPrimary,
+            onSecondary: this.onSecondary,
+            onBackground: this.onBackground,
+            onSurface: this.onSurface,
+            onError: this.onError,
+            brightness: this.brightness);
         return ThemeData.light().copyWith(
             platform: TargetPlatform.iOS,
-            colorScheme: ColorScheme.light().copyWith(
-                primary: this.primary,
-                primaryVariant: this.primaryVariant,
-                secondary: this.secondary,
-                secondaryVariant: this.secondaryVariant,
-                surface: this.surface,
-                background: this.background,
-                error: this.error,
-                onPrimary: this.onPrimary,
-                onSecondary: this.onSecondary,
-                onBackground: this.onBackground,
-                onSurface: this.onSurface,
-                onError: this.onError,
-                brightness: this.brightness),
+            colorScheme: colorScheme,
+            buttonColor: this.primary,
+            buttonTheme: ThemeData.light().buttonTheme.copyWith(
+                buttonColor: this.primary,
+                disabledColor: this.disabled,
+                colorScheme: colorScheme),
             inputDecorationTheme: ThemeData.light()
                 .inputDecorationTheme
                 .copyWith(
@@ -281,8 +293,8 @@ class ThemeColor {
                   hintStyle: TextStyle(color: this.weak),
                   counterStyle: TextStyle(color: this.weak),
                   errorStyle: TextStyle(color: this.error),
-                  prefixStyle: TextStyle(color: this.surface),
-                  suffixStyle: TextStyle(color: this.surface),
+                  prefixStyle: TextStyle(color: this.onBackground),
+                  suffixStyle: TextStyle(color: this.onBackground),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: this.weak, width: 2)),
                   enabledBorder: OutlineInputBorder(

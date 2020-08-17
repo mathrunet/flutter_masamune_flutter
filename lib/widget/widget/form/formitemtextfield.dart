@@ -11,6 +11,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final int maxLines;
   final int minLines;
   final String hintText;
+  final bool dense;
   final String labelText;
   final String counterText;
   final Widget prefix;
@@ -22,7 +23,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final void Function(String value) onSave;
 
   FormItemTextField(
-      {@required this.controller,
+      {this.controller,
       this.keyboardType = TextInputType.text,
       this.maxLength = 100,
       this.maxLines = 1,
@@ -31,6 +32,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.labelText = "",
       this.prefix,
       this.suffix,
+      this.dense = false,
       this.suggestion,
       this.enabled = true,
       this.readOnly = false,
@@ -48,12 +50,29 @@ class FormItemTextField extends StatelessWidget implements FormItem {
             child: TextFormField(
                 enabled: this.enabled,
                 controller: controller,
-                keyboardType: TextInputType.text,
+                keyboardType: this.keyboardType,
                 maxLength: this.maxLength,
                 maxLines: this.maxLines,
                 minLines: this.minLines,
                 decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
+                  disabledBorder: OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
+                  errorBorder: OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
                   hintText: this.hintText,
                   labelText: this.labelText,
                   counterText: this.counterText,
