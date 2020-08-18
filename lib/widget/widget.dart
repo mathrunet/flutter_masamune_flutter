@@ -16,6 +16,7 @@ export 'widget/uicounter.dart';
 export 'widget/responsive_grid.dart';
 export 'widget/responsivelisttile.dart';
 export 'widget/screenfitgridview.dart';
+export 'widget/video.dart';
 
 export 'widget/component/flexibletabcontroller.dart';
 export 'widget/component/dropdowntextformfield.dart';
@@ -47,7 +48,9 @@ export 'widget/list/listbutton.dart';
 export 'widget/list/listitem.dart';
 
 export 'widget/form/formbuilder.dart';
+export 'widget/form/formitembuilder.dart';
 export 'widget/form/formitemimage.dart';
+export 'widget/form/formitemmultimedia.dart';
 export 'widget/form/formitemheadline.dart';
 export 'widget/form/formitemavatarimage.dart';
 export 'widget/form/formitemdatetimefield.dart';

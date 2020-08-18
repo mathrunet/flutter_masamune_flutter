@@ -1,3 +1,7 @@
+## [0.4.6] - Update README (2020.08.18)
+
+* Adding the Video and FormItem widgets.
+
 ## [0.4.5] - Update README (2020.08.14)
 
 * Maintenance of Theme Color.

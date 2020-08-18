@@ -49,10 +49,10 @@ abstract class UIPageForm extends UIPageScaffold
   List<Widget> formBody(BuildContext context,
       Map<String, TextEditingController> controller, IDataDocument form);
 
-  /// Mode that collects forms in the middle.
+  /// Set the form type.
   ///
   /// Available for login and password reset page.
-  bool get center => false;
+  FormBuilderType get formType => FormBuilderType.listView;
 
   /// Creating a body.
   ///
@@ -60,7 +60,7 @@ abstract class UIPageForm extends UIPageScaffold
   @override
   Widget body(BuildContext context) {
     return FormBuilder(
-        type: FormBuilderType.listView,
+        type: this.formType,
         key: this.formKey,
         children: this.formBody(context, this.controllers, this.form));
   }

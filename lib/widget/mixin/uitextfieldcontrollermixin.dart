@@ -5,6 +5,14 @@ import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Mixin for using multiple text edit controllers.
 abstract class UITextFieldControllerMixin {
+  final Completer<IDataDocument> _completer = Completer();
+
+  /// Timeout time.
+  Duration get timeout => Const.timeout;
+
+  /// Flag that exits when the controller is fully loaded.
+  Future<IDataDocument> get initialized => this._completer.future;
+
   /// Text Editing Controller.
   final Map<String, TextEditingController> controllers = MapPool.get();
 
@@ -23,7 +31,7 @@ abstract class UITextFieldControllerMixin {
       controllers[key] = TextEditingController(text: value ?? Const.empty);
     });
     if (document is Future<IDataDocument>) {
-      IDataDocument doc = await document;
+      IDataDocument doc = await document.timeout(this.timeout);
       doc?.forEach((key, value) {
         if (isEmpty(key)) return;
         String val = filter != null && filter.containsKey(key)
@@ -35,6 +43,7 @@ abstract class UITextFieldControllerMixin {
           controllers[key].text = val;
         }
       });
+      _completer.complete(doc);
     } else if (document is IDataDocument) {
       document?.forEach((key, value) {
         if (isEmpty(key)) return;
@@ -47,6 +56,9 @@ abstract class UITextFieldControllerMixin {
           controllers[key].text = val;
         }
       });
+      _completer.complete(document);
+    } else {
+      _completer.complete(document);
     }
   }
 }

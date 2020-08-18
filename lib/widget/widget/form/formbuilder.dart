@@ -27,9 +27,13 @@ class FormBuilder extends StatelessWidget {
                 children: this.children));
       case FormBuilderType.center:
         return Container(
+            constraints: BoxConstraints.expand(),
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            child: Column(children: this.children));
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: this.children));
       default:
         return ListView(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
