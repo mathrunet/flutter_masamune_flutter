@@ -46,6 +46,7 @@ export 'widget/list/subheadline.dart';
 export 'widget/list/indent.dart';
 export 'widget/list/listbutton.dart';
 export 'widget/list/listitem.dart';
+export 'widget/list/multimediaview.dart';
 
 export 'widget/form/formbuilder.dart';
 export 'widget/form/formitembuilder.dart';

@@ -2,7 +2,7 @@ name: masamune_flutter
 description: >-
   Module that provides the flutter support function of the Masamune framework.
   State management by PathMap, page management, etc.
-version: 0.4.6+3
+version: 0.4.6+5
 homepage: https://mathru.net
 repository: https://github.com/mathrunet/flutter_masamune_flutter
 
@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   # GUI
-  intl: ^0.16.1 
+  intl: ^0.16.1
   photo_view: ^0.9.2
   solid_bottom_sheet: ^0.1.9
   loading_animations: ^2.1.0  
