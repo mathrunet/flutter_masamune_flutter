@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:masamune_core/masamune_core.dart';
 
 /// Wrapper for BottomNavigationBar.
 class UIBottomNavigationBar extends StatelessWidget {
@@ -22,10 +23,12 @@ class UIBottomNavigationBar extends StatelessWidget {
   final bool showSelectedLabels;
   final bool showUnselectedLabels;
   final bool disableOnTapWhenInitialIndex;
+  final String indexID;
 
   /// Wrapper for BottomNavigationBar.
   UIBottomNavigationBar(
       {Key key,
+      this.indexID,
       this.items,
       this.top,
       this.initialIndex = 0,
@@ -48,6 +51,11 @@ class UIBottomNavigationBar extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    int currentIndex = this.initialIndex;
+    if (isNotEmpty(this.indexID))
+      currentIndex =
+          this.items.indexWhere((element) => element.id == this.indexID);
+    if (currentIndex < 0) currentIndex = this.initialIndex;
     return Column(mainAxisSize: MainAxisSize.min, children: [
       if (this.top != null) ...[
         Divider(height: 1),
@@ -61,11 +69,11 @@ class UIBottomNavigationBar extends StatelessWidget {
           if (this.items == null || this.items.length <= index || index < 0)
             return;
           if (this.items[index]?.onTap == null) return;
-          if (this.disableOnTapWhenInitialIndex && index == this.initialIndex)
+          if (this.disableOnTapWhenInitialIndex && index == currentIndex)
             return;
           this.items[index]?.onTap();
         },
-        currentIndex: this.initialIndex,
+        currentIndex: currentIndex,
         elevation: this.elevation,
         type: this.type,
         fixedColor: this.fixedColor,
@@ -91,11 +99,13 @@ class UIBottomNavigationBar extends StatelessWidget {
 
 /// Wrapper for BottomNavigationBarItem.
 class UIBottomNavigationBarItem extends BottomNavigationBarItem {
+  final String id;
   final void Function() onTap;
 
   /// Wrapper for BottomNavigationBarItem.
   UIBottomNavigationBarItem(
-      {Widget icon,
+      {this.id,
+      Widget icon,
       Widget title,
       Widget activeIcon,
       Color backgroundColor,

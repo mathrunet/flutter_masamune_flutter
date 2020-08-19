@@ -33,6 +33,9 @@ class SuggestionOverlayBuilder extends StatefulWidget {
   /// True to show suggestions when tapping the element.
   final bool showOnTap;
 
+  /// Maximum height of choices.
+  final double maxHeight;
+
   /// Widget to enable the suggest feature and autocomplete feature.
   ///
   /// [items]: Source list for suggestion.
@@ -44,10 +47,12 @@ class SuggestionOverlayBuilder extends StatefulWidget {
   /// [color]: Suggestion window text color.
   /// [builder]: Builder for child elements.
   /// [showOnTap]: True to show suggestions when tapping the element.
+  /// [maxHeight]: Maximum height of choices.
   SuggestionOverlayBuilder(
       {@required this.builder,
       @required this.items,
       this.onDeleteSuggestion,
+      this.maxHeight = 260,
       this.color = Colors.black,
       this.backgroundColor = Colors.white,
       this.elevation,
@@ -115,12 +120,16 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
   }
 
   void _updateOverlay() {
-    final Size textFieldSize = (context.findRenderObject() as RenderBox).size;
+    final RenderBox itemBox = context.findRenderObject() as RenderBox;
+    final Size textFieldSize = itemBox.size;
     final width = textFieldSize.width;
     final height = textFieldSize.height;
+    final rect = itemBox.localToGlobal(Offset.zero) & textFieldSize;
+    final screen = MediaQuery.of(context).size;
+    final up = rect.top > (screen.height / 2.0);
     this._overlay = OverlayEntry(
         builder: (context) => Stack(children: [
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     this._overlay?.remove();
                     this._overlay = null;
@@ -133,12 +142,18 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
                   child: CompositedTransformFollower(
                       link: this._layerLink,
                       showWhenUnlinked: false,
-                      offset: Offset(0.0, height - 20),
+                      offset: Offset(0.0, -this.widget.maxHeight),
                       child: SizedBox(
                           width: width,
                           child: _SuggestionOverlay(
                             items: this.widget.items,
                             color: this.widget.color,
+                            offset: Offset(0.0,
+                                up ? 20 : this.widget.maxHeight + height - 20),
+                            maxHeight: this.widget.maxHeight,
+                            direction: up
+                                ? VerticalDirection.up
+                                : VerticalDirection.down,
                             onDeleteSuggestion: this.widget.onDeleteSuggestion,
                             backgroundColor: this.widget.backgroundColor,
                             controller: this._controller,
@@ -158,12 +173,18 @@ class _SuggestionOverlay extends StatefulWidget {
   final Color backgroundColor;
   final Color color;
   final List<String> items;
+  final VerticalDirection direction;
   final void Function(String value) onDeleteSuggestion;
   final TextEditingController controller;
   final Function onTap;
+  final double maxHeight;
+  final Offset offset;
   _SuggestionOverlay(
       {@required this.items,
       this.controller,
+      this.offset,
+      this.maxHeight = 260,
+      this.direction = VerticalDirection.down,
       this.onDeleteSuggestion,
       this.elevation = 8.0,
       this.color = Colors.black,
@@ -212,7 +233,7 @@ class _SuggestionOverlayState extends State<_SuggestionOverlay> {
           e != this._wordList.last &&
           !e.toLowerCase().startsWith(this._wordList.last.toLowerCase()))
         return null;
-      return InkWell(
+      return GestureDetector(
           onTap: () {
             if (this._wordList.length > 0) {
               this._wordList[this._wordList.length - 1] = e;
@@ -255,15 +276,25 @@ class _SuggestionOverlayState extends State<_SuggestionOverlay> {
       if (this.widget.onTap != null) this.widget.onTap();
       return Container();
     }
-    return SizedBox(
-        height: min((widgets.length * 50).toDouble() + 20, 260),
+    final height =
+        min((widgets.length * 50).toDouble() + 20, this.widget.maxHeight);
+    print(this.widget.offset.dy);
+    final offset = this.widget.offset.dy +
+        (this.widget.direction == VerticalDirection.down
+            ? 0
+            : (this.widget.maxHeight - height));
+    return Container(
+        height: height + offset,
+        padding: EdgeInsets.only(top: offset),
         child: Card(
           elevation: this.widget.elevation,
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
           color: this.widget.backgroundColor,
           child: SingleChildScrollView(
+              reverse: this.widget.direction == VerticalDirection.up,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Column(
+                  verticalDirection: this.widget.direction,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: widgets)),
