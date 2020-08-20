@@ -20,7 +20,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final bool readOnly;
   final bool obscureText;
   final List<String> suggestion;
-  final void Function(String value) onSave;
+  final void Function(String value) onSaved;
 
   FormItemTextField(
       {this.controller,
@@ -38,7 +38,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.readOnly = false,
       this.obscureText = false,
       this.counterText = "",
-      this.onSave});
+      this.onSaved});
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                 },
                 onSaved: (value) {
                   if (isEmpty(value)) return;
-                  if (this.onSave != null) this.onSave(value);
+                  if (this.onSaved != null) this.onSaved(value);
                 })));
   }
 }
