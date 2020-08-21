@@ -23,6 +23,7 @@ export 'widget/dialog.dart';
 export 'widget/mixin.dart';
 export 'widget/template.dart';
 export 'widget/widget.dart';
+export 'package:intl/intl.dart' show DateFormat;
 
 part 'core/typedef.dart';
 part 'core/defaultpath.dart';

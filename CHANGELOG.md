@@ -1,3 +1,7 @@
+## [0.4.7] - Update README (2020.08.21)
+
+* Form and List are separated.
+
 ## [0.4.6] - Update README (2020.08.18)
 
 * Adding the Video and FormItem widgets.
