@@ -11,10 +11,16 @@ class RouteConfig {
   /// Transition without animation.
   final bool immediately;
 
+  /// Parameter to add when switching pages.
+  final Map<String, dynamic> parameters;
+
   /// Route definitions by platform.
   ///
   /// By default, the route builder is set.
   final Map<RoutePlatform, WidgetBuilder> platform;
+
+  /// True for pages that add new elements.
+  final bool additional;
 
   /// Map for rerouting according to conditions.
   ///
@@ -38,9 +44,13 @@ class RouteConfig {
   /// [reroute]: Map for rerouting according to conditions.
   /// [immediately]: Transition without animation.
   /// [platform]: Route definitions by platform.
+  /// [additional]: True for pages that add new elements.
+  /// [parameters]: Parameter to add when switching pages.
   RouteConfig(this.builder,
       {this.fullScreen = false,
+      this.parameters = const {},
       this.immediately = false,
+      this.additional = false,
       this.reroute = const {},
       this.platform = const {}});
 
@@ -129,6 +139,11 @@ class RouteConfig {
         document = TemporaryDocument();
         document.clear();
       }
+      for (MapEntry<String, dynamic> map in tmp.value.parameters.entries) {
+        if (isEmpty(map.key) || map.value == null) continue;
+        document[map.key] = map.value;
+      }
+      document["additional"] = tmp.value.additional;
       for (MapEntry<String, bool Function()> reroute
           in tmp.value.reroute.entries) {
         if (isEmpty(reroute.key) || reroute.value == null) continue;

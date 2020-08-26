@@ -38,7 +38,7 @@ class DateTimeTextFormField extends StatelessWidget {
   /// Calculate DateTime from [millisecondsSinceEpoch].
   static DateTime value(int millisecondsSinceEpoch) {
     return millisecondsSinceEpoch == null || millisecondsSinceEpoch <= 0
-        ? DateTime.now()
+        ? null
         : DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
   }
 

@@ -14,6 +14,9 @@ abstract class UIPageDataMixin implements UIWidget {
   /// Gets the redirect path passed to the page.
   String get redirectTo => this.data?.getString("redirect_to", "/");
 
+  //// True to add a new page.
+  bool get additional => this.data?.getBool("additional") ?? false;
+
   /// The data passed to this page.
   IDataDocument get data => PathMap.get<IDataDocument>(DefaultPath.pageData);
 }

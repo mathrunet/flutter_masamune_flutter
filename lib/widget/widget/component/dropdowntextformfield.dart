@@ -116,8 +116,9 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
             disabledHint: this.widget.disabledHint ??
                 Text(isNotEmpty(this._controller?.text) &&
                         this.widget.items.containsKey(this._controller.text)
-                    ? this.widget.items[this._controller.text]
-                    : this.widget.items.values.first ?? Const.empty),
+                    ? this.widget.items[this._controller.text]?.localize()
+                    : this.widget.items.values.first?.localize() ??
+                        Const.empty),
             elevation: this.widget.elevation,
             style: this.widget.style,
             icon: this.widget.icon,
@@ -135,7 +136,7 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
                           ?.toList<Widget>((String key, String value) {
                         return Container(
                             alignment: Alignment.center,
-                            child: Text(value,
+                            child: Text(value.localize(),
                                 style: this.widget.itemTextColor != null
                                     ? TextStyle(
                                         color: this.widget.itemTextColor)
@@ -147,7 +148,7 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
                 this.widget.items?.toList((String key, String value) {
                   return DropdownMenuItem(
                     value: key,
-                    child: Text(value,
+                    child: Text(value.localize(),
                         style: this.widget.itemTextColor != null
                             ? TextStyle(color: this.widget.itemTextColor)
                             : null),
