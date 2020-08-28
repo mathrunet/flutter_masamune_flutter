@@ -250,6 +250,70 @@ class UIValue {
     return filter != null ? filter(defaultValue) : defaultValue;
   }
 
+  /// Get List from pathmap in conjunction with UIWidget.
+  ///
+  /// Displays anything as long as Path is Unit and can be converted to List.
+  ///
+  /// If not, [defaultValue] will be displayed.
+  ///
+  /// [path]: The path to get.
+  /// [defaultValue]: Value if none.
+  /// [filter]: Filter values.
+  Iterable<T> watchList<T extends Object>(String path,
+          {Iterable<T> defaultValue = const [],
+          Iterable<T> filter(Iterable<T> value)}) =>
+      filter != null
+          ? filter(this.watch<Iterable<T>>(path) ?? defaultValue)
+          : (this.watch<Iterable<T>>(path) ?? defaultValue);
+
+  /// Get List from pathmap in conjunction with UIWidget.
+  ///
+  /// Displays anything as long as Path is Unit and can be converted to List.
+  ///
+  /// If not, [defaultValue] will be displayed.
+  ///
+  /// [path]: The path to get.
+  /// [defaultValue]: Value if none.
+  /// [filter]: Filter values.
+  Iterable<T> readList<T extends Object>(String path,
+          {Iterable<T> defaultValue = const [],
+          Iterable<T> filter(Iterable<T> value)}) =>
+      filter != null
+          ? filter(this.read<Iterable<T>>(path) ?? defaultValue)
+          : (this.read<Iterable<T>>(path) ?? defaultValue);
+
+  /// Get Map from pathmap in conjunction with UIWidget.
+  ///
+  /// Displays anything as long as Path is Unit and can be converted to Map.
+  ///
+  /// If not, [defaultValue] will be displayed.
+  ///
+  /// [path]: The path to get.
+  /// [defaultValue]: Value if none.
+  /// [filter]: Filter values.
+  Map<K, V> watchMap<K extends Object, V extends Object>(String path,
+          {Map<K, V> defaultValue = const {},
+          Map<K, V> filter(Map<K, V> value)}) =>
+      filter != null
+          ? filter(this.watch<Map<K, V>>(path) ?? defaultValue)
+          : (this.watch<Map<K, V>>(path) ?? defaultValue);
+
+  /// Get Map from pathmap in conjunction with UIWidget.
+  ///
+  /// Displays anything as long as Path is Unit and can be converted to Map.
+  ///
+  /// If not, [defaultValue] will be displayed.
+  ///
+  /// [path]: The path to get.
+  /// [defaultValue]: Value if none.
+  /// [filter]: Filter values.
+  Map<K, V> readMap<K extends Object, V extends Object>(String path,
+          {Map<K, V> defaultValue = const {},
+          Map<K, V> filter(Map<K, V> value)}) =>
+      filter != null
+          ? filter(this.read<Map<K, V>>(path) ?? defaultValue)
+          : (this.read<Map<K, V>>(path) ?? defaultValue);
+
   /// Get the action callback from pathmap in conjunction with UIWidget.
   ///
   /// If it does not exist, the action that does nothing is called.

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
-import 'uitextfieldcontrollermixin.dart';
 
 /// Mixins for using forms on pages.
 abstract class UIFormMixin {
@@ -30,8 +29,15 @@ abstract class UIFormMixin {
   /// You give [whiteList] a list of keys, only those keys will be overwritten.
   ///
   /// You give [blackList] a list of keys, they will not be overwritten.
+  ///
+  /// Data can be processed by using [filter].
+  ///
+  /// You can save additional data by defining [additional].
   Future<IDataDocument> save(FutureOr<IDataDocument> target,
-      {List<String> whiteList, List<String> blackList}) async {
+      {List<String> whiteList,
+      List<String> blackList,
+      Map<String, Future<dynamic> Function(dynamic value)> filter,
+      Map<String, dynamic> additional}) async {
     if (this.formKey == null ||
         this.formKey.currentState == null ||
         this.form == null) return target;
@@ -45,7 +51,20 @@ abstract class UIFormMixin {
         if (blackList != null &&
             blackList.length > 0 &&
             blackList.contains(tmp.key)) continue;
-        document[tmp.key] = tmp.value.data;
+        var data = tmp.value.data;
+        if (filter != null && filter.containsKey(tmp.key))
+          data = await filter[tmp.key](data);
+        document[tmp.key] = data;
+      }
+      if (additional != null) {
+        for (MapEntry<String, dynamic> tmp in additional.entries) {
+          if (isEmpty(tmp.key)) continue;
+          if (tmp.value is String) {
+            document[tmp.key] = (tmp.value as String).applyTags();
+          } else {
+            document[tmp.key] = tmp.value;
+          }
+        }
       }
       await document.save();
       return document;
@@ -58,7 +77,20 @@ abstract class UIFormMixin {
         if (blackList != null &&
             blackList.length > 0 &&
             blackList.contains(tmp.key)) continue;
-        target[tmp.key] = tmp.value.data;
+        var data = tmp.value.data;
+        if (filter != null && filter.containsKey(tmp.key))
+          data = await filter[tmp.key](data);
+        target[tmp.key] = data;
+      }
+      if (additional != null) {
+        for (MapEntry<String, dynamic> tmp in additional.entries) {
+          if (isEmpty(tmp.key)) continue;
+          if (tmp.value is String) {
+            target[tmp.key] = (tmp.value as String).applyTags();
+          } else {
+            target[tmp.key] = tmp.value;
+          }
+        }
       }
       await target.save();
       return target;
