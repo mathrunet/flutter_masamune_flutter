@@ -85,6 +85,18 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
     super.dispose();
   }
 
+  @override
+  void didUpdateWidget(DropdownTextFormField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != this.widget.value)
+      this.setState(() {
+        if (this._controller == null ||
+            this.widget.items == null ||
+            !this.widget.items.containsKey(this.widget.value)) return;
+        this._controller.text = this.widget.value;
+      });
+  }
+
   void _listener() {
     this.setState(() {});
   }
