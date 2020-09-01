@@ -56,9 +56,61 @@ abstract class UITextFieldControllerMixin {
           controllers[key].text = val;
         }
       });
-      _completer.complete(document);
-    } else {
-      _completer.complete(document);
+    }
+  }
+
+  /// Update the controller.
+  ///
+  /// [initial]: Enter the controller key in the key and
+  /// the initial value in the value.
+  /// [document]: The document to read.
+  /// The value of the controller is updated when reading is completed.
+  /// [filter]: Callback when the document is updated.
+  Future update(FutureOr<IDataDocument> document,
+      {Map<String, String> initial,
+      Map<String, String Function(dynamic value)> filter}) async {
+    if (document is Future<IDataDocument>) {
+      initial?.forEach((key, value) {
+        if (isEmpty(key)) return;
+        if (!controllers.containsKey(key)) {
+          controllers[key] = TextEditingController(text: value ?? Const.empty);
+        } else {
+          controllers[key].text = value ?? Const.empty;
+        }
+      });
+      IDataDocument doc = await document.timeout(this.timeout);
+      doc?.forEach((key, value) {
+        if (isEmpty(key)) return;
+        String val = filter != null && filter.containsKey(key)
+            ? filter[key](value.data)
+            : value.data?.toString() ?? Const.empty;
+        if (!controllers.containsKey(key)) {
+          controllers[key] = TextEditingController(text: val);
+        } else {
+          controllers[key].text = val;
+        }
+      });
+      _completer.complete(doc);
+    } else if (document is IDataDocument) {
+      initial?.forEach((key, value) {
+        if (isEmpty(key)) return;
+        if (!controllers.containsKey(key)) {
+          controllers[key] = TextEditingController(text: value ?? Const.empty);
+        } else {
+          controllers[key].text = value ?? Const.empty;
+        }
+      });
+      document?.forEach((key, value) {
+        if (isEmpty(key)) return;
+        String val = filter != null && filter.containsKey(key)
+            ? filter[key](value.data)
+            : value.data?.toString() ?? Const.empty;
+        if (!controllers.containsKey(key)) {
+          controllers[key] = TextEditingController(text: val);
+        } else {
+          controllers[key].text = val;
+        }
+      });
     }
   }
 }

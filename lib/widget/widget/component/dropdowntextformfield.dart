@@ -69,32 +69,45 @@ class DropdownTextFormField extends StatefulWidget {
 
 class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
   TextEditingController _controller;
+
+  TextEditingController get _effectiveController =>
+      this.widget.controller ?? this._controller;
   @override
   void initState() {
     super.initState();
-    this._controller = this.widget.controller ??
-        TextEditingController(
-            text: this.widget.value ?? this.widget.items.keys.first);
-    this._controller.addListener(this._listener);
+    if (this.widget.controller == null) {
+      this._controller = TextEditingController(
+          text: this.widget.value ?? this.widget.items.keys.first);
+    }
+    this._effectiveController.addListener(this._listener);
   }
 
   @override
   void dispose() {
-    this._controller.removeListener(this._listener);
-    if (this.widget.controller == null) this._controller.dispose();
+    this._effectiveController.removeListener(this._listener);
+    if (this._controller != null) {
+      this._controller.removeListener(this._listener);
+      this._controller.dispose();
+    }
     super.dispose();
   }
 
   @override
   void didUpdateWidget(DropdownTextFormField oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.value != this.widget.value)
+    if (oldWidget.controller != this.widget.controller) {
+      oldWidget.controller?.removeListener(this._listener);
+      this.widget.controller?.addListener(this._listener);
+      this.setState(() {});
+    }
+    if (oldWidget.value != this.widget.value) {
       this.setState(() {
-        if (this._controller == null ||
+        if (this._effectiveController == null ||
             this.widget.items == null ||
             !this.widget.items.containsKey(this.widget.value)) return;
-        this._controller.text = this.widget.value;
+        this._effectiveController.text = this.widget.value;
       });
+    }
   }
 
   void _listener() {
@@ -111,24 +124,30 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
         child: DropdownButtonFormField<String>(
             hint: this.widget.hint,
             decoration: this.widget.decoration,
-            value: isEmpty(this._controller.text)
+            value: isEmpty(this._effectiveController.text)
                 ? this.widget.items.keys.first
-                : this._controller.text,
+                : this._effectiveController.text,
             validator: this.widget.validator,
             onTap: this.widget.onTap,
             onSaved: this.widget.onSaved,
             onChanged: this.widget.enabled
                 ? (value) {
-                    this._controller.text = value;
+                    this._effectiveController.text = value;
                     if (this.widget.onChanged != null)
                       this.widget.onChanged(value);
                   }
                 : null,
             autovalidate: this.widget.autovalidate,
             disabledHint: this.widget.disabledHint ??
-                Text(isNotEmpty(this._controller?.text) &&
-                        this.widget.items.containsKey(this._controller.text)
-                    ? this.widget.items[this._controller.text]?.localize()
+                Text(isNotEmpty(this._effectiveController?.text) &&
+                        this
+                            .widget
+                            .items
+                            .containsKey(this._effectiveController.text)
+                    ? this
+                        .widget
+                        .items[this._effectiveController.text]
+                        ?.localize()
                     : this.widget.items.values.first?.localize() ??
                         Const.empty),
             elevation: this.widget.elevation,
