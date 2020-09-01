@@ -127,9 +127,19 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
             value: isEmpty(this._effectiveController.text)
                 ? this.widget.items.keys.first
                 : this._effectiveController.text,
-            validator: this.widget.validator,
+            validator: (value) {
+              if (!(this.widget.enabled ?? true)) return null;
+              if (isEmpty(this._effectiveController.text)) return null;
+              if (this.widget.validator != null)
+                return this.widget.validator(value);
+              return null;
+            },
             onTap: this.widget.onTap,
-            onSaved: this.widget.onSaved,
+            onSaved: (value) {
+              if (!(this.widget.enabled ?? true)) return;
+              if (isEmpty(this._effectiveController.text)) return;
+              if (this.widget.onSaved != null) this.widget.onSaved(value);
+            },
             onChanged: this.widget.enabled
                 ? (value) {
                     this._effectiveController.text = value;
@@ -167,7 +177,10 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
                           ?.toList<Widget>((String key, String value) {
                         return Container(
                             alignment: Alignment.center,
-                            child: Text(value.localize(),
+                            child: Text(
+                                isEmpty(this._effectiveController.text)
+                                    ? "--"
+                                    : value.localize(),
                                 style: this.widget.itemTextColor != null
                                     ? TextStyle(
                                         color: this.widget.itemTextColor)
