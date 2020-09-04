@@ -17,9 +17,6 @@ class ThemeColor {
   /// The color when disabled.
   final Color disabled;
 
-  /// Canvas color.
-  final Color canvas;
-
   /// The color of the outside line and the dividing line.
   final Color weak;
 
@@ -81,7 +78,6 @@ class ThemeColor {
       this.primaryVariant = Colors.blueAccent,
       this.secondaryVariant = Colors.cyanAccent,
       this.disabled = Colors.grey,
-      this.canvas = Colors.grey,
       this.weak = Colors.grey,
       this.error = Colors.red,
       this.warning = Colors.amber,
@@ -108,7 +104,6 @@ class ThemeColor {
           Color primaryVariant = Colors.blueAccent,
           Color secondaryVariant = Colors.cyanAccent,
           Color disabled = Colors.grey,
-          Color canvas = Colors.grey,
           Color weak = Colors.grey,
           Color error = Colors.red,
           Color warning = Colors.amber,
@@ -132,7 +127,6 @@ class ThemeColor {
           primaryVariant: primaryVariant,
           secondaryVariant: secondaryVariant,
           disabled: disabled,
-          canvas: canvas,
           weak: weak,
           error: error,
           warning: warning,
@@ -159,7 +153,6 @@ class ThemeColor {
           Color primaryVariant = Colors.blueAccent,
           Color secondaryVariant = Colors.cyanAccent,
           Color disabled = Colors.grey,
-          Color canvas = Colors.grey,
           Color weak = Colors.grey,
           Color error = Colors.red,
           Color warning = Colors.amber,
@@ -183,7 +176,6 @@ class ThemeColor {
           primaryVariant: primaryVariant,
           secondaryVariant: secondaryVariant,
           disabled: disabled,
-          canvas: canvas,
           weak: weak,
           error: error,
           warning: warning,
@@ -261,7 +253,7 @@ class ThemeColor {
             dividerColor: this.weak,
             errorColor: this.error,
             backgroundColor: this.background,
-            canvasColor: this.canvas);
+            canvasColor: this.background);
       default:
         final colorScheme = ColorScheme.light().copyWith(
             primary: this.primary,
@@ -284,7 +276,7 @@ class ThemeColor {
             buttonTheme: ThemeData.light().buttonTheme.copyWith(
                 buttonColor: this.primary,
                 disabledColor: this.disabled,
-                colorScheme: colorScheme),
+                colorScheme: colorScheme),                
             inputDecorationTheme: ThemeData.light()
                 .inputDecorationTheme
                 .copyWith(
@@ -317,7 +309,7 @@ class ThemeColor {
             dividerColor: this.weak,
             errorColor: this.error,
             backgroundColor: this.background,
-            canvasColor: this.canvas);
+            canvasColor: this.background);
     }
   }
 }

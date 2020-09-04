@@ -58,6 +58,7 @@ class UIMaterialApp extends UIWidget {
                   child: MaterialApp(
                       key: key,
                       navigatorKey: navigatorKey,
+                      initialRoute: initialRoute,
                       home: home != null ? home(context) : null,
                       onGenerateRoute: home != null
                           ? null
