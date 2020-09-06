@@ -27,6 +27,7 @@ export 'widget/component/suggestionoverlaybuilder.dart';
 export 'widget/builder/uianimatedbuilder.dart';
 export 'widget/builder/loadbuilder.dart';
 export 'widget/builder/conditionbuilder.dart';
+export 'widget/builder/fullscreenbuilder.dart';
 
 export 'widget/scaffold/uiappbar.dart';
 export 'widget/scaffold/uibottomsheet.dart';

@@ -276,7 +276,7 @@ class ThemeColor {
             buttonTheme: ThemeData.light().buttonTheme.copyWith(
                 buttonColor: this.primary,
                 disabledColor: this.disabled,
-                colorScheme: colorScheme),                
+                colorScheme: colorScheme),
             inputDecorationTheme: ThemeData.light()
                 .inputDecorationTheme
                 .copyWith(
