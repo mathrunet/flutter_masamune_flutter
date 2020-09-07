@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masamune_core/masamune_core.dart';
 
 /// Providing the right provider by choosing between in-network and assets.
 class NetworkOrAsset {
@@ -8,7 +9,12 @@ class NetworkOrAsset {
   ///
   /// [uri]: If it starts with http, get a network image,
   /// otherwise get an asset image.
-  static ImageProvider image(String uri) {
+  /// [defaultURI]: The path to be read from the asset when [uri] is empty.
+  static ImageProvider image(String uri,
+      [String defaultURI = "assets/icon.png"]) {
+    if (isEmpty(uri)) {
+      return AssetImage(defaultURI);
+    }
     if (uri.startsWith("http")) {
       return NetworkImage(uri);
     } else {

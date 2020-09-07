@@ -140,7 +140,7 @@ abstract class UIPageScaffold extends UIPage {
         endDrawer: this.endDrawer(context),
         bottomNavigationBar: this.bottomNavigationBar(context),
         bottomSheet: this.bottomSheet(context),
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.backgroundColor ?? context.theme.backgroundColor,
         resizeToAvoidBottomPadding: this.resizeToAvoidBottomPadding,
         resizeToAvoidBottomInset: this.resizeToAvoidBottomInset,
         primary: this.primary,
