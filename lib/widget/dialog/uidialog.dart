@@ -23,7 +23,7 @@ class UIDialog {
   /// [popOnPress]: True if the dialog should be closed together when the button is pressed.
   /// [willShowRepetition]: True if the dialog will continue to be displayed unless you press the regular close button.
   static Future<bool> validate(BuildContext context,
-      {@required bool validator(),
+      {@required Future<bool> validator(),
       String dialogTitlePath = DefaultPath.dialogTitle,
       String dialogTextPath = DefaultPath.dialogText,
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
@@ -35,7 +35,7 @@ class UIDialog {
       bool disableBackKey = false,
       bool popOnPress = true,
       bool willShowRepetition = false}) async {
-    if (validator()) return true;
+    if (await validator()) return true;
     await Future.delayed(
         Duration.zero,
         () => show(context,

@@ -11,3 +11,4 @@ export 'dialog/uidialog.dart';
 export 'dialog/uifuture.dart';
 export 'dialog/uitask.dart';
 export 'dialog/uiselectdialog.dart';
+export 'dialog/uiconnectdialog.dart';
