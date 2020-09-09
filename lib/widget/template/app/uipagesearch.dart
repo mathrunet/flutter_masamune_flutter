@@ -9,7 +9,7 @@ abstract class UIPageSearch<T extends IDataDocument> extends UIPageScaffold {
   ///
   /// [context]: Build context.
   /// [text]: The text to search for.
-  Future<List<T>> onSearch(BuildContext context, String text);
+  Future<Iterable<T>> onSearch(BuildContext context, String text);
 
   /// Builder for displaying each item.
   ///
