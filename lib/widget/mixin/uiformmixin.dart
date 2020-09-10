@@ -16,7 +16,8 @@ abstract class UIFormMixin {
   /// Returns True if the validation is successful.
   ///
   /// If you enter a value in [initial], you can set it to the initial value.
-  bool validate({Map<String, dynamic> initial}) {
+  bool validate(BuildContext context, {Map<String, dynamic> initial}) {
+    context.unfocus();
     if (this.formKey == null || this.formKey.currentState == null) return false;
     if (!this.formKey.currentState.validate()) return false;
     this._form.clear();

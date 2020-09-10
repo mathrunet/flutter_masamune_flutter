@@ -25,8 +25,21 @@ abstract class UIPageSearch<T extends IDataDocument> extends UIPageScaffold {
     return Icon(Icons.close, size: 20, color: context.theme.disabledColor);
   }
 
+  /// The color of the active icon.
+  ///
+  /// [context]: Build context.
   Color iconActiveColor(BuildContext context) {
     return context.theme.primaryColor;
+  }
+
+  /// Hint text.
+  String get hintText => "Search Users".localize();
+
+  /// The widget to display when there is no element.
+  ///
+  /// [context]: Build context.
+  Widget emptyWidget(BuildContext context) {
+    return Center(child: Text("No user found."));
   }
 
   /// Creating a body.
@@ -47,12 +60,18 @@ abstract class UIPageSearch<T extends IDataDocument> extends UIPageScaffold {
         child: Padding(
             padding: const EdgeInsets.all(0),
             child: SearchBar<T>(
+                hintText: this.hintText,
+                emptyWidget: this.emptyWidget(context),
+                onError: (error) => this.emptyWidget(context),
                 minimumChars: 2,
                 iconActiveColor: this.iconActiveColor(context),
                 listPadding: const EdgeInsets.symmetric(vertical: 10),
                 searchBarStyle: SearchBarStyle(
                     backgroundColor: context.theme.backgroundColor),
-                onSearch: (text) => this.onSearch(context, text),
+                onSearch: (text) async {
+                  Iterable<T> list = await this.onSearch(context, text);
+                  return list?.toList();
+                },
                 searchBarPadding: const EdgeInsets.only(left: 10),
                 cancellationWidget: this.cancellationWidget(context),
                 header: Divider(height: 1),
