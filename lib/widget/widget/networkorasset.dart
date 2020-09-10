@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:masamune_core/masamune_core.dart';
 
@@ -16,7 +17,7 @@ class NetworkOrAsset {
       return AssetImage(defaultURI);
     }
     if (uri.startsWith("http")) {
-      return NetworkImage(uri);
+      return CachedNetworkImageProvider(uri);
     } else {
       return AssetImage(uri);
     }

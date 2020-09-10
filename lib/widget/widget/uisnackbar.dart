@@ -13,22 +13,22 @@ class UISnackBar {
   /// [dialogTextPath]: Dialog text path.
   /// [dialogSubmitTextPath]: Dialog submit button text path.
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
-  /// [defaultSubmitText]: Default submit button text.
-  /// [defaultSubmitAction]: Default submit button action.
-  /// [dialogText]: Default text.
+  /// [submitText]: Default submit button text.
+  /// [onSubmit]: Default submit button action.
+  /// [text]: Default text.
   /// [willShowRepetition]: True if the dialog will continue to be displayed unless you press the regular close button.
   static Future show(
       {String dialogTextPath = DefaultPath.dialogText,
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
-      String defaultSubmitText = "OK",
-      String defaultText,
-      VoidAction defaultSubmitAction,
+      String submitText = "OK",
+      String text,
+      VoidAction onSubmit,
       bool willShowRepetition = false}) async {
     BuildContext context = UIPage.current?.context;
     if (context == null) return;
-    String text = context.read(dialogTextPath, defaultValue: defaultText);
-    if (text == null) return;
+    String _text = context.read(dialogTextPath, defaultValue: text);
+    if (_text == null) return;
     bool clicked = false;
     do {
       context = UIPage.current?.context;
@@ -37,10 +37,10 @@ class UISnackBar {
           ?.currentState as ScaffoldState);
       await scaffold
           .showSnackBar(SnackBar(
-              content: Text(text),
+              content: Text(_text),
               action: SnackBarAction(
                 label: context.read(dialogSubmitTextPath,
-                    defaultValue: defaultSubmitText),
+                    defaultValue: submitText),
                 onPressed: () {
                   PathMap.removeAllPath([
                     dialogTextPath,
@@ -49,7 +49,7 @@ class UISnackBar {
                     dialogSubmitTextPath
                   ]);
                   context.readAction(dialogSubmitActionPath,
-                      defaultAction: defaultSubmitAction)();
+                      defaultAction: onSubmit)();
                   clicked = true;
                 },
               )))
