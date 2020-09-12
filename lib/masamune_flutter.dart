@@ -49,3 +49,7 @@ part 'route/uirouteobserver.dart';
 
 part 'animation/uianimatorscenario.dart';
 part 'animation/uianimatorunit.dart';
+
+part 'model/unitmodel.dart';
+part 'model/documentmodel.dart';
+part 'model/collectionmodel.dart';

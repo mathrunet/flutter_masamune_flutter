@@ -1,3 +1,7 @@
+## [0.4.9] - Update README (2020.09.11)
+
+* Created an abstract class for the model.
+
 ## [0.4.8] - Update README (2020.09.07)
 
 * Added a FullScreenBuilder.

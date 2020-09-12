@@ -329,6 +329,7 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
   /// [context]: Build context.
   @protected
   bool rebuildable(BuildContext context) {
+    if (this._nonRebuildInternal) return false;
     if (this.widget._rebuildable != null && this.widget._rebuildable(context))
       return true;
     return this.widget.rebuildable(context);
@@ -382,6 +383,7 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
   bool _loaded = false;
   bool _willUpdate = false;
   dynamic _willUpdateObject;
+  bool _nonRebuildInternal = false;
 
   /// Get the UIValue.
   UIValue get value => this._value;
@@ -533,6 +535,7 @@ class _UIWidgetContainerState extends State<_UIWidgetContainer>
 
   @override
   void didPop() {
+    this._parent._nonRebuildInternal = true;
     this._parent._didPop(this.context);
   }
 
