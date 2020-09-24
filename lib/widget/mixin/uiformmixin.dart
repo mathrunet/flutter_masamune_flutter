@@ -66,11 +66,7 @@ abstract class UIFormMixin {
       if (additional != null) {
         for (MapEntry<String, dynamic> tmp in additional.entries) {
           if (isEmpty(tmp.key)) continue;
-          if (tmp.value is String) {
-            document[tmp.key] = (tmp.value as String).applyTags();
-          } else {
-            document[tmp.key] = tmp.value;
-          }
+          document[tmp.key] = tmp.value;
         }
       }
       await document.save();
@@ -92,11 +88,7 @@ abstract class UIFormMixin {
       if (additional != null) {
         for (MapEntry<String, dynamic> tmp in additional.entries) {
           if (isEmpty(tmp.key)) continue;
-          if (tmp.value is String) {
-            target[tmp.key] = (tmp.value as String).applyTags();
-          } else {
-            target[tmp.key] = tmp.value;
-          }
+          target[tmp.key] = tmp.value;
         }
       }
       await target.save();
