@@ -74,14 +74,19 @@ class RouteConfig {
     if (settings == null || config == null) return null;
     IDataDocument document;
     if (settings.arguments is IDataDocument) {
-      document = settings.arguments as IDataDocument;
+      document = TemporaryDocument();
+      document.clear();
+      IDataDocument doc = settings.arguments as IDataDocument;
+      doc?.forEach((key, value) {
+        document[key] = value.data;
+      });
     } else if (settings.arguments is RouteQuery) {
       RouteQuery query = settings.arguments as RouteQuery;
-      document = query._data;
-      if (document == null) {
-        document = TemporaryDocument();
-        document.clear();
-      }
+      document = TemporaryDocument();
+      document.clear();
+      query._data?.forEach((key, value) {
+        document[key] = value.data;
+      });
       if (query._fullscreen) document["fullscreen"] = true;
       if (query._immediately) document["immediately"] = true;
     } else {
@@ -125,14 +130,19 @@ class RouteConfig {
       if (match == null) continue;
       IDataDocument document;
       if (settings.arguments is IDataDocument) {
-        document = settings.arguments as IDataDocument;
+        document = TemporaryDocument();
+        document.clear();
+        IDataDocument doc = settings.arguments as IDataDocument;
+        doc?.forEach((key, value) {
+          document[key] = value.data;
+        });
       } else if (settings.arguments is RouteQuery) {
         RouteQuery query = settings.arguments as RouteQuery;
-        document = query._data;
-        if (document == null) {
-          document = TemporaryDocument();
-          document.clear();
-        }
+        document = TemporaryDocument();
+        document.clear();
+        query._data?.forEach((key, value) {
+          document[key] = value.data;
+        });
         if (query._fullscreen) document["fullscreen"] = true;
         if (query._immediately) document["immediately"] = true;
       } else {
