@@ -1,3 +1,7 @@
+## [0.5.0] - Update README (2020.09.25)
+
+* Support for flutter_hooks and flutter_widget_model.
+
 ## [0.4.9] - Update README (2020.09.11)
 
 * Created an abstract class for the model.

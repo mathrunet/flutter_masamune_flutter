@@ -15,10 +15,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
+import 'package:flutter_widget_model/flutter_widget_model.dart';
 import 'package:masamune_core/masamune_core.dart';
 import 'widget/dialog.dart';
 import 'widget/mixin.dart';
 export 'package:masamune_core/masamune_core.dart';
+export 'package:flutter_widget_model/flutter_widget_model.dart';
 export 'widget/dialog.dart';
 export 'widget/mixin.dart';
 export 'widget/template.dart';
@@ -38,6 +40,8 @@ part 'component/extensions.dart';
 part 'component/uiwidget.dart';
 part 'component/uivalue.dart';
 
+part 'component/uihookwidget.dart';
+
 part 'key/uivaluekey.dart';
 part 'key/uipagestoragekey.dart';
 
@@ -49,3 +53,5 @@ part 'route/uirouteobserver.dart';
 
 part 'animation/uianimatorscenario.dart';
 part 'animation/uianimatorunit.dart';
+
+part 'hooks/uipagedocument.dart';

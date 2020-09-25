@@ -1,7 +1,7 @@
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// A mix-in class for handling the data passed to the page by [pushPath] etc.
-abstract class UIPageDataMixin implements UIWidget {
+abstract class UIPageDataMixin {
   /// The UID passed to this page.
   String get uid => this.data?.uid;
 
@@ -18,5 +18,6 @@ abstract class UIPageDataMixin implements UIWidget {
   bool get additional => this.data?.getBool("additional") ?? false;
 
   /// The data passed to this page.
-  IDataDocument get data => PathMap.get<IDataDocument>(DefaultPath.pageData);
+  IDataDocument get data =>
+      PathMap.get<IDataDocument>(DefaultPath.pageData) ?? TemporaryDocument();
 }
