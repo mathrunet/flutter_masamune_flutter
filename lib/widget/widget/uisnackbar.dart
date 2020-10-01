@@ -32,9 +32,8 @@ class UISnackBar {
     bool clicked = false;
     do {
       context = UIPage.current?.context;
-      ScaffoldState scaffold = ((UIPage.current?.widget as UIPageScaffold)
-          ?.scaffold
-          ?.currentState as ScaffoldState);
+      ScaffoldState scaffold =
+          (UIPage.current?.widget as UIPageScaffold)?.scaffold;
       await scaffold
           .showSnackBar(SnackBar(
               content: Text(_text),

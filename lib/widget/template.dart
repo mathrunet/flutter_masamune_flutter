@@ -18,4 +18,5 @@ export 'template/app/uipagesearch.dart';
 
 export 'template/uihookboot.dart';
 export 'template/uihookpagescaffold.dart';
+export 'template/uiinternalpagescaffold.dart';
 export 'template/app/uihookpagesliverlist.dart';

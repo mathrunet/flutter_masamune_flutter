@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:masamune_core/masamune_core.dart';
 
 /// Wrapper for BottomNavigationBar.
-class UIBottomNavigationBar extends StatelessWidget {
+class UIBottomNavigationBar extends StatefulWidget {
   final List<UIBottomNavigationBarItem> items;
   final int initialIndex;
   final double elevation;
@@ -49,49 +49,67 @@ class UIBottomNavigationBar extends StatelessWidget {
       this.showSelectedLabels = true,
       this.showUnselectedLabels})
       : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _UIBottomNavigationBarState();
+}
+
+class _UIBottomNavigationBarState extends State<UIBottomNavigationBar> {
+  int currentIndex;
+  @override
+  void initState() {
+    super.initState();
+    this.currentIndex = this.widget.initialIndex;
+    if (isNotEmpty(this.widget.indexID))
+      this.currentIndex = this
+          .widget
+          .items
+          .indexWhere((element) => element.id == this.widget.indexID);
+    if (this.currentIndex < 0) this.currentIndex = this.widget.initialIndex;
+  }
+
   @override
   Widget build(BuildContext context) {
-    int currentIndex = this.initialIndex;
-    if (isNotEmpty(this.indexID))
-      currentIndex =
-          this.items.indexWhere((element) => element.id == this.indexID);
-    if (currentIndex < 0) currentIndex = this.initialIndex;
     return Column(mainAxisSize: MainAxisSize.min, children: [
-      if (this.top != null) ...[
+      if (this.widget.top != null) ...[
         Divider(height: 1),
-        this.top,
+        this.widget.top,
         Divider(height: 1),
       ],
       BottomNavigationBar(
-        key: this.key,
-        items: this.items,
+        key: this.widget.key,
+        items: this.widget.items,
         onTap: (index) {
-          if (this.items == null || this.items.length <= index || index < 0)
-            return;
-          if (this.items[index]?.onTap == null) return;
-          if (this.disableOnTapWhenInitialIndex && index == currentIndex)
-            return;
-          this.items[index]?.onTap();
+          if (this.widget.items == null ||
+              this.widget.items.length <= index ||
+              index < 0) return;
+          if (this.widget.items[index]?.onTap == null) return;
+          if (this.widget.disableOnTapWhenInitialIndex &&
+              index == this.currentIndex) return;
+          this.setState(() {
+            this.currentIndex = index;
+            this.widget.items[index]?.onTap();
+          });
         },
-        currentIndex: currentIndex,
-        elevation: this.elevation,
-        type: this.type,
-        fixedColor: this.fixedColor,
+        currentIndex: this.currentIndex,
+        elevation: this.widget.elevation,
+        type: this.widget.type,
+        fixedColor: this.widget.fixedColor,
         backgroundColor:
-            this.backgroundColor ?? Theme.of(context)?.bottomAppBarColor,
-        iconSize: this.iconSize,
+            this.widget.backgroundColor ?? Theme.of(context)?.bottomAppBarColor,
+        iconSize: this.widget.iconSize,
         selectedItemColor:
-            this.selectedItemColor ?? Theme.of(context)?.primaryColor,
-        unselectedItemColor: this.unselectedItemColor ??
+            this.widget.selectedItemColor ?? Theme.of(context)?.primaryColor,
+        unselectedItemColor: this.widget.unselectedItemColor ??
             Theme.of(context)?.bottomAppBarTheme?.color,
-        selectedIconTheme: this.selectedIconTheme,
-        unselectedIconTheme: this.unselectedIconTheme,
-        selectedFontSize: this.selectedFontSize,
-        unselectedFontSize: this.unselectedFontSize,
-        selectedLabelStyle: this.selectedLabelStyle,
-        unselectedLabelStyle: this.unselectedLabelStyle,
-        showSelectedLabels: this.showSelectedLabels,
-        showUnselectedLabels: this.showUnselectedLabels,
+        selectedIconTheme: this.widget.selectedIconTheme,
+        unselectedIconTheme: this.widget.unselectedIconTheme,
+        selectedFontSize: this.widget.selectedFontSize,
+        unselectedFontSize: this.widget.unselectedFontSize,
+        selectedLabelStyle: this.widget.selectedLabelStyle,
+        unselectedLabelStyle: this.widget.unselectedLabelStyle,
+        showSelectedLabels: this.widget.showSelectedLabels,
+        showUnselectedLabels: this.widget.showUnselectedLabels,
       )
     ]);
   }

@@ -2,26 +2,20 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
-/// Abstract class for creating pages.
+/// Used to display a page within a page.
 ///
 /// It is inherited and used by the class that displays the page.
 ///
 /// Scaffold is built in by default, and the provided method is overridden and used.
 ///
-/// Normally, please override body.
-///
 /// Please inherit and use.
-abstract class UIPageScaffold extends UIPage {
-  /// Key for Scaffold.
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+abstract class UIInternalPageScaffold extends UIInternalPage {
+  final GlobalKey scaffold = GlobalKey();
 
-  /// State for Scaffold.
-  ScaffoldState get scaffold => this.scaffoldKey?.currentState;
-
-  /// Abstract class for creating pages.
+  /// Used to display a page within a page.
   ///
   /// [key]: Widget key.
-  UIPageScaffold({Key key}) : super(key: key);
+  UIInternalPageScaffold({Key key}) : super(key: key);
 
   /// FloatingActionButton's Location.
   @protected
@@ -129,7 +123,7 @@ abstract class UIPageScaffold extends UIPage {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: this.scaffoldKey,
+        key: scaffold,
         appBar: this.appBar(context),
         body: GestureDetector(
             onTap: () => context.unfocus(),

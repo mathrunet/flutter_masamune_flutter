@@ -99,7 +99,7 @@ abstract class UIPageWebHome extends UIPageWebPage {
                 child: this.sideBar(context))));
       }
       return Scaffold(
-          key: scaffold,
+          key: this.scaffoldKey,
           appBar: this.appBar(context),
           body: GestureDetector(
               onTap: () => context.unfocus(),

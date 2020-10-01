@@ -374,6 +374,9 @@ extension BuildContextExtension on BuildContext {
   /// Get the Navigator related to context.
   NavigatorState get navigator => Navigator.of(this);
 
+  /// Get the Root navigator related to context.
+  NavigatorState get rootNavigator => Navigator.of(this, rootNavigator: true);
+
   /// Get the Flavor.
   String get flavor => FlavorScope.of(this)?.flavor;
 

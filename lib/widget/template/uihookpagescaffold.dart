@@ -12,7 +12,11 @@ import 'package:masamune_flutter/masamune_flutter.dart';
 ///
 /// Please inherit and use.
 abstract class UIHookPageScaffold extends UIHookPage {
-  final GlobalKey scaffold = GlobalKey();
+  /// Key for Scaffold.
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  /// State for Scaffold.
+  ScaffoldState get scaffold => this.scaffoldKey?.currentState;
 
   /// Abstract class for creating pages.
   ///
@@ -125,7 +129,7 @@ abstract class UIHookPageScaffold extends UIHookPage {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: scaffold,
+        key: this.scaffoldKey,
         appBar: this.appBar(context),
         body: GestureDetector(
             onTap: () => context.unfocus(),

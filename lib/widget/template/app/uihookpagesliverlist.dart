@@ -61,7 +61,7 @@ abstract class UIHookPageSliverList extends UIHookPageScaffold {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: scaffold,
+        key: this.scaffoldKey,
         body: GestureDetector(
             onTap: () => context.unfocus(),
             child: CustomScrollView(

@@ -42,6 +42,7 @@ part 'component/uivalue.dart';
 
 part 'component/uihookwidget.dart';
 part 'component/uihookpage.dart';
+part 'component/uiinternalpage.dart';
 
 part 'key/uivaluekey.dart';
 part 'key/uipagestoragekey.dart';
