@@ -14,6 +14,7 @@ class NetworkOrAsset {
   static ImageProvider image(String uri,
       [String defaultURI = "assets/icon.png"]) {
     if (isEmpty(uri)) {
+      if (isEmpty(defaultURI)) return null;
       return AssetImage(defaultURI);
     }
     if (uri.startsWith("http")) {

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:masamune_core/masamune_core.dart';
+import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Wrapper for BottomNavigationBar.
 class UIBottomNavigationBar extends StatefulWidget {
@@ -9,6 +10,7 @@ class UIBottomNavigationBar extends StatefulWidget {
   final double elevation;
   final Widget top;
   final BottomNavigationBarType type;
+  final InternalNavigatorObserver routeObserver;
   final Color fixedColor;
   final Color backgroundColor;
   final double iconSize;
@@ -36,6 +38,7 @@ class UIBottomNavigationBar extends StatefulWidget {
       this.elevation = 8.0,
       this.type = BottomNavigationBarType.fixed,
       this.fixedColor,
+      this.routeObserver,
       this.backgroundColor,
       this.iconSize = 24.0,
       this.selectedItemColor,
@@ -54,7 +57,8 @@ class UIBottomNavigationBar extends StatefulWidget {
   State<StatefulWidget> createState() => _UIBottomNavigationBarState();
 }
 
-class _UIBottomNavigationBarState extends State<UIBottomNavigationBar> {
+class _UIBottomNavigationBarState extends State<UIBottomNavigationBar>
+    with RouteAware {
   int currentIndex;
   @override
   void initState() {
@@ -66,6 +70,32 @@ class _UIBottomNavigationBarState extends State<UIBottomNavigationBar> {
           .items
           .indexWhere((element) => element.id == this.widget.indexID);
     if (this.currentIndex < 0) this.currentIndex = this.widget.initialIndex;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    this.widget.routeObserver?.subscribe(_onRouteChange);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    this.widget.routeObserver?.unsubscribe(_onRouteChange);
+  }
+
+  void _onRouteChange(Route route) {
+    if (this.widget.routeObserver == null) return;
+    if (this.widget.items == null || this.widget.items.length <= 0) return;
+    for (int i = 0; i < this.widget.items.length; i++) {
+      UIBottomNavigationBarItem item = this.widget.items[i];
+      if (i == this.currentIndex) continue;
+      if (item == null || item.onRouteChange == null) continue;
+      if (!item.onRouteChange(route)) continue;
+      this.setState(() {
+        this.currentIndex = i;
+      });
+    }
   }
 
   @override
@@ -86,10 +116,7 @@ class _UIBottomNavigationBarState extends State<UIBottomNavigationBar> {
           if (this.widget.items[index]?.onTap == null) return;
           if (this.widget.disableOnTapWhenInitialIndex &&
               index == this.currentIndex) return;
-          this.setState(() {
-            this.currentIndex = index;
-            this.widget.items[index]?.onTap();
-          });
+          this.widget.items[index]?.onTap();
         },
         currentIndex: this.currentIndex,
         elevation: this.widget.elevation,
@@ -119,6 +146,7 @@ class _UIBottomNavigationBarState extends State<UIBottomNavigationBar> {
 class UIBottomNavigationBarItem extends BottomNavigationBarItem {
   final String id;
   final void Function() onTap;
+  final bool Function(Route route) onRouteChange;
 
   /// Wrapper for BottomNavigationBarItem.
   UIBottomNavigationBarItem(
@@ -127,7 +155,8 @@ class UIBottomNavigationBarItem extends BottomNavigationBarItem {
       Widget title,
       Widget activeIcon,
       Color backgroundColor,
-      this.onTap})
+      this.onTap,
+      this.onRouteChange})
       : super(
             icon: icon,
             title: title,

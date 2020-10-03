@@ -4,6 +4,8 @@ part of masamune.flutter;
 ///
 /// Please inherit and use it.
 abstract class UIInternalPage extends UIHookPage {
+  /// Route monitoring observer.
+  final InternalNavigatorObserver routeObserver = InternalNavigatorObserver();
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   /// Keys for the navigator.
@@ -30,9 +32,6 @@ abstract class UIInternalPage extends UIHookPage {
 
   /// Setting up a route.
   Map<String, RouteConfig> get routes;
-
-  /// Observer for the root.
-  List<NavigatorObserver> get observers => null;
 
   /// Page when a route name is specified that is not defined in the route.
   RouteConfig get onUnknownRoute => null;
@@ -79,13 +78,59 @@ abstract class UIInternalPage extends UIHookPage {
                     arguments: ModalRoute.of(context).settings.arguments))
           ];
         },
-        observers: [
-          if (this.observers != null) ...this.observers,
-        ],
+        observers: [this.routeObserver, UIRouteObserver()],
         onUnknownRoute: this.onUnknownRoute != null
             ? (settings) => RouteConfig._onSingleRoute(settings, onUnknownRoute)
             : null,
       ),
     );
+  }
+}
+
+/// Observer to be able to catch the navigation movement inside.
+///
+/// You can describe what to do
+/// when the internal page changes by [subscribe] and listen for changes.
+class InternalNavigatorObserver extends NavigatorObserver {
+  final List<void Function(Route route)> _listener = [];
+
+  /// Listen for new route changes.
+  ///
+  /// [callback]: Callbacks to subscribe.
+  void subscribe(void Function(Route route) callback) {
+    if (callback == null || this._listener.contains(callback)) return;
+    this._listener.add(callback);
+  }
+
+  /// Unlisten for new route changes.
+  ///
+  /// [callback]: Callbacks to unsubscribe.
+  void unsubscribe(void Function(Route route) callback) {
+    if (callback == null || !this._listener.contains(callback)) return;
+    this._listener.remove(callback);
+  }
+
+  /// The [Navigator] replaced oldRoute with newRoute.
+  void didReplace({Route newRoute, Route oldRoute}) {
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    this._listener?.forEach((element) => element?.call(newRoute));
+  }
+
+  /// The [Navigator] pushed route.
+  ///
+  /// The route immediately below that one, and thus the previously active route, is previousRoute.
+  @override
+  void didPush(Route route, Route previousRoute) {
+    super.didPush(route, previousRoute);
+    this._listener?.forEach((element) => element?.call(route));
+  }
+
+  /// The [Navigator] popped route.
+  ///
+  /// The route immediately below that one, and thus the newly active route, is previousRoute.
+  @override
+  void didPop(Route route, Route previousRoute) {
+    super.didPop(route, previousRoute);
+    this._listener?.forEach((element) => element?.call(previousRoute));
   }
 }
