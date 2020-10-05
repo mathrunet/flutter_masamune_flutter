@@ -19,7 +19,7 @@ abstract class UIPageFormMixin {
   /// Define the controller.
   ///
   /// You can enter an initial value in [initialText].
-  TextEditingController controller([String initialText]) {
+  TextEditingController textEditingController([String initialText]) {
     return useTextEditingController(text: initialText);
   }
 
