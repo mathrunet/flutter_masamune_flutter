@@ -31,26 +31,15 @@ class UIPageChangePassword extends UIHookPageForm {
         textAlign: TextAlign.center,
       ),
       SizedBox(height: 20),
-      FormItemTextField(
-        controller: textEditingController(),
+      FormItemPassword(
         hintText: "Please enter a password".localize(),
         labelText: "Password".localize(),
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: true,
+        confirm: true,
+        notMatchText: "Passwords do not match.".localize(),
+        confirmLabelText: "ConfirmationPassword".localize(),
         onSaved: (value) {
           if (isEmpty(value)) return;
           form["password"] = value;
-        },
-      ),
-      FormItemTextField(
-        controller: textEditingController(),
-        hintText: "Please enter a password".localize(),
-        labelText: "ConfirmationPassword".localize(),
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: true,
-        onSaved: (value) {
-          if (isEmpty(value)) return;
-          form["confirmation"] = value;
         },
       ),
     ];
@@ -63,14 +52,6 @@ class UIPageChangePassword extends UIHookPageForm {
   @override
   void onSubmit(BuildContext context, IDataDocument form) async {
     if (!this.validate(context)) return;
-    if (form["password"] != form["confirmation"]) {
-      UIDialog.show(context,
-          title: "Error".localize(),
-          text: "Passwords do not match.".localize(),
-          submitText: "OK".localize(),
-          onSubmit: () {});
-      return;
-    }
     UIDialog.show(context,
         title: "Success".localize(),
         text: "Editing is complete.".localize(),

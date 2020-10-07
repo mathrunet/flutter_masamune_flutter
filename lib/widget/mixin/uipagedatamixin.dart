@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// A mix-in class for handling the data passed to the page by [pushPath] etc.
-abstract class UIPageDataMixin {
+mixin UIPageDataMixin on Widget {
   /// The UID passed to this page.
   String get uid => this.data?.uid;
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Mixin for using multiple text edit controllers.
-abstract class UITextFieldControllerMixin {
+mixin UITextFieldControllerMixin on Widget {
   final Completer<IDataDocument> _completer = Completer();
 
   /// Timeout time.

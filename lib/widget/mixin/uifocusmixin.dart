@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Mixins for using focus on pages.
-abstract class UIFocusMixin implements UIWidget {
+mixin UIFocusMixin on Widget implements UIWidget {
   /// [provider]: Save the object to UIValue.
   ///
   /// The saved value is getting by [context.consume].

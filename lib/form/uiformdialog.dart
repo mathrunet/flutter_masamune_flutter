@@ -9,9 +9,6 @@ class UIFormDialog {
   /// Show dialog.
   ///
   /// [context]: Build context.
-  /// [dialogTitlePath]: Dialog title path.
-  /// [dialogSubmitTextPath]: Dialog submit button text path.
-  /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [submitText]: Default submit button text.
   /// [submitHeight]: Height of submit button.
   /// [onSubmit]: Default submit button action.
@@ -20,63 +17,52 @@ class UIFormDialog {
   /// [title]: Default title.
   /// [popOnPress]: True if the dialog should be closed together when the button is pressed.
   static Future show(BuildContext context,
-      {String dialogTitlePath = DefaultPath.dialogTitle,
-      String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
-      String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
-      String submitText = "OK",
-      List<Widget> children,
+      {String submitText = "OK",
+      List<Widget> Function(BuildContext context, IDataDocument form) builder,
       BorderRadiusGeometry submitBorderRadius,
       Color submitBackgroundColor,
       double submitHeight = 80,
       String title,
       bool popOnPress = true,
-      VoidAction onSubmit}) async {
+      void onSubmit(IDataDocument form)}) async {
     if (context == null) return;
-    String _title = context.read(dialogTitlePath, defaultValue: title);
-    if (_title == null || children == null) return;
+    if (title == null || builder == null) return;
     final GlobalKey<FormState> key = GlobalKey<FormState>();
-    OverlayState overlay = context.navigator.overlay;
+    final OverlayState overlay = context.navigator.overlay;
+    final IDataDocument form = TemporaryDocument();
     await showDialog(
-        context: overlay.context,
-        builder: (context) {
-          return WillPopScope(
-              onWillPop: null,
-              child: Form(
-                  key: key,
-                  child: SimpleDialog(
-                    title: Text(_title),
-                    titlePadding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-                    contentPadding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-                    children: [
-                      ...children,
-                      FormItemSubmit(
-                        label: submitText,
-                        height: submitHeight,
-                        backgroundColor: submitBackgroundColor,
-                        borderRadius: submitBorderRadius,
-                        onPressed: () {
-                          if (!key.currentState.validate()) return;
-                          key.currentState.save();
-                          PathMap.removeAllPath([
-                            dialogTitlePath,
-                            dialogSubmitTextPath,
-                            dialogSubmitActionPath,
-                            dialogSubmitTextPath
-                          ]);
-                          context.readAction(dialogSubmitActionPath,
-                              defaultAction: onSubmit)();
-                          if (popOnPress)
-                            Navigator.of(context, rootNavigator: true).pop();
-                        },
-                      )
-                    ],
-                  )));
-        });
-    PathMap.removeAllPath([
-      dialogTitlePath,
-      dialogSubmitTextPath,
-      dialogSubmitActionPath,
-      dialogSubmitTextPath
-    ]);
+      context: overlay.context,
+      builder: (context) {
+        return WillPopScope(
+          onWillPop: null,
+          child: Form(
+            key: key,
+            child: SimpleDialog(
+              title: Text(title),
+              titlePadding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+              contentPadding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+              children: [
+                ...builder(context, form),
+                Space.height(10),
+                FormItemSubmit(
+                  label: submitText,
+                  height: submitHeight,
+                  backgroundColor: submitBackgroundColor,
+                  borderRadius: submitBorderRadius,
+                  onPressed: () {
+                    context.unfocus();
+                    if (!key.currentState.validate()) return;
+                    key.currentState.save();
+                    onSubmit?.call(form);
+                    if (popOnPress)
+                      Navigator.of(context, rootNavigator: true).pop();
+                  },
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

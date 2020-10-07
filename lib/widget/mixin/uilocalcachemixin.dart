@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:masamune_flutter/masamune_flutter.dart';
+
 /// Mixins for using cache on pages.
 ///
 /// Scope to local only.
 /// The cache is deleted if this widget is replaced.
-abstract class UILocalCacheMixin<T extends Object> {
+mixin UILocalCacheMixin<T extends Object> on Widget {
   /// Cache.
   final UILocalCache<T> cache = UILocalCache<T>();
 }

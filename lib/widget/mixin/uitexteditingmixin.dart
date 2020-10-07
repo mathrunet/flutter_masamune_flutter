@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Mixins for using text editor.
-abstract class UITextEditingMixin implements UIWidget {
+mixin UITextEditingMixin on Widget implements UIWidget {
   static const String _focusKey = "focus";
   static const String _focusNodeKey = "focusNode";
   final _TextEditingController _textEditingController =

@@ -4,12 +4,14 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final int maxLength;
+  final int minLength;
   final int maxLines;
   final int minLines;
   final String hintText;
   final bool dense;
   final String labelText;
   final String counterText;
+  final String lengthErrorText;
   final Widget prefix;
   final bool enabled;
   final Widget suffix;
@@ -32,6 +34,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       {this.controller,
       this.keyboardType = TextInputType.text,
       this.maxLength,
+      this.minLength,
       this.maxLines,
       this.minLines = 1,
       this.border,
@@ -40,6 +43,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.expands = false,
       this.hintText = "",
       this.labelText = "",
+      this.lengthErrorText = "",
       this.prefix,
       this.suffix,
       this.dense = false,
@@ -132,6 +136,12 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                 onTap: this.enabled ? onTap : null,
                 validator: (value) {
                   if (!this.allowEmpty && isEmpty(value)) return this.hintText;
+                  if (!this.allowEmpty &&
+                      this.minLength != null &&
+                      isNotEmpty(this.lengthErrorText) &&
+                      this.minLength > value.length) {
+                    return this.lengthErrorText;
+                  }
                   if (this.validator != null) return this.validator(value);
                   return null;
                 },

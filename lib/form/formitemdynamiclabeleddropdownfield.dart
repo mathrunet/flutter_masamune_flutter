@@ -16,10 +16,12 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
   final void Function(String key, String value) onChanged;
   final TextInputType keyboardType;
   final int maxLength;
+  final int minLength;
   final int maxLines;
   final int minLines;
   final String hintText;
   final String counterText;
+  final String lengthErrorText;
   final bool readOnly;
   final bool obscureText;
   final String separator;
@@ -36,6 +38,7 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
       {this.controller,
       @required this.items,
       this.labelText = "",
+      this.lengthErrorText,
       this.prefix,
       this.suffix,
       this.onSaved,
@@ -50,6 +53,7 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
       this.separator = Const.colon,
       this.keyboardType = TextInputType.text,
       this.maxLength,
+      this.minLength,
       this.maxLines,
       this.minLines = 1,
       this.onDeleteSuggestion,
@@ -208,9 +212,16 @@ class _FormItemDynamicLabeledDropdownFieldState
                       autovalidate: false,
                       onTap: this.widget.enabled ? onTap : null,
                       validator: (value) {
-                        if (!this.widget.allowEmpty && isEmpty(value))
+                        if (!this.widget.allowEmpty && isEmpty(value)) {
                           return this.widget.hintText;
+                        }
 
+                        if (!this.widget.allowEmpty &&
+                            this.widget.minLength != null &&
+                            isNotEmpty(this.widget.lengthErrorText) &&
+                            this.widget.minLength > value.length) {
+                          return this.widget.lengthErrorText;
+                        }
                         if (this.widget.validator != null)
                           return this.widget.validator(
                               value,

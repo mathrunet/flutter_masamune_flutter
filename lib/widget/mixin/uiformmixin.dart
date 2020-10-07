@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Mixins for using forms on pages.
-abstract class UIFormMixin {
+mixin UIFormMixin on Widget {
   /// Key for form.
   final formKey = GlobalKey<FormState>();
 

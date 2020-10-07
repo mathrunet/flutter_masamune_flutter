@@ -28,6 +28,7 @@ part 'formitemlabeleddropdownfield.dart';
 part 'formitemmultimedia.dart';
 part 'formitemsubmit.dart';
 part 'formitemtextfield.dart';
+part 'formitempassword.dart';
 part 'formitemswitch.dart';
 part 'uipageform.dart';
 part 'uiformdialog.dart';
