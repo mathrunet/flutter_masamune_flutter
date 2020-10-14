@@ -25,6 +25,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final Color backgroundColor;
   final void Function(String) onDeleteSuggestion;
   final void Function(String value) onSaved;
+  final void Function(String value) onChanged;
   final String Function(String value) validator;
   final EdgeInsetsGeometry padding;
   final Color color;
@@ -57,6 +58,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.onDeleteSuggestion,
       this.validator,
       this.onSaved,
+      this.onChanged,
       this.color,
       this.subColor});
 
@@ -144,6 +146,10 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                   }
                   if (this.validator != null) return this.validator(value);
                   return null;
+                },
+                onChanged: (value) {
+                  if (!this.allowEmpty && isEmpty(value)) return;
+                  if (this.onChanged != null) this.onChanged(value);
                 },
                 onSaved: (value) {
                   if (!this.allowEmpty && isEmpty(value)) return;

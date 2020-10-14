@@ -14,6 +14,7 @@ export 'mixin/uitexteditingmixin.dart';
 export 'mixin/uitextfieldcontrollermixin.dart';
 
 export 'mixin/uipagedatamixin.dart';
+export 'mixin/uipagesearchmixin.dart';
 export 'mixin/uipageformmixin.dart';
 export 'mixin/uipagefocusnodemixin.dart';
 export 'mixin/uipagetexteditingcontrollermixin.dart';

@@ -114,18 +114,20 @@ class _FormItemSwitchState extends FormFieldState<bool> {
                             : Theme.of(context).disabledColor))),
             Flexible(
                 flex: 1,
-                child: Switch(
-                  value: this.value,
-                  activeColor: this.widget.activeColor,
-                  activeTrackColor: this.widget.activeTrackColor,
-                  inactiveThumbColor: this.widget.inactiveThumbColor,
-                  inactiveTrackColor: this.widget.inactiveTrackColor,
-                  onChanged: (bool value) {
-                    if (this.widget.onChanged != null)
-                      this.widget.onChanged(value);
-                    this.setState(() {});
-                  },
-                ))
+                child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Switch(
+                      value: this.value,
+                      activeColor: this.widget.activeColor,
+                      activeTrackColor: this.widget.activeTrackColor,
+                      inactiveThumbColor: this.widget.inactiveThumbColor,
+                      inactiveTrackColor: this.widget.inactiveTrackColor,
+                      onChanged: (bool value) {
+                        if (this.widget.onChanged != null)
+                          this.widget.onChanged(value);
+                        this.setState(() {});
+                      },
+                    )))
           ]),
         );
         break;

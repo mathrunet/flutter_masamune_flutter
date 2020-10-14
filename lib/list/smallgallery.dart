@@ -16,7 +16,6 @@ class SmallGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(this.children);
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
         constraints: constraints,

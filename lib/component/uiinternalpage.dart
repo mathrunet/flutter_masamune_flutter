@@ -57,11 +57,8 @@ abstract class UIInternalPage extends UIHookPage {
   Widget body(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (this.navigator.canPop()) {
-          this.navigator.pop();
-          return false;
-        }
-        return true;
+        this.navigator.maybePop();
+        return false;
       },
       child: Navigator(
         key: this._navigatorKey,

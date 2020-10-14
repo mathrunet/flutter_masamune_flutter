@@ -9,6 +9,7 @@ class UIBottomNavigationBar extends StatefulWidget {
   final int initialIndex;
   final double elevation;
   final Widget top;
+  final Widget bottom;
   final BottomNavigationBarType type;
   final InternalNavigatorObserver routeObserver;
   final Color fixedColor;
@@ -36,6 +37,7 @@ class UIBottomNavigationBar extends StatefulWidget {
       this.initialIndex = 0,
       this.disableOnTapWhenInitialIndex = true,
       this.elevation = 8.0,
+      this.bottom,
       this.type = BottomNavigationBarType.fixed,
       this.fixedColor,
       this.routeObserver,
@@ -104,8 +106,8 @@ class _UIBottomNavigationBarState extends State<UIBottomNavigationBar>
       if (this.widget.top != null) ...[
         Divider(height: 1),
         this.widget.top,
-        Divider(height: 1),
       ],
+      Divider(height: 1),
       BottomNavigationBar(
         key: this.widget.key,
         items: this.widget.items,
@@ -137,7 +139,11 @@ class _UIBottomNavigationBarState extends State<UIBottomNavigationBar>
         unselectedLabelStyle: this.widget.unselectedLabelStyle,
         showSelectedLabels: this.widget.showSelectedLabels,
         showUnselectedLabels: this.widget.showUnselectedLabels,
-      )
+      ),
+      if (this.widget.bottom != null) ...[
+        Divider(height: 1),
+        this.widget.bottom,
+      ],
     ]);
   }
 }

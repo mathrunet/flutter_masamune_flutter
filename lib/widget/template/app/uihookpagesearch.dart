@@ -1,24 +1,10 @@
-import 'package:flappy_search_bar/flappy_search_bar.dart';
-import 'package:flappy_search_bar/search_bar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
+import 'package:masamune_flutter/widget/mixin/uipagesearchmixin.dart';
 
 /// Page template for creating a page for search.
 abstract class UIHookPageSearch<T extends IDataDocument>
-    extends UIHookPageScaffold {
-  /// Callback for searching text and getting data.
-  ///
-  /// [context]: Build context.
-  /// [text]: The text to search for.
-  Future<Iterable<T>> onSearch(BuildContext context, String text);
-
-  /// Builder for displaying each item.
-  ///
-  /// [context]: Build context.
-  /// [data]: Item data.
-  /// [index]: Item index.
-  Widget onItemFound(BuildContext context, T data, int index);
-
+    extends UIHookPageScaffold with UIPageSearchMixin<T> {
   /// Cancel button widget.
   ///
   /// [context]: Build context.
@@ -43,40 +29,25 @@ abstract class UIHookPageSearch<T extends IDataDocument>
     return Center(child: Text("No user found."));
   }
 
+  /// Enable borders.
+  bool get enableBorder => false;
+
+  /// Search bar padding.
+  EdgeInsetsGeometry get searchBarPadding => const EdgeInsets.all(10);
+
+  /// Widgets to stack on top of each other.
+  ///
+  /// [context]: Build context.
+  Widget overlayWidget(BuildContext context) => null;
+
+  /// Widget to display when nothing is being searched for.
+  Widget placeholderWidget(BuildContext context) => null;
+
   /// Creating a body.
   ///
   /// [context]: Build context.
   @override
   Widget body(BuildContext context) {
-    return Theme(
-        data: Theme.of(context).copyWith(
-            inputDecorationTheme: InputDecorationTheme(
-          border: InputBorder.none,
-          disabledBorder: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-          focusedErrorBorder: InputBorder.none,
-        )),
-        child: Padding(
-            padding: const EdgeInsets.all(0),
-            child: SearchBar<T>(
-                hintText: this.hintText,
-                emptyWidget: this.emptyWidget(context),
-                onError: (error) => this.emptyWidget(context),
-                minimumChars: 2,
-                iconActiveColor: this.iconActiveColor(context),
-                listPadding: const EdgeInsets.symmetric(vertical: 10),
-                searchBarStyle: SearchBarStyle(
-                    backgroundColor: context.theme.backgroundColor),
-                onSearch: (text) async {
-                  Iterable<T> list = await this.onSearch(context, text);
-                  return list?.toList();
-                },
-                searchBarPadding: const EdgeInsets.only(left: 10),
-                cancellationWidget: this.cancellationWidget(context),
-                header: Divider(height: 1),
-                onItemFound: (data, index) =>
-                    this.onItemFound(context, data, index))));
+    return this.search(context);
   }
 }

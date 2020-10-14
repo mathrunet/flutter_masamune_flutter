@@ -83,7 +83,7 @@ abstract class UIHookWidget extends StatefulHookWidget {
   ///
   /// [context]: Build context.
   @protected
-  Widget build(BuildContext context) => null;
+  Widget build(BuildContext context);
 
   /// Executed when the widget is loaded.
   ///
