@@ -32,3 +32,4 @@ part 'rankinglisttile.dart';
 part 'rightbutton.dart';
 part 'smallgallery.dart';
 part 'space.dart';
+part 'uicommenttile.dart';

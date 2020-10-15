@@ -1,3 +1,7 @@
+## [0.5.2] - Update README (2020.10.15)
+
+* Add widgets.
+
 ## [0.5.1] - Update README (2020.10.05)
 
 * Integrate masamune_list and masamune_form.
