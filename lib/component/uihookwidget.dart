@@ -10,6 +10,18 @@ part of masamune.flutter;
 ///
 /// You can use Hooks just like normal HookWidget.
 abstract class UIHookWidget extends StatefulHookWidget {
+  /// Root observer.
+  ///
+  /// ```
+  /// return new MaterialApp(
+  ///   ...
+  ///   navigatorObservers: <NavigatorObserver>[UIHookWidget.routeObserver],
+  ///   ...
+  /// );
+  /// ```
+  static RouteObserver<PageRoute> get routeObserver => _routeObserver;
+  static RouteObserver<PageRoute> _routeObserver = RouteObserver<PageRoute>();
+
   final BuildEvent _load;
   final BuildEvent _unload;
   final WidgetBuilder _child;
@@ -178,6 +190,11 @@ abstract class UIHookWidget extends StatefulHookWidget {
 
 class _UIHookWidgetState extends State<UIHookWidget>
     with WidgetsBindingObserver, RouteAware {
+  /// True if the widget is valid.
+  bool get enabled => this._enabled;
+  bool _enabled = true;
+  bool _markRebuild = false;
+  Widget _cache;
   @override
   void initState() {
     super.initState();
@@ -202,7 +219,7 @@ class _UIHookWidgetState extends State<UIHookWidget>
     super.didChangeDependencies();
     ModalRoute route = ModalRoute.of(this.context);
     if (route == null) return;
-    UIValue.routeObserver.subscribe(this, route);
+    UIHookWidget.routeObserver.subscribe(this, route);
   }
 
   @override
@@ -211,7 +228,7 @@ class _UIHookWidgetState extends State<UIHookWidget>
     this.widget._unload?.call(context);
     this.widget.onUnload(context);
     WidgetsBinding.instance.removeObserver(this);
-    UIValue.routeObserver.unsubscribe(this);
+    UIHookWidget.routeObserver.unsubscribe(this);
   }
 
   @override
@@ -242,25 +259,37 @@ class _UIHookWidgetState extends State<UIHookWidget>
 
   @override
   void didPopNext() {
+    this._enabled = true;
+    if (this._markRebuild) {
+      this.setState(() {});
+      this._markRebuild = false;
+    }
     this.widget._didPopNext?.call(this.context);
     this.widget.didPopNext(this.context);
   }
 
   @override
   void didPushNext() {
+    this._enabled = false;
     this.widget._didPushNext?.call(this.context);
     this.widget.didPushNext(this.context);
   }
 
   @override
   void didPush() {
+    this._enabled = true;
     this.widget._didPush?.call(this.context);
     this.widget.didPush(this.context);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (this.widget._child != null) return this.widget._child(context);
-    return this.widget.build(context);
+    if (!this.enabled && this._cache != null) {
+      this._markRebuild = true;
+      return this._cache;
+    }
+    if (this.widget._child != null)
+      return this._cache = this.widget._child(context);
+    return this._cache = this.widget.build(context);
   }
 }

@@ -82,6 +82,22 @@ abstract class UIInternalPage extends UIHookPage {
       ),
     );
   }
+
+  @override
+  void didPopNext(BuildContext context) {
+    super.didPopNext(context);
+    final data = this.routeObserver._currentRoute?.settings?.arguments;
+    if (data is IDataDocument) {
+      final document = DataDocument(DefaultPath.pageData);
+      document.clear();
+      for (MapEntry<String, IDataField> tmp in data.entries) {
+        if (isEmpty(tmp.key) || tmp.value == null || tmp.value.data == null)
+          continue;
+        document[tmp.key] = tmp.value.data;
+        PathTag.set(tmp.key, tmp.value.data.toString());
+      }
+    }
+  }
 }
 
 /// Observer to be able to catch the navigation movement inside.
@@ -89,6 +105,7 @@ abstract class UIInternalPage extends UIHookPage {
 /// You can describe what to do
 /// when the internal page changes by [subscribe] and listen for changes.
 class InternalNavigatorObserver extends NavigatorObserver {
+  Route _currentRoute;
   final List<void Function(Route route)> _listener = [];
 
   /// Listen for new route changes.
@@ -110,6 +127,7 @@ class InternalNavigatorObserver extends NavigatorObserver {
   /// The [Navigator] replaced oldRoute with newRoute.
   void didReplace({Route newRoute, Route oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    this._currentRoute = newRoute;
     this._listener?.forEach((element) => element?.call(newRoute));
   }
 
@@ -119,6 +137,7 @@ class InternalNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route route, Route previousRoute) {
     super.didPush(route, previousRoute);
+    this._currentRoute = route;
     this._listener?.forEach((element) => element?.call(route));
   }
 
@@ -128,6 +147,7 @@ class InternalNavigatorObserver extends NavigatorObserver {
   @override
   void didPop(Route route, Route previousRoute) {
     super.didPop(route, previousRoute);
+    this._currentRoute = previousRoute;
     this._listener?.forEach((element) => element?.call(previousRoute));
   }
 }

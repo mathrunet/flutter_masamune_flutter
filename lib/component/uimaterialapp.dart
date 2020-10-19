@@ -72,8 +72,9 @@ class UIMaterialApp extends UIWidget {
                                   boot: onBootRoute),
                       navigatorObservers: [
                         if (navigatorObservers != null) ...navigatorObservers,
+                        UIRouteObserver(),
                         UIValue.routeObserver,
-                        UIRouteObserver()
+                        UIHookWidget.routeObserver,
                       ],
                       builder: null,
                       title: title,
