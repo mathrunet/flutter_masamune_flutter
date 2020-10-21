@@ -191,16 +191,12 @@ abstract class UIHookWidget extends StatefulHookWidget {
 class _UIHookWidgetState extends State<UIHookWidget>
     with WidgetsBindingObserver, RouteAware {
   /// True if the widget is valid.
-  bool get enabled {
-    if (!this._enabled) return false;
-    _UIInternalPageState parent = _InternalScope.of(context);
-    if (parent == null) return true;
-    return parent.enabled;
-  }
+  bool get enabled => this._enabled && (this._parent?.enabled ?? true);
 
   bool _enabled = true;
   bool _markRebuild = false;
   Widget _cache;
+  _UIInternalPageState _parent;
   @override
   void initState() {
     super.initState();
@@ -223,9 +219,12 @@ class _UIHookWidgetState extends State<UIHookWidget>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    this._parent = _UIInternalPageScope.of(context);
     ModalRoute route = ModalRoute.of(this.context);
-    if (route == null) return;
-    UIHookWidget.routeObserver.subscribe(this, route);
+    if (route != null) UIHookWidget.routeObserver.subscribe(this, route);
+    this._parent?._addDidPushListener(this.didPush);
+    this._parent?._addDidPopNextListener(this._didPopNextInternal);
+    this._parent?._addDidPushNextListener(this.didPushNext);
   }
 
   @override
@@ -235,6 +234,9 @@ class _UIHookWidgetState extends State<UIHookWidget>
     this.widget.onUnload(context);
     WidgetsBinding.instance.removeObserver(this);
     UIHookWidget.routeObserver.unsubscribe(this);
+    this._parent?._removeDidPushListener(this.didPush);
+    this._parent?._removeDidPopNextListener(this._didPopNextInternal);
+    this._parent?._removeDidPushNextListener(this.didPushNext);
   }
 
   @override
@@ -272,6 +274,22 @@ class _UIHookWidgetState extends State<UIHookWidget>
     }
     this.widget._didPopNext?.call(this.context);
     this.widget.didPopNext(this.context);
+  }
+
+  void _didPopNextInternal() {
+    ModalRoute route = ModalRoute.of(this.context);
+    final data = route?.settings?.arguments;
+    if (data is IDataDocument) {
+      final document = DataDocument(DefaultPath.pageData);
+      document.clear();
+      for (MapEntry<String, IDataField> tmp in data.entries) {
+        if (isEmpty(tmp.key) || tmp.value == null || tmp.value.data == null)
+          continue;
+        document[tmp.key] = tmp.value.data;
+        PathTag.set(tmp.key, tmp.value.data.toString());
+      }
+    }
+    this.didPopNext();
   }
 
   @override

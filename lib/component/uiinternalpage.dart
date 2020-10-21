@@ -94,16 +94,14 @@ abstract class UIInternalPage extends UIHookPage {
 class _UIInternalPageState extends State<UIInternalPage>
     with WidgetsBindingObserver, RouteAware {
   /// True if the widget is valid.
-  bool get enabled {
-    if (!this._enabled) return false;
-    _UIInternalPageState parent = _InternalScope.of(context);
-    if (parent == null) return true;
-    return parent.enabled;
-  }
-
+  bool get enabled => this._enabled && (this._parent?.enabled ?? true);
   bool _enabled = true;
   bool _markRebuild = false;
   Widget _cache;
+  _UIInternalPageState _parent;
+  List<void Function()> _didPushListener = [];
+  List<void Function()> _didPopNextListener = [];
+  List<void Function()> _didPushNextListener = [];
   @override
   void initState() {
     super.initState();
@@ -126,9 +124,12 @@ class _UIInternalPageState extends State<UIInternalPage>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    this._parent = _UIInternalPageScope.of(context);
     ModalRoute route = ModalRoute.of(this.context);
-    if (route == null) return;
-    UIHookWidget.routeObserver.subscribe(this, route);
+    if (route != null) UIHookWidget.routeObserver.subscribe(this, route);
+    this._parent?._addDidPushListener(this.didPush);
+    this._parent?._addDidPopNextListener(this._didPopNextInternal);
+    this._parent?._addDidPushNextListener(this.didPushNext);
   }
 
   @override
@@ -138,6 +139,9 @@ class _UIInternalPageState extends State<UIInternalPage>
     this.widget.onUnload(context);
     WidgetsBinding.instance.removeObserver(this);
     UIHookWidget.routeObserver.unsubscribe(this);
+    this._parent?._removeDidPushListener(this.didPush);
+    this._parent?._removeDidPopNextListener(this._didPopNextInternal);
+    this._parent?._removeDidPushNextListener(this.didPushNext);
   }
 
   @override
@@ -173,9 +177,15 @@ class _UIInternalPageState extends State<UIInternalPage>
       this.setState(() {});
       this._markRebuild = false;
     }
+    this._didPopNextListener.forEach((element) => element?.call());
     this.widget._didPopNext?.call(this.context);
     this.widget.didPopNext(this.context);
-    final data = this.widget.routeObserver._currentRoute?.settings?.arguments;
+  }
+
+  void _didPopNextInternal() {
+    this.didPopNext();
+    ModalRoute route = ModalRoute.of(this.context);
+    final data = route?.settings?.arguments;
     if (data is IDataDocument) {
       final document = DataDocument(DefaultPath.pageData);
       document.clear();
@@ -191,6 +201,7 @@ class _UIInternalPageState extends State<UIInternalPage>
   @override
   void didPushNext() {
     this._enabled = false;
+    this._didPushNextListener.forEach((element) => element?.call());
     this.widget._didPushNext?.call(this.context);
     this.widget.didPushNext(this.context);
   }
@@ -198,6 +209,7 @@ class _UIInternalPageState extends State<UIInternalPage>
   @override
   void didPush() {
     this._enabled = true;
+    this._didPushListener.forEach((element) => element?.call());
     this.widget._didPush?.call(this.context);
     this.widget.didPush(this.context);
   }
@@ -209,28 +221,58 @@ class _UIInternalPageState extends State<UIInternalPage>
       return this._cache;
     }
     if (this.widget._child != null) {
-      return this._cache = _InternalScope(
+      return this._cache = _UIInternalPageScope(
         state: this,
         child: this.widget._child(context),
       );
     }
-    return this._cache = _InternalScope(
+    return this._cache = _UIInternalPageScope(
       state: this,
       child: this.widget.build(context),
     );
   }
+
+  void _addDidPopNextListener(void Function() callback) {
+    if (this._didPopNextListener.contains(callback)) return;
+    this._didPopNextListener.add(callback);
+  }
+
+  void _removeDidPopNextListener(void Function() callback) {
+    if (!this._didPopNextListener.contains(callback)) return;
+    this._didPopNextListener.remove(callback);
+  }
+
+  void _addDidPushListener(void Function() callback) {
+    if (this._didPushListener.contains(callback)) return;
+    this._didPushListener.add(callback);
+  }
+
+  void _removeDidPushListener(void Function() callback) {
+    if (!this._didPushListener.contains(callback)) return;
+    this._didPushListener.remove(callback);
+  }
+
+  void _addDidPushNextListener(void Function() callback) {
+    if (this._didPushNextListener.contains(callback)) return;
+    this._didPushNextListener.add(callback);
+  }
+
+  void _removeDidPushNextListener(void Function() callback) {
+    if (!this._didPushNextListener.contains(callback)) return;
+    this._didPushNextListener.remove(callback);
+  }
 }
 
-class _InternalScope extends InheritedWidget {
+class _UIInternalPageScope extends InheritedWidget {
   final _UIInternalPageState state;
-  _InternalScope({this.state, Key key, Widget child})
+  _UIInternalPageScope({this.state, Key key, Widget child})
       : super(key: key, child: child);
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => true;
   static _UIInternalPageState of(BuildContext context) {
     return (context
-            .getElementForInheritedWidgetOfExactType<_InternalScope>()
-            ?.widget as _InternalScope)
+            .getElementForInheritedWidgetOfExactType<_UIInternalPageScope>()
+            ?.widget as _UIInternalPageScope)
         ?.state;
   }
 }
