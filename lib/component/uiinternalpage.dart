@@ -36,6 +36,13 @@ abstract class UIInternalPage extends UIHookPage {
   /// Page when a route name is specified that is not defined in the route.
   RouteConfig get onUnknownRoute => null;
 
+  /// Create a state.
+  ///
+  /// Do not use from outside.
+  @override
+  @protected
+  State createState() => _UIInternalPageState();
+
   /// Callback for building.
   ///
   /// Override and use.
@@ -82,11 +89,93 @@ abstract class UIInternalPage extends UIHookPage {
       ),
     );
   }
+}
+
+class _UIInternalPageState extends State<UIInternalPage>
+    with WidgetsBindingObserver, RouteAware {
+  /// True if the widget is valid.
+  bool get enabled {
+    if (!this._enabled) return false;
+    _UIInternalPageState parent = _InternalScope.of(context);
+    if (parent == null) return true;
+    return parent.enabled;
+  }
+
+  bool _enabled = true;
+  bool _markRebuild = false;
+  Widget _cache;
+  @override
+  void initState() {
+    super.initState();
+    this.widget._load?.call(this.context);
+    this.widget.onLoad(this.context);
+    String error = this._validateOnLoad(this.context);
+    if (isNotEmpty(error)) {
+      UIDialog.show(this.context, text: error);
+      return;
+    }
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  String _validateOnLoad(BuildContext context) {
+    String error = this.widget._validateOnLoad?.call(context);
+    if (isNotEmpty(error)) return error;
+    return this.widget.validateOnLoad(this.context);
+  }
 
   @override
-  void didPopNext(BuildContext context) {
-    super.didPopNext(context);
-    final data = this.routeObserver._currentRoute?.settings?.arguments;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    ModalRoute route = ModalRoute.of(this.context);
+    if (route == null) return;
+    UIHookWidget.routeObserver.subscribe(this, route);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    this.widget._unload?.call(context);
+    this.widget.onUnload(context);
+    WidgetsBinding.instance.removeObserver(this);
+    UIHookWidget.routeObserver.unsubscribe(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.detached:
+        this.widget._quit?.call(this.context);
+        this.widget.onQuit(this.context);
+        break;
+      case AppLifecycleState.paused:
+        this.widget._pause?.call(this.context);
+        this.widget.onPause(this.context);
+        break;
+      case AppLifecycleState.resumed:
+        this.widget._unpause?.call(this.context);
+        this.widget.onUnpause(this.context);
+        break;
+      default:
+        break;
+    }
+  }
+
+  @override
+  void didPop() {
+    this.widget._didPop?.call(this.context);
+    this.widget.didPop(this.context);
+  }
+
+  @override
+  void didPopNext() {
+    this._enabled = true;
+    if (this._markRebuild) {
+      this.setState(() {});
+      this._markRebuild = false;
+    }
+    this.widget._didPopNext?.call(this.context);
+    this.widget.didPopNext(this.context);
+    final data = this.widget.routeObserver._currentRoute?.settings?.arguments;
     if (data is IDataDocument) {
       final document = DataDocument(DefaultPath.pageData);
       document.clear();
@@ -97,6 +186,52 @@ abstract class UIInternalPage extends UIHookPage {
         PathTag.set(tmp.key, tmp.value.data.toString());
       }
     }
+  }
+
+  @override
+  void didPushNext() {
+    this._enabled = false;
+    this.widget._didPushNext?.call(this.context);
+    this.widget.didPushNext(this.context);
+  }
+
+  @override
+  void didPush() {
+    this._enabled = true;
+    this.widget._didPush?.call(this.context);
+    this.widget.didPush(this.context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!this.enabled && this._cache != null) {
+      this._markRebuild = true;
+      return this._cache;
+    }
+    if (this.widget._child != null) {
+      return this._cache = _InternalScope(
+        state: this,
+        child: this.widget._child(context),
+      );
+    }
+    return this._cache = _InternalScope(
+      state: this,
+      child: this.widget.build(context),
+    );
+  }
+}
+
+class _InternalScope extends InheritedWidget {
+  final _UIInternalPageState state;
+  _InternalScope({this.state, Key key, Widget child})
+      : super(key: key, child: child);
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) => true;
+  static _UIInternalPageState of(BuildContext context) {
+    return (context
+            .getElementForInheritedWidgetOfExactType<_InternalScope>()
+            ?.widget as _InternalScope)
+        ?.state;
   }
 }
 

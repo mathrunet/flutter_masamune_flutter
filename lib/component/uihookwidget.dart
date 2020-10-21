@@ -191,7 +191,13 @@ abstract class UIHookWidget extends StatefulHookWidget {
 class _UIHookWidgetState extends State<UIHookWidget>
     with WidgetsBindingObserver, RouteAware {
   /// True if the widget is valid.
-  bool get enabled => this._enabled;
+  bool get enabled {
+    if (!this._enabled) return false;
+    _UIInternalPageState parent = _InternalScope.of(context);
+    if (parent == null) return true;
+    return parent.enabled;
+  }
+
   bool _enabled = true;
   bool _markRebuild = false;
   Widget _cache;

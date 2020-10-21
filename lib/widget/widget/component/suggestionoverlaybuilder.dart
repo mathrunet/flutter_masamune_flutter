@@ -278,7 +278,7 @@ class _SuggestionOverlayState extends State<_SuggestionOverlay> {
     }
     final height =
         min((widgets.length * 50).toDouble() + 20, this.widget.maxHeight);
-    print(this.widget.offset.dy);
+
     final offset = this.widget.offset.dy +
         (this.widget.direction == VerticalDirection.down
             ? 0
