@@ -123,6 +123,7 @@ class _FormItemSwitchState extends FormFieldState<bool> {
                       inactiveThumbColor: this.widget.inactiveThumbColor,
                       inactiveTrackColor: this.widget.inactiveTrackColor,
                       onChanged: (bool value) {
+                        setValue(value);
                         if (this.widget.onChanged != null)
                           this.widget.onChanged(value);
                         this.setState(() {});
