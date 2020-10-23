@@ -15,6 +15,7 @@ class UIFormDialog {
   /// [submitBorderRadius]: Border radius of the Submit button.
   /// [submitBackgroundColor]: Background color of the Submit button.
   /// [title]: Default title.
+  /// [validate]: Verify the value.
   /// [popOnPress]: True if the dialog should be closed together when the button is pressed.
   static Future show(BuildContext context,
       {String submitText = "OK",
@@ -23,6 +24,7 @@ class UIFormDialog {
       Color submitBackgroundColor,
       double submitHeight = 80,
       String title,
+      bool validate = true,
       bool popOnPress = true,
       void onSubmit(IDataDocument form)}) async {
     if (context == null) return;
@@ -51,11 +53,11 @@ class UIFormDialog {
                   borderRadius: submitBorderRadius,
                   onPressed: () {
                     context.unfocus();
-                    if (!key.currentState.validate()) return;
+                    if (validate && !key.currentState.validate()) return;
                     key.currentState.save();
-                    onSubmit?.call(form);
                     if (popOnPress)
                       Navigator.of(context, rootNavigator: true).pop();
+                    onSubmit?.call(form);
                   },
                 )
               ],
