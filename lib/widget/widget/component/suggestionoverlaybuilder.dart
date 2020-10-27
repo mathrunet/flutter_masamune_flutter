@@ -67,19 +67,38 @@ class SuggestionOverlayBuilder extends StatefulWidget {
 class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
   OverlayEntry _overlay;
   TextEditingController _controller;
+  TextEditingController get _effectiveController =>
+      widget.controller ?? _controller;
+
   final LayerLink _layerLink = LayerLink();
   @override
   void initState() {
     super.initState();
     this._controller = this.widget.controller ?? TextEditingController();
-    this._controller.addListener(this._listener);
+    this._effectiveController.addListener(this._listener);
+  }
+
+  @override
+  void didUpdateWidget(SuggestionOverlayBuilder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      oldWidget.controller?.removeListener(this._listener);
+      widget.controller?.addListener(this._listener);
+
+      if (oldWidget.controller != null && widget.controller == null)
+        _controller =
+            TextEditingController.fromValue(oldWidget.controller.value);
+      if (widget.controller != null) {
+        if (oldWidget.controller == null) _controller = null;
+      }
+    }
   }
 
   void _listener() {
     if (this._overlay != null) return;
-    if (this._controller == null) return;
+    if (this._effectiveController == null) return;
     if (this.widget.items == null || this.widget.items.length <= 0) return;
-    String search = this._controller.text;
+    String search = this._effectiveController.text;
     List<String> wordList = search == null ? [] : search.split(Const.space);
     if (!this.widget.items.any((element) =>
         isNotEmpty(element) &&
@@ -93,13 +112,15 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
   @override
   void dispose() {
     super.dispose();
-    this._controller.removeListener(this._listener);
+    this._effectiveController.removeListener(this._listener);
   }
 
   @override
   Widget build(BuildContext context) {
     if (this.widget.items == null || this.widget.items.length <= 0) {
-      return this.widget.builder(context, this._controller, this.widget.onTap);
+      return this
+          .widget
+          .builder(context, this._effectiveController, this.widget.onTap);
     }
     return WillPopScope(
         onWillPop: () {
@@ -113,7 +134,7 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
         },
         child: CompositedTransformTarget(
             link: this._layerLink,
-            child: this.widget.builder(context, this._controller, () {
+            child: this.widget.builder(context, this._effectiveController, () {
               if (this.widget.showOnTap) this._updateOverlay();
               if (this.widget.onTap != null) this.widget.onTap();
             })));
@@ -156,7 +177,7 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
                                 : VerticalDirection.down,
                             onDeleteSuggestion: this.widget.onDeleteSuggestion,
                             backgroundColor: this.widget.backgroundColor,
-                            controller: this._controller,
+                            controller: this._effectiveController,
                             elevation: this.widget.elevation,
                             onTap: () {
                               this._overlay?.remove();
@@ -199,20 +220,39 @@ class _SuggestionOverlay extends StatefulWidget {
 class _SuggestionOverlayState extends State<_SuggestionOverlay> {
   String _search;
   TextEditingController _controller;
+  TextEditingController get _effectiveController =>
+      widget.controller ?? _controller;
+
   List<String> _wordList = [];
   @override
   void initState() {
     super.initState();
     this._controller = this.widget.controller ?? TextEditingController();
-    this._search = this._controller.text;
+    this._search = this._effectiveController.text;
     this._wordList =
         this._search == null ? [] : this._search.split(Const.space);
-    this._controller.addListener(this._listener);
+    this._effectiveController.addListener(this._listener);
+  }
+
+  @override
+  void didUpdateWidget(_SuggestionOverlay oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      oldWidget.controller?.removeListener(this._listener);
+      widget.controller?.addListener(this._listener);
+
+      if (oldWidget.controller != null && widget.controller == null)
+        _controller =
+            TextEditingController.fromValue(oldWidget.controller.value);
+      if (widget.controller != null) {
+        if (oldWidget.controller == null) _controller = null;
+      }
+    }
   }
 
   void _listener() {
     this.setState(() {
-      this._search = this._controller.text;
+      this._search = this._effectiveController.text;
       this._wordList =
           this._search == null ? [] : this._search.split(Const.space);
     });
@@ -221,7 +261,7 @@ class _SuggestionOverlayState extends State<_SuggestionOverlay> {
   @override
   void dispose() {
     super.dispose();
-    this._controller.removeListener(this._listener);
+    this._effectiveController.removeListener(this._listener);
   }
 
   @override
@@ -239,11 +279,11 @@ class _SuggestionOverlayState extends State<_SuggestionOverlay> {
               this._wordList[this._wordList.length - 1] = e;
             }
             String text = this._wordList.join(Const.space);
-            this._controller.clearComposing();
-            this._controller.clear();
-            this._controller.text = text;
-            this._controller.selection = TextSelection.fromPosition(
-                TextPosition(offset: this._controller.text.length));
+            this._effectiveController.clearComposing();
+            this._effectiveController.clear();
+            this._effectiveController.text = text;
+            this._effectiveController.selection = TextSelection.fromPosition(
+                TextPosition(offset: this._effectiveController.text.length));
             if (this.widget.onTap != null) this.widget.onTap();
           },
           child: Container(

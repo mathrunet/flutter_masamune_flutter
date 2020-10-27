@@ -195,7 +195,6 @@ class _UIHookWidgetState extends State<UIHookWidget>
 
   bool _enabled = true;
   bool _markRebuild = false;
-  Widget _cache;
   _UIInternalPageState _parent;
   @override
   void initState() {
@@ -308,12 +307,8 @@ class _UIHookWidgetState extends State<UIHookWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (!this.enabled && this._cache != null) {
-      this._markRebuild = true;
-      return this._cache;
-    }
-    if (this.widget._child != null)
-      return this._cache = this.widget._child(context);
-    return this._cache = this.widget.build(context);
+    if (!this.enabled) this._markRebuild = true;
+    if (this.widget._child != null) return this.widget._child(context);
+    return this.widget.build(context);
   }
 }

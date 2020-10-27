@@ -14,6 +14,12 @@ class Headline extends StatelessWidget {
   /// Headline title.
   final String title;
 
+  /// Headline leagding widget.
+  final Widget leading;
+
+  /// Vertical placement.
+  final CrossAxisAlignment crossAxisAlignment;
+
   /// Headline tailing widget.
   final Widget tailing;
 
@@ -32,8 +38,10 @@ class Headline extends StatelessWidget {
   /// [elevation]: Headline height.
   /// [icon]: Icon data.
   /// [title]: Headline title.
+  /// [leading]: Headline leagding widget.
   /// [tailing]: Headline tailing widget.
   /// [color]: Text / Icon color.
+  /// [crossAxisAlignment]: Vertical placement.
   /// [backgroundColor]: Background color.
   /// [padding]: Padding.
   Headline(this.title,
@@ -42,6 +50,8 @@ class Headline extends StatelessWidget {
       this.icon,
       this.tailing,
       this.color,
+      this.crossAxisAlignment = CrossAxisAlignment.center,
+      this.leading,
       this.backgroundColor,
       this.padding});
 
@@ -55,10 +65,15 @@ class Headline extends StatelessWidget {
                 const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             color: this.backgroundColor ?? context.theme.accentColor,
             child: Row(
+              crossAxisAlignment: this.crossAxisAlignment,
               children: <Widget>[
                 if (this.icon != null) ...[
                   Icon(this.icon,
                       color: this.color ?? context.theme.backgroundColor),
+                  Space.width(20),
+                ],
+                if (this.leading != null) ...[
+                  this.leading,
                   Space.width(20),
                 ],
                 Expanded(
