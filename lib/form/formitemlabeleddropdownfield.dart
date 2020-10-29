@@ -55,6 +55,8 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
               padding: const EdgeInsets.fromLTRB(12, 4.5, 8, 4.5),
               child: DropdownTextFormField(
                   controller: this.controller,
+                  isExpanded: true,
+                  textAlign: TextAlign.right,
                   items: this.items,
                   enabled: this.enabled,
                   style: TextStyle(

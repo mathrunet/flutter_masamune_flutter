@@ -34,3 +34,5 @@ export 'widget/scaffold/uiappbar.dart';
 export 'widget/scaffold/uibottomsheet.dart';
 export 'widget/scaffold/uitopnavigationbar.dart';
 export 'widget/scaffold/uibottomnavigationbar.dart';
+
+export 'widget/property/defaultboxdecoration.dart';

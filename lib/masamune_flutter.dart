@@ -25,6 +25,7 @@ export 'widget/dialog.dart';
 export 'widget/mixin.dart';
 export 'widget/template.dart';
 export 'widget/widget.dart';
+export 'package:flutter/material.dart' hide Path;
 export 'form/form.dart';
 export 'list/list.dart';
 export 'package:intl/intl.dart' show DateFormat;

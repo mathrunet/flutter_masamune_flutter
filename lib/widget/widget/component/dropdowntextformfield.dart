@@ -25,6 +25,7 @@ class DropdownTextFormField extends StatefulWidget {
   final Color iconDisabledColor;
   final Color iconEnabledColor;
   final double iconSize;
+  final TextAlign textAlign;
   final bool isDense;
   final bool isExpanded;
   final double itemHeight;
@@ -45,6 +46,7 @@ class DropdownTextFormField extends StatefulWidget {
       this.hint,
       this.onChanged,
       this.onTap,
+      this.textAlign,
       this.decoration = const InputDecoration(),
       this.onSaved,
       this.enabled = true,
@@ -147,19 +149,21 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
                       this.widget.onChanged(value);
                   }
                 : null,
-            autovalidate: this.widget.autovalidate,
             disabledHint: this.widget.disabledHint ??
-                Text(isNotEmpty(this._effectiveController?.text) &&
-                        this
-                            .widget
-                            .items
-                            .containsKey(this._effectiveController.text)
-                    ? this
-                        .widget
-                        .items[this._effectiveController.text]
-                        ?.localize()
-                    : this.widget.items.values.first?.localize() ??
-                        Const.empty),
+                Text(
+                  isNotEmpty(this._effectiveController?.text) &&
+                          this
+                              .widget
+                              .items
+                              .containsKey(this._effectiveController.text)
+                      ? this
+                          .widget
+                          .items[this._effectiveController.text]
+                          ?.localize()
+                      : this.widget.items.values.first?.localize() ??
+                          Const.empty,
+                  textAlign: this.widget.textAlign,
+                ),
             elevation: this.widget.elevation,
             style: this.widget.style,
             icon: this.widget.icon,
@@ -181,6 +185,7 @@ class _DropdownTextFormFieldState extends State<DropdownTextFormField> {
                                 isEmpty(this._effectiveController.text)
                                     ? "--"
                                     : value.localize(),
+                                textAlign: this.widget.textAlign,
                                 style: this.widget.itemTextColor != null
                                     ? TextStyle(
                                         color: this.widget.itemTextColor)

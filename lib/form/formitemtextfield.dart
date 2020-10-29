@@ -30,6 +30,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final EdgeInsetsGeometry padding;
   final Color color;
   final Color subColor;
+  final void Function(String value) onSubmitted;
 
   FormItemTextField(
       {this.controller,
@@ -58,6 +59,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.onDeleteSuggestion,
       this.validator,
       this.onSaved,
+      this.onSubmitted,
       this.onChanged,
       this.color,
       this.subColor});
@@ -134,7 +136,9 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                 style: TextStyle(color: this.color),
                 obscureText: this.obscureText,
                 readOnly: this.readOnly,
-                autovalidate: false,
+                onFieldSubmitted: (value) {
+                  if (this.onSubmitted != null) this.onSubmitted(value);
+                },
                 onTap: this.enabled ? onTap : null,
                 validator: (value) {
                   if (!this.allowEmpty && isEmpty(value)) return this.hintText;

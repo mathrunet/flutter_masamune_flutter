@@ -12,6 +12,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 part 'formbuilder.dart';
@@ -35,5 +36,6 @@ part 'uiformdialog.dart';
 part 'uipagereauth.dart';
 part 'uipagechangeemail.dart';
 part 'uipagechangepassword.dart';
+part 'formitemselectbuilder.dart';
 
 part 'uihookpageform.dart';

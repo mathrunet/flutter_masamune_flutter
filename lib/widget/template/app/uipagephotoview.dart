@@ -16,6 +16,11 @@ abstract class UIPagePhotoView extends UIPageScaffold {
   /// [context]: Build context.
   @override
   Widget body(BuildContext context) {
-    return PhotoView(imageProvider: this.image(context));
+    return PhotoView(
+      imageProvider: this.image(context),
+      backgroundDecoration: this.backgroundColor != null
+          ? BoxDecoration(color: this.backgroundColor)
+          : null,
+    );
   }
 }
