@@ -97,7 +97,6 @@ class _UIInternalPageState extends State<UIInternalPage>
   bool get enabled => this._enabled && (this._parent?.enabled ?? true);
   bool _enabled = true;
   bool _markRebuild = false;
-  Widget _cache;
   _UIInternalPageState _parent;
   List<void Function()> _didPushListener = [];
   List<void Function()> _didPopNextListener = [];
@@ -105,8 +104,8 @@ class _UIInternalPageState extends State<UIInternalPage>
   @override
   void initState() {
     super.initState();
-    this.widget._load?.call(this.context);
-    this.widget.onLoad(this.context);
+    this.widget._init?.call(this.context);
+    this.widget.onInit(this.context);
     String error = this._validateOnLoad(this.context);
     if (isNotEmpty(error)) {
       UIDialog.show(this.context, text: error);
@@ -135,8 +134,8 @@ class _UIInternalPageState extends State<UIInternalPage>
   @override
   void dispose() {
     super.dispose();
-    this.widget._unload?.call(context);
-    this.widget.onUnload(context);
+    this.widget._dispose?.call(context);
+    this.widget.onDispose(context);
     WidgetsBinding.instance.removeObserver(this);
     UIHookWidget.routeObserver.unsubscribe(this);
     this._parent?._removeDidPushListener(this.didPush);
@@ -216,17 +215,21 @@ class _UIInternalPageState extends State<UIInternalPage>
 
   @override
   Widget build(BuildContext context) {
-    if (!this.enabled && this._cache != null) {
-      this._markRebuild = true;
-      return this._cache;
+    this.widget._load?.call(this.context);
+    this.widget.onLoad(this.context);
+    String error = this._validateOnLoad(this.context);
+    if (isNotEmpty(error)) {
+      UIDialog.show(this.context, text: error);
+      return Container();
     }
+    if (!this.enabled) this._markRebuild = true;
     if (this.widget._child != null) {
-      return this._cache = _UIInternalPageScope(
+      return _UIInternalPageScope(
         state: this,
         child: this.widget._child(context),
       );
     }
-    return this._cache = _UIInternalPageScope(
+    return _UIInternalPageScope(
       state: this,
       child: this.widget.build(context),
     );

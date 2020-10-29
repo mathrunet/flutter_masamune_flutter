@@ -22,8 +22,9 @@ abstract class UIHookWidget extends StatefulHookWidget {
   static RouteObserver<PageRoute> get routeObserver => _routeObserver;
   static RouteObserver<PageRoute> _routeObserver = RouteObserver<PageRoute>();
 
+  final BuildEvent _init;
   final BuildEvent _load;
-  final BuildEvent _unload;
+  final BuildEvent _dispose;
   final WidgetBuilder _child;
   final BuildEvent _pause;
   final BuildEvent _unpause;
@@ -45,8 +46,9 @@ abstract class UIHookWidget extends StatefulHookWidget {
   /// You can use Hooks just like normal HookWidget.
   ///
   /// [key]: Widget key.
+  /// [init]: Callback for widget initializing.
   /// [load]: Callback for widget loading.
-  /// [unload]: Callback for Widget unloading.
+  /// [dispose]: Callback for Widget disposing.
   /// [child]: Callback when creating a widget.
   /// [pause]: Callback for Application paused.
   /// [unpause]: Callback for Application unpaused.
@@ -58,8 +60,9 @@ abstract class UIHookWidget extends StatefulHookWidget {
   /// [validateOnLoad]: Verification callback before loading.
   const UIHookWidget(
       {Key key,
+      BuildEvent init,
       BuildEvent load,
-      BuildEvent unload,
+      BuildEvent dispose,
       BuildEvent pause,
       BuildEvent unpause,
       BuildEvent quit,
@@ -69,8 +72,9 @@ abstract class UIHookWidget extends StatefulHookWidget {
       BuildEvent didPushNext,
       ValidateEvent validateOnLoad,
       WidgetBuilder child})
-      : this._load = load,
-        this._unload = unload,
+      : this._init = init,
+        this._load = load,
+        this._dispose = dispose,
         this._pause = pause,
         this._unpause = unpause,
         this._quit = quit,
@@ -97,6 +101,15 @@ abstract class UIHookWidget extends StatefulHookWidget {
   @protected
   Widget build(BuildContext context);
 
+  /// Executed when the widget is initialized.
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @protected
+  @mustCallSuper
+  void onInit(BuildContext context) {}
+
   /// Executed when the widget is loaded.
   ///
   /// Override and use.
@@ -106,14 +119,14 @@ abstract class UIHookWidget extends StatefulHookWidget {
   @mustCallSuper
   void onLoad(BuildContext context) {}
 
-  /// Executed when the widget is unloaded.
+  /// Executed when the widget is disposed.
   ///
   /// Override and use.
   ///
   /// [context]: Build context.
   @protected
   @mustCallSuper
-  void onUnload(BuildContext context) {}
+  void onDispose(BuildContext context) {}
 
   /// Executed when the widget is pause.
   ///
@@ -199,13 +212,8 @@ class _UIHookWidgetState extends State<UIHookWidget>
   @override
   void initState() {
     super.initState();
-    this.widget._load?.call(this.context);
-    this.widget.onLoad(this.context);
-    String error = this._validateOnLoad(this.context);
-    if (isNotEmpty(error)) {
-      UIDialog.show(this.context, text: error);
-      return;
-    }
+    this.widget._init?.call(this.context);
+    this.widget.onInit(this.context);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -229,8 +237,8 @@ class _UIHookWidgetState extends State<UIHookWidget>
   @override
   void dispose() {
     super.dispose();
-    this.widget._unload?.call(context);
-    this.widget.onUnload(context);
+    this.widget._dispose?.call(context);
+    this.widget.onDispose(context);
     WidgetsBinding.instance.removeObserver(this);
     UIHookWidget.routeObserver.unsubscribe(this);
     this._parent?._removeDidPushListener(this.didPush);
@@ -307,6 +315,13 @@ class _UIHookWidgetState extends State<UIHookWidget>
 
   @override
   Widget build(BuildContext context) {
+    this.widget._load?.call(this.context);
+    this.widget.onLoad(this.context);
+    String error = this._validateOnLoad(this.context);
+    if (isNotEmpty(error)) {
+      UIDialog.show(this.context, text: error);
+      return Container();
+    }
     if (!this.enabled) this._markRebuild = true;
     if (this.widget._child != null) return this.widget._child(context);
     return this.widget.build(context);
