@@ -23,6 +23,7 @@ abstract class UIHookWidget extends StatefulHookWidget {
   static RouteObserver<PageRoute> _routeObserver = RouteObserver<PageRoute>();
 
   final BuildEvent _init;
+  final BuildEvent _didInit;
   final BuildEvent _load;
   final BuildEvent _dispose;
   final WidgetBuilder _child;
@@ -47,6 +48,7 @@ abstract class UIHookWidget extends StatefulHookWidget {
   ///
   /// [key]: Widget key.
   /// [init]: Callback for widget initializing.
+  /// [didInit]: Callback for widget initializing.
   /// [load]: Callback for widget loading.
   /// [dispose]: Callback for Widget disposing.
   /// [child]: Callback when creating a widget.
@@ -61,6 +63,7 @@ abstract class UIHookWidget extends StatefulHookWidget {
   const UIHookWidget(
       {Key key,
       BuildEvent init,
+      BuildEvent didInit,
       BuildEvent load,
       BuildEvent dispose,
       BuildEvent pause,
@@ -73,6 +76,7 @@ abstract class UIHookWidget extends StatefulHookWidget {
       ValidateEvent validateOnLoad,
       WidgetBuilder child})
       : this._init = init,
+        this._didInit = didInit,
         this._load = load,
         this._dispose = dispose,
         this._pause = pause,
@@ -109,6 +113,15 @@ abstract class UIHookWidget extends StatefulHookWidget {
   @protected
   @mustCallSuper
   void onInit(BuildContext context) {}
+
+  /// Executed after the widget is initialized.
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @protected
+  @mustCallSuper
+  void onDidInit(BuildContext context) {}
 
   /// Executed when the widget is loaded.
   ///
@@ -215,6 +228,10 @@ class _UIHookWidgetState extends State<UIHookWidget>
     this.widget._init?.call(this.context);
     this.widget.onInit(this.context);
     WidgetsBinding.instance.addObserver(this);
+    Future.delayed(Duration.zero, () {
+      this.widget._didInit?.call(this.context);
+      this.widget.onDidInit(this.context);
+    });
   }
 
   String _validateOnLoad(BuildContext context) {
