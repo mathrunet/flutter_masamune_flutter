@@ -7,6 +7,9 @@ class SearchBuilder<T extends Object> extends StatefulWidget {
   /// Builder when the data is empty.
   final Widget emptyWidget;
 
+  /// The first widget shown.
+  final Widget initialWidget;
+
   /// Padding.
   final EdgeInsetsGeometry padding;
 
@@ -33,6 +36,7 @@ class SearchBuilder<T extends Object> extends StatefulWidget {
   ///
   /// [emptyWidget]: Builder when the data is empty.
   /// [padding]: Padding.
+  /// [initialWidget]: The first widget shown.
   /// [initialValue]: Default search text.
   /// [minLength]: The minimum length of search text required to perform a search.
   /// [controller]: Controller for entering a search string.
@@ -44,6 +48,7 @@ class SearchBuilder<T extends Object> extends StatefulWidget {
       this.padding = const EdgeInsets.all(10),
       this.controller,
       this.minLength = 2,
+      this.initialWidget,
       this.indicatorColor,
       @required this.search,
       this.initialValue,
@@ -94,6 +99,7 @@ class _SearchBuilderState<T extends Object> extends State<SearchBuilder<T>> {
   @override
   Widget build(BuildContext context) {
     if (isEmpty(this.value) || this.value.length < this.widget.minLength) {
+      if (this.widget.initialWidget != null) return this.widget.initialWidget;
       if (this.widget.emptyWidget != null) return this.widget.emptyWidget;
       return Center(child: Text("No data.".localize()));
     }

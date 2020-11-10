@@ -12,6 +12,11 @@ abstract class UIHookPageDetail extends UIHookPageScaffold {
   /// Image data.
   ImageProvider get image => null;
 
+  /// Widget to place between the title and the image.
+  ///
+  /// [context]: Build context.
+  Widget top(BuildContext context) => null;
+
   /// Title.
   String get title;
 
@@ -31,22 +36,32 @@ abstract class UIHookPageDetail extends UIHookPageScaffold {
   @override
   Widget body(BuildContext context) {
     final title = this.title;
+    final top = this.top(context);
     return ListView(
       children: <Widget>[
         if (this.image != null)
           Image(height: this.imageHeight, image: this.image, fit: BoxFit.cover),
-        Indent(
-          padding: const EdgeInsets.all(15),
+        Stack(
           children: [
-            if (isNotEmpty(title)) ...[
-              Text(
-                this.title,
-                style: context.theme.textTheme.headline4
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
-              Space(),
-            ],
-            ...(this.content(context) ?? []),
+            Indent(
+              padding: const EdgeInsets.all(15),
+              children: [
+                if (isNotEmpty(title)) ...[
+                  Text(
+                    this.title,
+                    style: context.theme.textTheme.headline4
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  Space(),
+                ],
+                ...(this.content(context) ?? []),
+              ],
+            ),
+            if (top != null)
+              Container(
+                alignment: Alignment.topRight,
+                child: top,
+              )
           ],
         ),
         ...(this.bottom(context) ?? [])

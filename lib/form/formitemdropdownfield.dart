@@ -10,6 +10,8 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
   final Widget suffix;
   final bool enabled;
   final bool dense;
+  final InputBorder border;
+  final EdgeInsetsGeometry padding;
   final bool allowEmpty;
   final Color backgroundColor;
   final void Function(String value) onSaved;
@@ -20,6 +22,8 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
       this.hintText = "",
       @required this.items,
       this.enabled = true,
+      this.border,
+      this.padding,
       this.backgroundColor,
       this.dense = false,
       this.labelText = "",
@@ -35,7 +39,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
     return Padding(
         padding: this.dense
             ? const EdgeInsets.all(0)
-            : const EdgeInsets.symmetric(vertical: 10),
+            : (this.padding ?? const EdgeInsets.symmetric(vertical: 10)),
         child: DropdownTextFormField(
             controller: this.controller,
             items: this.items,
@@ -43,24 +47,30 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
             decoration: InputDecoration(
               fillColor: this.backgroundColor,
               filled: this.backgroundColor != null,
-              border: OutlineInputBorder(
-                  borderSide:
-                      this.dense ? BorderSide.none : const BorderSide()),
-              enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      this.dense ? BorderSide.none : const BorderSide()),
-              disabledBorder: OutlineInputBorder(
-                  borderSide:
-                      this.dense ? BorderSide.none : const BorderSide()),
-              errorBorder: OutlineInputBorder(
-                  borderSide:
-                      this.dense ? BorderSide.none : const BorderSide()),
-              focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      this.dense ? BorderSide.none : const BorderSide()),
-              focusedErrorBorder: OutlineInputBorder(
-                  borderSide:
-                      this.dense ? BorderSide.none : const BorderSide()),
+              border: this.border ??
+                  OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
+              enabledBorder: this.border ??
+                  OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
+              disabledBorder: this.border ??
+                  OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
+              errorBorder: this.border ??
+                  OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
+              focusedBorder: this.border ??
+                  OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
+              focusedErrorBorder: this.border ??
+                  OutlineInputBorder(
+                      borderSide:
+                          this.dense ? BorderSide.none : const BorderSide()),
               contentPadding: const EdgeInsets.all(17.5),
               hintText: this.hintText,
               labelText: this.labelText,
