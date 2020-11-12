@@ -29,6 +29,7 @@ export 'widget/builder/loadbuilder.dart';
 export 'widget/builder/conditionbuilder.dart';
 export 'widget/builder/fullscreenbuilder.dart';
 export 'widget/builder/searchbuilder.dart';
+export 'widget/builder/pathlistenbuilder.dart';
 
 export 'widget/scaffold/uiappbar.dart';
 export 'widget/scaffold/uibottomsheet.dart';
