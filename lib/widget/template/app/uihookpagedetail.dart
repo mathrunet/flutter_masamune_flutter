@@ -12,6 +12,11 @@ abstract class UIHookPageDetail extends UIHookPageScaffold {
   /// Image data.
   ImageProvider get image => null;
 
+  /// What to do when you tap an image.
+  /// 
+  /// [context]: Build context.
+  void onImageTap(BuildContext context) => null;
+
   /// Widget to place between the title and the image.
   ///
   /// [context]: Build context.
@@ -40,7 +45,13 @@ abstract class UIHookPageDetail extends UIHookPageScaffold {
     return ListView(
       children: <Widget>[
         if (this.image != null)
-          Image(height: this.imageHeight, image: this.image, fit: BoxFit.cover),
+          InkWell(
+            onTap: () {
+              this.onImageTap?.call(context);
+            },
+            child: Image(
+                height: this.imageHeight, image: this.image, fit: BoxFit.cover),
+          ),
         Stack(
           children: [
             Indent(
