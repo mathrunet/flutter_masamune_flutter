@@ -19,7 +19,7 @@ class FormItemSubmit extends StatelessWidget implements FormItem {
       this.color,
       this.padding,
       this.height = 80,
-      this.fontSize = 20,
+      this.fontSize = 18,
       this.dense = false,
       this.enabled = true,
       this.borderRadius,
