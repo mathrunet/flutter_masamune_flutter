@@ -7,13 +7,13 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final int minLength;
   final int maxLines;
   final int minLines;
-  final String hintText;
   final bool dense;
+  final String hintText;
   final String labelText;
   final String counterText;
   final String lengthErrorText;
-  final Widget prefix;
   final bool enabled;
+  final Widget prefix;
   final Widget suffix;
   final bool readOnly;
   final bool obscureText;
@@ -28,6 +28,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final void Function(String value) onChanged;
   final String Function(String value) validator;
   final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry contentPadding;
   final Color color;
   final Color subColor;
   final void Function(String value) onSubmitted;
@@ -37,6 +38,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.keyboardType = TextInputType.text,
       this.maxLength,
       this.minLength,
+      this.contentPadding,
       this.maxLines,
       this.minLines = 1,
       this.border,
@@ -71,9 +73,10 @@ class FormItemTextField extends StatelessWidget implements FormItem {
         onDeleteSuggestion: this.onDeleteSuggestion,
         controller: this.controller,
         builder: (context, controller, onTap) => Padding(
-            padding: this.dense
-                ? const EdgeInsets.all(0)
-                : (this.padding ?? const EdgeInsets.symmetric(vertical: 10)),
+            padding: this.padding ??
+                (this.dense
+                    ? const EdgeInsets.all(0)
+                    : const EdgeInsets.symmetric(vertical: 10)),
             child: TextFormField(
                 enabled: this.enabled,
                 controller: controller,
@@ -87,6 +90,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                     : (this.expands ? null : this.minLines),
                 expands: !this.obscureText && this.expands,
                 decoration: InputDecoration(
+                  contentPadding: this.contentPadding,
                   fillColor: this.backgroundColor,
                   filled: this.backgroundColor != null,
                   isDense: this.dense,

@@ -18,6 +18,8 @@ class UITopNavigationBar extends StatefulWidget {
   final bool disableOnTapWhenInitialIndex;
   final String indexID;
   final double height;
+  final EdgeInsetsGeometry itemPadding;
+  final bool scrollable;
   final EdgeInsetsGeometry padding;
 
   /// Wrapper for UITopNavigationBar.
@@ -34,7 +36,9 @@ class UITopNavigationBar extends StatefulWidget {
       this.backgroundColor,
       this.selectedItemColor,
       this.unselectedItemColor,
+      this.itemPadding,
       this.selectedItemTextColor,
+      this.scrollable = false,
       this.unselectedItemTextColor,
       this.showSelectedLabels = true})
       : super(key: key);
@@ -84,52 +88,64 @@ class _UITopNavigationBarState extends State<UITopNavigationBar>
     }
   }
 
+  List<Widget> _buildInternal(BuildContext context) {
+    int index = 0;
+    return this.widget.items.mapAndRemoveEmpty(
+      (e) {
+        final selected = index == this.currentIndex;
+        if (!this.widget.showSelectedLabels && selected) return null;
+        index++;
+        return Flexible(
+          flex: 1,
+          child: Padding(
+            padding: this.widget.itemPadding ?? const EdgeInsets.all(0),
+            child: FlatButton(
+              shape: StadiumBorder(),
+              color: selected
+                  ? (this.widget.selectedItemColor ??
+                      context.theme.primaryColor)
+                  : (this.widget.unselectedItemColor),
+              padding: const EdgeInsets.all(0),
+              onPressed: () {
+                if (this.widget.disableOnTapWhenInitialIndex && selected)
+                  return;
+                e.onTap?.call();
+              },
+              child: DefaultTextStyle.merge(
+                  style: TextStyle(
+                      color: selected
+                          ? (this.widget.selectedItemTextColor ?? Colors.white)
+                          : (this.widget.unselectedItemTextColor)),
+                  child: e.title),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    int index = 0;
     return Column(mainAxisSize: MainAxisSize.min, children: [
       Container(
         height: this.widget.height,
         color:
             this.widget.backgroundColor ?? Theme.of(context).bottomAppBarColor,
         padding: this.widget.padding,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ...this.widget.items.mapAndRemoveEmpty(
-              (e) {
-                final selected = index == this.currentIndex;
-                if (!this.widget.showSelectedLabels && selected) return null;
-                index++;
-                return Flexible(
-                  flex: 1,
-                  child: FlatButton(
-                    shape: StadiumBorder(),
-                    color: selected
-                        ? (this.widget.selectedItemColor ??
-                            context.theme.primaryColor)
-                        : (this.widget.unselectedItemColor),
-                    padding: const EdgeInsets.all(0),
-                    onPressed: () {
-                      if (this.widget.disableOnTapWhenInitialIndex && selected)
-                        return;
-                      e.onTap?.call();
-                    },
-                    child: DefaultTextStyle.merge(
-                        style: TextStyle(
-                            color: selected
-                                ? (this.widget.selectedItemTextColor ??
-                                    Colors.white)
-                                : (this.widget.unselectedItemTextColor)),
-                        child: e.title),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+        child: this.widget.scrollable
+            ? SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: this._buildInternal(context)))
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: this._buildInternal(context),
+              ),
       ),
       Divider(height: 1),
     ]);

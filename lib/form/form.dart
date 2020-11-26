@@ -10,13 +10,16 @@ library masamune.form;
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 part 'formbuilder.dart';
 part 'formitem.dart';
+part 'formitemchipsfield.dart';
 part 'formitemavatarimage.dart';
 part 'formitembuilder.dart';
 part 'formitemdatetimefield.dart';

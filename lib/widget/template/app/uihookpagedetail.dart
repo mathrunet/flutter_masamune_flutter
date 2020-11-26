@@ -13,7 +13,7 @@ abstract class UIHookPageDetail extends UIHookPageScaffold {
   ImageProvider get image => null;
 
   /// What to do when you tap an image.
-  /// 
+  ///
   /// [context]: Build context.
   void onImageTap(BuildContext context) => null;
 
