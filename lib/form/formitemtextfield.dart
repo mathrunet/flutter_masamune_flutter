@@ -31,12 +31,16 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final EdgeInsetsGeometry contentPadding;
   final Color color;
   final Color subColor;
+  final bool showCursor;
+  final Function onTap;
+  final FocusNode focusNode;
   final void Function(String value) onSubmitted;
 
   FormItemTextField(
       {this.controller,
       this.keyboardType = TextInputType.text,
       this.maxLength,
+      this.onTap,
       this.minLength,
       this.contentPadding,
       this.maxLines,
@@ -63,6 +67,8 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.onSaved,
       this.onSubmitted,
       this.onChanged,
+      this.showCursor,
+      this.focusNode,
       this.color,
       this.subColor});
 
@@ -78,6 +84,8 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                     ? const EdgeInsets.all(0)
                     : const EdgeInsets.symmetric(vertical: 10)),
             child: TextFormField(
+                focusNode: this.focusNode,
+                showCursor: this.showCursor,
                 enabled: this.enabled,
                 controller: controller,
                 keyboardType: this.keyboardType,
@@ -143,7 +151,12 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                 onFieldSubmitted: (value) {
                   if (this.onSubmitted != null) this.onSubmitted(value);
                 },
-                onTap: this.enabled ? onTap : null,
+                onTap: this.enabled
+                    ? () {
+                        onTap?.call();
+                        this.onTap?.call();
+                      }
+                    : null,
                 validator: (value) {
                   if (!this.allowEmpty && isEmpty(value)) return this.hintText;
                   if (!this.allowEmpty &&

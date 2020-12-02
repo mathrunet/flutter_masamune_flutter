@@ -1,3 +1,7 @@
+## [0.5.4] - Update README (2020.11.30)
+
+* Added multiple widgets.
+
 ## [0.5.3] - Update README (2020.10.27)
 
 * Raised the minimum version of Flutter to 2.8.0

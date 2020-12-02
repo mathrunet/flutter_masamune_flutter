@@ -5,6 +5,9 @@ class UICommentTile extends StatelessWidget {
   /// Picture.
   final ImageProvider image;
 
+  /// Avatar image.
+  final ImageProvider avatar;
+
   /// Name.
   final String name;
 
@@ -15,7 +18,8 @@ class UICommentTile extends StatelessWidget {
   final String text;
 
   /// List tiles for comment.
-  UICommentTile({this.image, this.name, this.date, @required this.text});
+  UICommentTile(
+      {this.image, this.avatar, this.name, this.date, @required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +30,12 @@ class UICommentTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (this.image != null) ...[
+          if (this.avatar != null) ...[
             SizedBox(
               height: 40,
               width: 40,
               child: CircleAvatar(
-                backgroundImage: this.image,
+                backgroundImage: this.avatar,
               ),
             ),
             Space.width(20),
@@ -54,6 +58,18 @@ class UICommentTile extends StatelessWidget {
                 Text(
                   this.text,
                 ),
+                if (this.image != null) ...[
+                  Space(),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    constraints: const BoxConstraints.expand(height: 200),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image(image: this.image),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

@@ -93,8 +93,9 @@ class _UITopNavigationBarState extends State<UITopNavigationBar>
     return this.widget.items.mapAndRemoveEmpty(
       (e) {
         final selected = index == this.currentIndex;
-        if (!this.widget.showSelectedLabels && selected) return null;
         index++;
+        if (!this.widget.showSelectedLabels && selected) return null;
+        if (e.hide) return null;
         return Flexible(
           flex: 1,
           child: Padding(
@@ -157,9 +158,10 @@ class UITopNavigationBarItem {
   final String id;
   final Widget title;
   final void Function() onTap;
+  final bool hide;
   final bool Function(Route route) onRouteChange;
 
   /// Wrapper for UITopNavigationBarItem.
   const UITopNavigationBarItem(
-      {this.id, this.title, this.onTap, this.onRouteChange});
+      {this.id, this.title, this.onTap, this.onRouteChange, this.hide = false});
 }

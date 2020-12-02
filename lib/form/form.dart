@@ -40,5 +40,6 @@ part 'uipagereauth.dart';
 part 'uipagechangeemail.dart';
 part 'uipagechangepassword.dart';
 part 'formitemselectbuilder.dart';
+part 'formitemfullscreen.dart';
 
 part 'uihookpageform.dart';

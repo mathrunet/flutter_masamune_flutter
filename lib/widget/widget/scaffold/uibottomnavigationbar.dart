@@ -115,10 +115,11 @@ class _UIBottomNavigationBarState extends State<UIBottomNavigationBar>
           if (this.widget.items == null ||
               this.widget.items.length <= index ||
               index < 0) return;
-          if (this.widget.items[index]?.onTap == null) return;
-          if (this.widget.disableOnTapWhenInitialIndex &&
-              index == this.currentIndex) return;
-          this.widget.items[index]?.onTap();
+          if (index == this.currentIndex) {
+            this.widget.items[index]?.onTapWhenInitialIndex?.call();
+            if (this.widget.disableOnTapWhenInitialIndex) return;
+          }
+          this.widget.items[index]?.onTap?.call();
         },
         currentIndex: this.currentIndex,
         elevation: this.widget.elevation,
@@ -153,6 +154,7 @@ class UIBottomNavigationBarItem extends BottomNavigationBarItem {
   final String id;
   final void Function() onTap;
   final bool Function(Route route) onRouteChange;
+  final void Function() onTapWhenInitialIndex;
 
   /// Wrapper for BottomNavigationBarItem.
   UIBottomNavigationBarItem(
@@ -162,6 +164,7 @@ class UIBottomNavigationBarItem extends BottomNavigationBarItem {
       Widget activeIcon,
       Color backgroundColor,
       this.onTap,
+      this.onTapWhenInitialIndex,
       this.onRouteChange})
       : super(
             icon: icon,
