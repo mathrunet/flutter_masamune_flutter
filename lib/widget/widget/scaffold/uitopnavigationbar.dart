@@ -4,6 +4,8 @@ import 'package:masamune_core/masamune_core.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Wrapper for UITopNavigationBar.
+
+/// Wrapper for UITopNavigationBar.
 class UITopNavigationBar extends StatefulWidget {
   final List<UITopNavigationBarItem> items;
   final int initialIndex;
@@ -21,6 +23,11 @@ class UITopNavigationBar extends StatefulWidget {
   final EdgeInsetsGeometry itemPadding;
   final bool scrollable;
   final EdgeInsetsGeometry padding;
+  final ShapeBorder selectedShapeBorder;
+  final Decoration selectedDecoration;
+  final ShapeBorder unselectedShapeBorder;
+  final Decoration unselectedDecoration;
+  final bool showDivider;
 
   /// Wrapper for UITopNavigationBar.
   UITopNavigationBar(
@@ -29,6 +36,10 @@ class UITopNavigationBar extends StatefulWidget {
       this.padding = const EdgeInsets.all(6),
       this.height = 40,
       this.items,
+      this.selectedDecoration,
+      this.selectedShapeBorder,
+      this.unselectedDecoration,
+      this.unselectedShapeBorder,
       this.initialIndex = 0,
       this.disableOnTapWhenInitialIndex = true,
       this.fixedColor,
@@ -37,6 +48,7 @@ class UITopNavigationBar extends StatefulWidget {
       this.selectedItemColor,
       this.unselectedItemColor,
       this.itemPadding,
+      this.showDivider = true,
       this.selectedItemTextColor,
       this.scrollable = false,
       this.unselectedItemTextColor,
@@ -96,16 +108,27 @@ class _UITopNavigationBarState extends State<UITopNavigationBar>
         index++;
         if (!this.widget.showSelectedLabels && selected) return null;
         if (e.hide) return null;
+        final decoration = selected
+            ? this.widget.selectedDecoration
+            : this.widget.unselectedDecoration;
+        final shapeBorder = selected
+            ? this.widget.selectedShapeBorder
+            : this.widget.unselectedShapeBorder;
         return Flexible(
           flex: 1,
-          child: Padding(
+          child: Container(
+            decoration: decoration,
             padding: this.widget.itemPadding ?? const EdgeInsets.all(0),
             child: FlatButton(
-              shape: StadiumBorder(),
-              color: selected
-                  ? (this.widget.selectedItemColor ??
-                      context.theme.primaryColor)
-                  : (this.widget.unselectedItemColor),
+              shape: decoration == null && shapeBorder == null
+                  ? const StadiumBorder()
+                  : shapeBorder,
+              color: decoration != null
+                  ? null
+                  : (selected
+                      ? (this.widget.selectedItemColor ??
+                          context.theme.primaryColor)
+                      : this.widget.unselectedItemColor),
               padding: const EdgeInsets.all(0),
               onPressed: () {
                 if (this.widget.disableOnTapWhenInitialIndex && selected)
@@ -115,8 +138,8 @@ class _UITopNavigationBarState extends State<UITopNavigationBar>
               child: DefaultTextStyle.merge(
                   style: TextStyle(
                       color: selected
-                          ? (this.widget.selectedItemTextColor ?? Colors.white)
-                          : (this.widget.unselectedItemTextColor)),
+                          ? this.widget.selectedItemTextColor ?? Colors.white
+                          : this.widget.unselectedItemTextColor),
                   child: e.title),
             ),
           ),
@@ -148,7 +171,7 @@ class _UITopNavigationBarState extends State<UITopNavigationBar>
                 children: this._buildInternal(context),
               ),
       ),
-      Divider(height: 1),
+      if (this.widget.showDivider) Divider(height: 1),
     ]);
   }
 }

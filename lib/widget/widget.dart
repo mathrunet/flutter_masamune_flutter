@@ -39,3 +39,4 @@ export 'widget/scaffold/uitopnavigationbar.dart';
 export 'widget/scaffold/uibottomnavigationbar.dart';
 
 export 'widget/property/defaultboxdecoration.dart';
+export 'widget/property/tabdecoration.dart';
