@@ -22,6 +22,11 @@ abstract class UIBoot extends UIPage {
   /// If null, the color will be gradation.
   Color get indicatorColor => null;
 
+  /// Feature image.
+  ///
+  /// If you register it, this is the only one displayed.
+  ImageProvider get featureImage => null;
+
   /// Creating a body.
   ///
   /// [context]: Build context.
@@ -33,6 +38,21 @@ abstract class UIBoot extends UIPage {
   }
 
   Widget _body(BuildContext context) {
+    ImageProvider image = this.featureImage;
+    if (image != null) {
+      return Container(
+        color: context.theme.backgroundColor,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image(
+              image: image,
+              fit: BoxFit.contain,
+            ),
+          ],
+        ),
+      );
+    }
     return Container(
         color: context.theme.backgroundColor,
         child: UIAnimatedBuilder(
