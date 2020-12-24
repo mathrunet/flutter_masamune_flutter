@@ -27,6 +27,11 @@ abstract class UIBoot extends UIPage {
   /// If you register it, this is the only one displayed.
   ImageProvider get featureImage => null;
 
+  /// Feature widget.
+  ///
+  /// If you register it, this is the only one displayed.
+  Widget get featureWidget => null;
+
   /// Creating a body.
   ///
   /// [context]: Build context.
@@ -51,6 +56,14 @@ abstract class UIBoot extends UIPage {
             ),
           ],
         ),
+      );
+    }
+    Widget widget = this.featureWidget;
+    if (widget != null) {
+      return Container(
+        color: context.theme.backgroundColor,
+        alignment: Alignment.center,
+        child: widget,
       );
     }
     return Container(
