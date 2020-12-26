@@ -16,6 +16,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
   final Color backgroundColor;
   final void Function(String value) onSaved;
   final void Function(String value) onChanged;
+  final EdgeInsetsGeometry contentPadding;
 
   FormItemDropdownField(
       {this.controller,
@@ -27,6 +28,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
       this.backgroundColor,
       this.dense = false,
       this.labelText = "",
+      this.contentPadding,
       this.prefix,
       this.allowEmpty = false,
       this.suffix,
@@ -71,7 +73,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
                   OutlineInputBorder(
                       borderSide:
                           this.dense ? BorderSide.none : const BorderSide()),
-              contentPadding: const EdgeInsets.all(17.5),
+              contentPadding: this.contentPadding ?? const EdgeInsets.all(17.5),
               hintText: this.hintText,
               labelText: this.labelText,
               counterText: this.counterText,
