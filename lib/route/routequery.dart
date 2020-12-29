@@ -6,7 +6,8 @@ part of masamune.flutter;
 class RouteQuery {
   final bool _fullscreen;
   final bool _immediately;
-  final IDataDocument _data;
+  final IDataDocument _document;
+  final Map<String, dynamic> _data;
 
   /// Define a query for routing.
   ///
@@ -14,11 +15,16 @@ class RouteQuery {
   ///
   /// [fullscreen]: True when transitioning pages in full screen.
   /// [immediately]: True if transitioning immediately without animation.
+  /// [document]: Document for routing.
   /// [data]: Data for routing.
   const RouteQuery(
-      {bool fullscreen = false, bool immediately = false, IDataDocument data})
+      {bool fullscreen = false,
+      bool immediately = false,
+      IDataDocument document,
+      Map<String, dynamic> data})
       : this._fullscreen = fullscreen,
         this._immediately = immediately,
+        this._document = document,
         this._data = data;
 
   /// View the page as a full screen.

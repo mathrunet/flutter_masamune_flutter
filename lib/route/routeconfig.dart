@@ -84,8 +84,11 @@ class RouteConfig {
       RouteQuery query = settings.arguments as RouteQuery;
       document = TemporaryDocument();
       document.clear();
-      query._data?.forEach((key, value) {
+      query._document?.forEach((key, value) {
         document[key] = value.data;
+      });
+      query._data?.forEach((key, value) {
+        document[key] = value;
       });
       if (query._fullscreen) document["fullscreen"] = true;
       if (query._immediately) document["immediately"] = true;
@@ -140,8 +143,11 @@ class RouteConfig {
         RouteQuery query = settings.arguments as RouteQuery;
         document = TemporaryDocument();
         document.clear();
-        query._data?.forEach((key, value) {
+        query._document?.forEach((key, value) {
           document[key] = value.data;
+        });
+        query._data?.forEach((key, value) {
+          document[key] = value;
         });
         if (query._fullscreen) document["fullscreen"] = true;
         if (query._immediately) document["immediately"] = true;
