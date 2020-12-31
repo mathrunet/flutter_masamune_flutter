@@ -69,7 +69,6 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
   TextEditingController _controller;
   TextEditingController get _effectiveController =>
       widget.controller ?? _controller;
-  TextEditingController _innerController;
 
   final LayerLink _layerLink = LayerLink();
   @override
@@ -77,13 +76,6 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
     super.initState();
     this._controller = this.widget.controller ?? TextEditingController();
     this._effectiveController.addListener(this._listener);
-    this._innerController = TextEditingController();
-    this._innerController.addListener(this._innterListener);
-  }
-
-  void _innterListener() {
-    if (this._effectiveController.text == this._innerController.text) return;
-    this._effectiveController.text = this._innerController.text;
   }
 
   @override
@@ -107,8 +99,6 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
     if (this._effectiveController == null) return;
     if (this.widget.items == null || this.widget.items.length <= 0) return;
     String search = this._effectiveController.text;
-    if (search != this._innerController.text)
-      this._effectiveController.text = search;
     List<String> wordList = search == null ? [] : search.split(Const.space);
     if (!this.widget.items.any((element) =>
         isNotEmpty(element) &&
@@ -122,7 +112,6 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
   @override
   void dispose() {
     super.dispose();
-    this._innerController.dispose();
     this._effectiveController.removeListener(this._listener);
   }
 
@@ -145,7 +134,7 @@ class _SuggestionOverlayBuilderState extends State<SuggestionOverlayBuilder> {
         },
         child: CompositedTransformTarget(
             link: this._layerLink,
-            child: this.widget.builder(context, this._innerController, () {
+            child: this.widget.builder(context, this._effectiveController, () {
               if (this.widget.showOnTap) this._updateOverlay();
               if (this.widget.onTap != null) this.widget.onTap();
             })));
