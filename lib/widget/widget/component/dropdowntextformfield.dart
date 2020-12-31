@@ -16,7 +16,6 @@ class DropdownTextFormField extends StatefulWidget {
   final InputDecoration decoration;
   final void Function(String) onSaved;
   final String Function(String) validator;
-  final bool autovalidate;
   final bool enabled;
   final Widget disabledHint;
   final int elevation;
@@ -51,7 +50,6 @@ class DropdownTextFormField extends StatefulWidget {
       this.onSaved,
       this.enabled = true,
       this.validator,
-      this.autovalidate = false,
       this.disabledHint,
       this.elevation = 8,
       this.style,

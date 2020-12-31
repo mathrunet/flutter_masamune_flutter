@@ -25,6 +25,7 @@ part 'formitembuilder.dart';
 part 'formitemdatetimefield.dart';
 part 'formitemdropdownfield.dart';
 part 'formitemdropdownbutton.dart';
+part 'formitemsimplechips.dart';
 part 'formitemdynamiclabeleddropdownfield.dart';
 part 'formitemheadline.dart';
 part 'formitemimage.dart';
@@ -41,5 +42,6 @@ part 'uipagechangeemail.dart';
 part 'uipagechangepassword.dart';
 part 'formitemselectbuilder.dart';
 part 'formitemfullscreen.dart';
+part 'uisimpleformdialog.dart';
 
 part 'uihookpageform.dart';

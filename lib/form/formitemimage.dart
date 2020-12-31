@@ -25,7 +25,6 @@ class FormItemImage extends FormField<String> {
   /// [icon]: Icon if you have not uploaded an image.
   /// [onSaved]: Processing when saved.
   /// [validator]: Processing when validated.
-  /// [autovalidate]: True to automatically validate.
   /// [enabled]: True to enable.
   /// [dense]: True for dense.
   FormItemImage(
@@ -38,7 +37,6 @@ class FormItemImage extends FormField<String> {
       void onSaved(String value),
       String validator(String value),
       String initialURI,
-      bool autovalidate = false,
       bool enabled = true})
       : super(
             key: key,
@@ -47,7 +45,6 @@ class FormItemImage extends FormField<String> {
             },
             onSaved: onSaved,
             validator: validator,
-            autovalidate: autovalidate,
             initialValue: initialURI,
             enabled: enabled);
 

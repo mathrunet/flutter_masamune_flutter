@@ -80,7 +80,6 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
               prefix: this.prefix,
               suffix: this.suffix,
             ),
-            autovalidate: false,
             validator: (value) {
               if (!this.allowEmpty && isEmpty(value)) return this.hintText;
               return null;

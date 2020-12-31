@@ -29,7 +29,6 @@ class FormItemBuilder<TController extends Object> extends FormField<String> {
       void onSaved(String value),
       String validator(String value),
       String initialURI,
-      bool autovalidate = false,
       bool enabled = true})
       : this._builder = builder,
         super(
@@ -39,7 +38,6 @@ class FormItemBuilder<TController extends Object> extends FormField<String> {
             },
             onSaved: onSaved,
             validator: validator,
-            autovalidate: autovalidate,
             initialValue: initialURI,
             enabled: enabled);
 

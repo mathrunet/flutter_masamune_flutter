@@ -29,7 +29,6 @@ class FormItemSelectBuilder extends FormField<String> {
       Key key,
       void onSaved(String value),
       String validator(String value),
-      bool autovalidate = false,
       bool enabled = true})
       : this._builder = builder,
         super(

@@ -72,7 +72,6 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
                       enabledBorder: InputBorder.none,
                       prefix: this.prefix,
                       suffix: this.suffix),
-                  autovalidate: false,
                   onChanged: (value) {
                     if (this.onChanged != null) this.onChanged(value);
                   },

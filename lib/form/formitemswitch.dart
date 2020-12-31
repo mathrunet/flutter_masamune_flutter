@@ -29,7 +29,6 @@ class FormItemSwitch extends FormField<bool> {
       void onSaved(bool value),
       String validator(bool value),
       bool initialValue,
-      bool autovalidate = false,
       bool enabled = true})
       : super(
             key: key,
@@ -38,7 +37,6 @@ class FormItemSwitch extends FormField<bool> {
             },
             onSaved: onSaved,
             validator: validator,
-            autovalidate: autovalidate,
             initialValue: initialValue,
             enabled: enabled);
   @override

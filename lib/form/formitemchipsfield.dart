@@ -69,7 +69,6 @@ class FormItemChipsField extends FormField<String> {
     void onSaved(List<String> value),
     String validator(String value),
     String initialURI,
-    bool autovalidate = false,
   })  : assert(separator != null),
         assert(findSuggestions != null || initialItems != null),
         super(
@@ -81,7 +80,6 @@ class FormItemChipsField extends FormField<String> {
               onSaved?.call(value.split(separator));
             },
             validator: validator,
-            autovalidate: autovalidate,
             initialValue: initialURI,
             enabled: enabled);
 

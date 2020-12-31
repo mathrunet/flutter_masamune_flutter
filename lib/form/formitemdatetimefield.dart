@@ -174,7 +174,6 @@ class _FormItemDateTimeFieldState extends State<FormItemDateTimeField> {
           obscureText: this.widget.obscureText,
           readOnly: this.widget.readOnly,
           format: this.widget.format,
-          autovalidate: false,
           validator: (value) {
             if (!this.widget.allowEmpty && isEmpty(value))
               return this.widget.hintText;

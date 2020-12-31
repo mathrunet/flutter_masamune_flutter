@@ -209,7 +209,6 @@ class _FormItemDynamicLabeledDropdownFieldState
                       ),
                       obscureText: this.widget.obscureText,
                       readOnly: this.widget.readOnly,
-                      autovalidate: false,
                       onTap: this.widget.enabled ? onTap : null,
                       validator: (value) {
                         if (!this.widget.allowEmpty && isEmpty(value)) {
@@ -269,7 +268,6 @@ class _FormItemDynamicLabeledDropdownFieldState
                                   disabledBorder: InputBorder.none,
                                   focusedBorder: InputBorder.none,
                                   enabledBorder: InputBorder.none),
-                              autovalidate: false,
                               onChanged: (value) {
                                 if (this.widget.onChanged != null)
                                   this.widget.onChanged(

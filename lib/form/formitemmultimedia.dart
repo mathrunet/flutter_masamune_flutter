@@ -37,7 +37,6 @@ class FormItemMultiMedia extends FormField<String> {
       void onSaved(String value),
       String validator(String value),
       String initialJson,
-      bool autovalidate = false,
       bool enabled = true})
       : this.size = Size(height - 20, height - 20),
         this._builder = builder,
@@ -48,7 +47,6 @@ class FormItemMultiMedia extends FormField<String> {
             },
             onSaved: onSaved,
             validator: validator,
-            autovalidate: autovalidate,
             initialValue: initialJson,
             enabled: enabled);
 

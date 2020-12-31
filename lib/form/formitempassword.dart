@@ -122,7 +122,6 @@ class _FormItemPasswordState extends State<FormItemPassword> {
           style: TextStyle(color: this.widget.color),
           obscureText: true,
           readOnly: false,
-          autovalidate: false,
           validator: (value) {
             if (!this.widget.allowEmpty && isEmpty(value)) {
               return this.widget.hintText;
@@ -205,7 +204,6 @@ class _FormItemPasswordState extends State<FormItemPassword> {
             style: TextStyle(color: this.widget.color),
             obscureText: true,
             readOnly: false,
-            autovalidate: false,
             validator: (value) {
               if (!this.widget.allowEmpty && isEmpty(value)) {
                 return this.widget.hintText;

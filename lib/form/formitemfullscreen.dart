@@ -39,7 +39,6 @@ class FormItemFullScreen<T extends Object> extends FormField<T> {
       void onSaved(T value),
       String validator(T value),
       T initialValue,
-      bool autovalidate = false,
       bool enabled = true})
       : super(
             key: key,
@@ -48,7 +47,6 @@ class FormItemFullScreen<T extends Object> extends FormField<T> {
             },
             onSaved: onSaved,
             validator: validator,
-            autovalidate: autovalidate,
             initialValue: initialValue,
             enabled: enabled);
 
@@ -156,7 +154,6 @@ class _FormItemFullScreenState<T extends Object> extends FormFieldState<T> {
             style: TextStyle(color: this.widget.color),
             obscureText: this.widget.obscureText,
             readOnly: true,
-            autovalidate: false,
             onTap: this.widget.enabled && isNotEmpty(this.widget.path)
                 ? () async {
                     final res = await context.navigator.pushNamed(

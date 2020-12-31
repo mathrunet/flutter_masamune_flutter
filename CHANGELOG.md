@@ -1,3 +1,7 @@
+## [0.5.5] - Update README (2020.11.30)
+
+* Added multiple widgets.
+
 ## [0.5.4] - Update README (2020.11.30)
 
 * Added multiple widgets.

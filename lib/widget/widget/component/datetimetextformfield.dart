@@ -96,7 +96,6 @@ class DateTimeTextFormField extends StatelessWidget {
     this.onSaved,
     this.validator,
     this.initialValue,
-    this.autovalidate = false,
     this.enabled = true,
     this.resetIcon = const Icon(Icons.close),
     this.onChanged,
@@ -142,7 +141,6 @@ class DateTimeTextFormField extends StatelessWidget {
   final FormFieldSetter<DateTime> onSaved;
   final FormFieldValidator<DateTime> validator;
   final DateTime initialValue;
-  final bool autovalidate;
   final bool enabled;
   final InputDecoration decoration;
   final TextInputType keyboardType;
@@ -179,7 +177,6 @@ class DateTimeTextFormField extends StatelessWidget {
         onSaved: this.onSaved,
         validator: this.validator,
         initialValue: this.initialValue,
-        autovalidate: this.autovalidate,
         enabled: this.enabled,
         resetIcon: this.resetIcon,
         onChanged: this.onChanged,
