@@ -19,6 +19,17 @@ mixin UIPageDataMixin on Widget {
   bool get additional => this.data?.getBool("additional") ?? false;
 
   /// The data passed to this page.
-  IDataDocument get data =>
-      PathMap.get<IDataDocument>(DefaultPath.pageData) ?? TemporaryDocument();
+  IDataDocument get data {
+    try {
+      final context = useContext();
+      if (context != null) {
+        final data = ModalRoute.of(context)?.settings?.arguments;
+        if (data is IDataDocument) {
+          return data;
+        }
+      }
+    } catch (e) {}
+    return PathMap.get<IDataDocument>(DefaultPath.pageData) ??
+        TemporaryDocument();
+  }
 }
