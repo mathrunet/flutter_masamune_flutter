@@ -1,6 +1,6 @@
 part of masamune.form;
 
-class UIPageChangeEmail extends UIHookPageForm {
+class UIPageChangeEmail extends UIPageForm {
   /// Page title.
   @protected
   String get title => "Change Email".localize();

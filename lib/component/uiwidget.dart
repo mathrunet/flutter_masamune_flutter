@@ -8,8 +8,10 @@ part of masamune.flutter;
 ///
 /// In that case, the value can be obtained instantly by using [value.text()] or [value.read())].
 abstract class UIWidget extends StatefulWidget {
+  final BuildEvent _init;
+  final BuildEvent _didInit;
   final BuildEvent _load;
-  final BuildEvent _unload;
+  final BuildEvent _dispose;
   final WidgetBuilder _child;
   final BuildEvent _pause;
   final BuildEvent _unpause;
@@ -19,7 +21,6 @@ abstract class UIWidget extends StatefulWidget {
   final BuildEvent _didPop;
   final BuildEvent _didPopNext;
   final ValidateEvent _validateOnLoad;
-  final List Function(BuildContext context) _provider;
   final bool Function(BuildContext context) _rebuildable;
 
   /// Abstract class of widget including listening function equivalent to UIValue.
@@ -47,8 +48,10 @@ abstract class UIWidget extends StatefulWidget {
   /// [validateOnLoad]: Verification callback before loading.
   const UIWidget(
       {Key key,
+      BuildEvent init,
+      BuildEvent didInit,
       BuildEvent load,
-      BuildEvent unload,
+      BuildEvent dispose,
       BuildEvent pause,
       BuildEvent unpause,
       BuildEvent quit,
@@ -57,11 +60,12 @@ abstract class UIWidget extends StatefulWidget {
       BuildEvent didPopNext,
       BuildEvent didPushNext,
       ValidateEvent validateOnLoad,
-      List provider(BuildContext context),
       bool rebuildable(BuildContext context),
       WidgetBuilder child})
-      : this._load = load,
-        this._unload = unload,
+      : this._init = init,
+        this._didInit = didInit,
+        this._load = load,
+        this._dispose = dispose,
         this._pause = pause,
         this._unpause = unpause,
         this._quit = quit,
@@ -71,7 +75,6 @@ abstract class UIWidget extends StatefulWidget {
         this._didPushNext = didPushNext,
         this._validateOnLoad = validateOnLoad,
         this._child = child,
-        this._provider = provider,
         this._rebuildable = rebuildable,
         super(key: key);
 
@@ -90,6 +93,24 @@ abstract class UIWidget extends StatefulWidget {
   @protected
   Widget build(BuildContext context) => null;
 
+  /// Executed when the widget is initialized.
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @protected
+  @mustCallSuper
+  void onInit(BuildContext context) {}
+
+  /// Executed after the widget is initialized.
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @protected
+  @mustCallSuper
+  void onDidInit(BuildContext context) {}
+
   /// Executed when the widget is loaded.
   ///
   /// Override and use.
@@ -99,14 +120,14 @@ abstract class UIWidget extends StatefulWidget {
   @mustCallSuper
   void onLoad(BuildContext context) {}
 
-  /// Executed when the widget is unloaded.
+  /// Executed when the widget is disposed.
   ///
   /// Override and use.
   ///
   /// [context]: Build context.
   @protected
   @mustCallSuper
-  void onUnload(BuildContext context) {}
+  void onDispose(BuildContext context) {}
 
   /// Executed when the widget is pause.
   ///
@@ -134,17 +155,6 @@ abstract class UIWidget extends StatefulWidget {
   @protected
   @mustCallSuper
   void onQuit(BuildContext context) {}
-
-  /// [provider]: Save the object to UIValue.
-  ///
-  /// The saved value is getting by [context.consume<T>].
-  ///
-  /// Override and use.
-  ///
-  /// [context]: Build context.
-  @protected
-  @mustCallSuper
-  List provider(BuildContext context) => [];
 
   /// Determines whether to build.
   ///
@@ -207,6 +217,30 @@ abstract class UIWidget extends StatefulWidget {
 /// Normally not used,
 /// but if you want to use it with UIWidget inheritance, inherit it and use it.
 class UIWidgetState<T extends UIWidget> extends State<T> {
+  /// Executed when the widget is initialized.
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @protected
+  @mustCallSuper
+  void onInit(BuildContext context) {
+    if (this.widget._init != null) this.widget._init(context);
+    this.widget.onInit(context);
+  }
+
+  /// Executed after the widget is initialized.
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @protected
+  @mustCallSuper
+  void onDidInit(BuildContext context) {
+    if (this.widget._didInit != null) this.widget._didInit(context);
+    this.widget.onDidInit(context);
+  }
+
   /// Executed when the widget is loaded.
   ///
   /// Override and use.
@@ -219,22 +253,27 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
     this.widget.onLoad(context);
   }
 
-  /// Executed when the widget is unloaded.
+  /// Executed when the widget is disposed.
   ///
   /// Override and use.
   ///
   /// [context]: Build context.
   @protected
   @mustCallSuper
-  void onUnload(BuildContext context) {
-    if (this.widget._unload != null) this.widget._unload(context);
-    this.widget.onUnload(context);
+  void onDispose(BuildContext context) {
+    if (this.widget._dispose != null) this.widget._dispose(context);
+    this.widget.onDispose(context);
   }
 
   Widget _build(BuildContext context) {
-    if (this._cache != null && !this.rebuildable(context)) {
-      this._notifyObject = null;
-      return this._cache;
+    if (this._cache != null) {
+      if (!this.rebuildable(context)) {
+        this._notifyObject = null;
+        return this._cache;
+      } else if (!this.enabled) {
+        this._willUpdate = true;
+        return this._cache;
+      }
     }
     if (this._notifyObject is IPath) {
       Log.ast("Rebuild widget: %s (%s) (%s) %d by %s (%s)", [
@@ -302,22 +341,6 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
   void onQuit(BuildContext context) {
     if (this.widget._quit != null) this.widget._quit(context);
     this.widget.onQuit(context);
-  }
-
-  /// [provider]: Save the object to UIValue.
-  ///
-  /// The saved value is getting by [context.consume<T>].
-  ///
-  /// Override and use.
-  ///
-  /// [context]: Build context.
-  @protected
-  @mustCallSuper
-  List provider(BuildContext context) {
-    return [
-      ...this.widget.provider(context),
-      if (this.widget._provider != null) ...this.widget._provider(context)
-    ];
   }
 
   /// Determines whether to build.
@@ -452,7 +475,7 @@ class _UIWidgetScope extends InheritedWidget {
   }
 }
 
-class _UIWidgetContainer extends StatefulWidget {
+class _UIWidgetContainer extends StatefulHookWidget {
   final UIWidgetState _parent;
   _UIWidgetContainer(UIWidgetState parent) : this._parent = parent;
   @override
@@ -468,6 +491,12 @@ class _UIWidgetContainerState extends State<_UIWidgetContainer>
   @override
   Widget build(BuildContext context) {
     if (!this._parent._loaded) return Container();
+    this._parent.onLoad(this.context);
+    String error = this._parent.validateOnLoad(this.context);
+    if (isNotEmpty(error)) {
+      UIDialog.show(this.context, text: error);
+      return Container();
+    }
     return this._parent._build(context);
   }
 
@@ -475,20 +504,7 @@ class _UIWidgetContainerState extends State<_UIWidgetContainer>
   void initState() {
     super.initState();
     this._parent._value._container = this;
-    List provided = this._parent.provider(this.context);
-    for (dynamic tmp in provided) {
-      if (tmp == null) continue;
-      Type type = tmp.runtimeType;
-      if (this._parent._value._provided.containsKey(type)) continue;
-      this._parent._value._provided[type] = tmp;
-    }
-    if (this._parent.validateOnLoad != null) {
-      String error = this._parent.validateOnLoad(this.context);
-      if (isNotEmpty(error)) {
-        UIDialog.show(this.context, text: error);
-        return;
-      }
-    }
+    this._parent.onInit(this.context);
     this._parent._loaded = true;
     if (this._parent.onLoad != null) this._parent.onLoad(this.context);
     if (this._parent.onPause != null ||
@@ -496,12 +512,15 @@ class _UIWidgetContainerState extends State<_UIWidgetContainer>
         this._parent.onQuit != null) {
       WidgetsBinding.instance.addObserver(this);
     }
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
+      this._parent.onDidInit(this.context);
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
-    if (this._parent.onUnload != null) this._parent.onUnload(this.context);
+    this._parent.onDispose(this.context);
     WidgetsBinding.instance.removeObserver(this);
     UIValue.routeObserver.unsubscribe(this);
     this._parent._value._dispose();

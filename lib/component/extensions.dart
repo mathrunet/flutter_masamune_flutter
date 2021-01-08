@@ -341,15 +341,6 @@ extension BuildContextExtension on BuildContext {
     return value.exists(path);
   }
 
-  /// Get the object given by [provider].
-  ///
-  /// Be sure to define the type.
-  T consume<T extends Object>() {
-    UIValue value = UIValue.of(this);
-    if (value == null) return null;
-    return value.consume<T>();
-  }
-
   /// True if the next data is available.
   ///
   /// The next data is acquired by [next()].

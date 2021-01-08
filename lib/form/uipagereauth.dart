@@ -1,6 +1,6 @@
 part of masamune.form;
 
-class UIPageReAuth extends UIHookPageForm {
+class UIPageReAuth extends UIPageForm {
   /// Page title.
   @protected
   String get title => "Reauthentication".localize();

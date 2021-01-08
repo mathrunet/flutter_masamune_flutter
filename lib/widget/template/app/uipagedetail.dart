@@ -2,7 +2,7 @@ import 'package:masamune_flutter/masamune_flutter.dart';
 import 'package:flutter/material.dart';
 
 /// Detail Page Template.
-abstract class UIHookPageDetail extends UIHookPageScaffold {
+abstract class UIPageDetail extends UIPageScaffold {
   /// Detailed data documentation.
   IDataDocument get document;
 

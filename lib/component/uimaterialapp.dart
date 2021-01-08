@@ -5,7 +5,7 @@ class UIMaterialApp extends UIWidget {
   /// Widget which extended [MaterialApp] for Path.
   UIMaterialApp(
       {BuildEvent load,
-      BuildEvent unload,
+      BuildEvent dispose,
       BuildEvent pause,
       BuildEvent unpause,
       BuildEvent quit,
@@ -38,7 +38,7 @@ class UIMaterialApp extends UIWidget {
       bool debugShowCheckedModeBanner = true})
       : super(
             load: load,
-            unload: unload,
+            dispose: dispose,
             pause: (context) {
               if (pause != null) pause(context);
               PathMap.onApplicationPause(true);
@@ -73,8 +73,7 @@ class UIMaterialApp extends UIWidget {
                       navigatorObservers: [
                         if (navigatorObservers != null) ...navigatorObservers,
                         UIRouteObserver(),
-                        UIValue.routeObserver,
-                        UIHookWidget.routeObserver,
+                        UIValue.routeObserver
                       ],
                       builder: null,
                       title: title,

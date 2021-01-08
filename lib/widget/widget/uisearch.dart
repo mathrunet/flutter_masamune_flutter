@@ -24,8 +24,8 @@ class UISearch extends UIWidget {
   /// [context]: Build context.
   @override
   @mustCallSuper
-  void onUnload(BuildContext context) {
-    super.onUnload(context);
+  void onDispose(BuildContext context) {
+    super.onDispose(context);
     if (isEmpty(this.searchPath)) return;
     DataField(this.searchPath, Const.empty);
   }

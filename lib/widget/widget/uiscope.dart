@@ -18,7 +18,7 @@ class UIScope extends UIWidget {
   /// In that case, the value can be obtained instantly by using [value.text()] or [value.read())].
   ///
   /// [load]: Callback for widget loading.
-  /// [unload]: Callback for Widget unloading.
+  /// [dispose]: Callback for Widget unloading.
   /// [child]: Callback when creating a widget.
   /// [pause]: Callback for Application paused.
   /// [unpause]: Callback for Application unpaused.
@@ -28,7 +28,9 @@ class UIScope extends UIWidget {
   /// [rebuildable]: Callback to determine if build is possible.
   const UIScope(
       {BuildEvent load,
-      BuildEvent unload,
+      BuildEvent init,
+      BuildEvent didInit,
+      BuildEvent dispose,
       BuildEvent pause,
       BuildEvent unpause,
       BuildEvent quit,
@@ -37,11 +39,12 @@ class UIScope extends UIWidget {
       @required WidgetBuilder child})
       : super(
             load: load,
-            unload: unload,
+            init: init,
+            didInit: didInit,
+            dispose: dispose,
             pause: pause,
             unpause: unpause,
             quit: quit,
-            provider: provider,
             rebuildable: rebuildable,
             child: child);
 }

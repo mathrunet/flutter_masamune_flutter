@@ -1,6 +1,6 @@
 part of masamune.form;
 
-class UIPageChangePassword extends UIHookPageForm {
+class UIPageChangePassword extends UIPageForm {
   /// Page title.
   @protected
   String get title => "Change Password".localize();

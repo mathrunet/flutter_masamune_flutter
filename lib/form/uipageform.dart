@@ -1,53 +1,37 @@
 part of masamune.form;
 
 /// Template for creating form pages.
-abstract class UIPageForm extends UIPageScaffold
-    with UIFormMixin, UITextFieldControllerMixin {
-  /// Executed when the widget is loaded.
-  ///
-  /// Override and use.
-  ///
-  /// [context]: Build context.
-  @override
-  @mustCallSuper
-  void onLoad(BuildContext context) {
-    super.onLoad(context);
-    this.init(this.define(context), document: this.loader(context));
-  }
-
+abstract class UIPageForm extends UIPageScaffold with UIPageFormMixin {
   /// Creating a floating action button.
   ///
   /// [context]: Build context.
   @override
   Widget floatingActionButton(BuildContext context) {
     return FloatingActionButton(
-        onPressed: () => this.onSubmit(context),
+        onPressed: () {
+          if (this.autoValidate && !this.validate(context)) return;
+          this.onSubmit(context, this.form);
+        },
         child: Icon(this.floatingActionButtonIcon));
   }
+
+  /// Automatic verification.
+  bool get autoValidate => true;
 
   /// What happens when a form is submitted.
   ///
   /// [context]: Build context.
-  void onSubmit(BuildContext context);
+  /// [form]: Form data.
+  void onSubmit(BuildContext context, IDataDocument form);
 
   /// FAB icon definition.
   IconData get floatingActionButtonIcon => Icons.check;
 
-  /// Initial definition of the controller.
-  ///
-  /// [context]: Build context.
-  Map<String, String> define(BuildContext context);
-
-  /// Data load.
-  ///
-  /// [context]: Build context.
-  FutureOr<IDataDocument> loader(BuildContext context);
-
   /// Form body definition.
   ///
   /// [context]: Build context.
-  List<Widget> formBody(BuildContext context,
-      Map<String, TextEditingController> controller, IDataDocument form);
+  /// [form]: Form data.
+  List<Widget> formBody(BuildContext context, IDataDocument form);
 
   /// Set the form type.
   ///
@@ -63,9 +47,10 @@ abstract class UIPageForm extends UIPageScaffold
   @override
   Widget body(BuildContext context) {
     return FormBuilder(
-        type: this.formType,
-        key: this.formKey,
-        padding: this.formPadding,
-        children: this.formBody(context, this.controllers, this.form));
+      type: this.formType,
+      key: this.formKey,
+      padding: this.formPadding,
+      children: this.formBody(context, this.form),
+    );
   }
 }

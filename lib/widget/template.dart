@@ -22,4 +22,4 @@ export 'template/uiinternalpagescaffold.dart';
 export 'template/uihookpagetabscaffold.dart';
 export 'template/app/uihookpagesliverlist.dart';
 export 'template/app/uihookpagesearch.dart';
-export 'template/app/uihookpagedetail.dart';
+// export 'template/app/uihookpagedetail.dart';

@@ -1,3 +1,7 @@
+## [0.6.0] - Update README (2021.01.07)
+
+* Hook and InheritWidget are integrated.
+
 ## [0.5.5] - Update README (2020.11.30)
 
 * Added multiple widgets.

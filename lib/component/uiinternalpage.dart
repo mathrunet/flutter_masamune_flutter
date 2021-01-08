@@ -3,7 +3,7 @@ part of masamune.flutter;
 /// Used to display a page within a page.
 ///
 /// Please inherit and use it.
-abstract class UIInternalPage extends UIHookPage {
+abstract class UIInternalPage extends UIPage {
   /// Route monitoring observer.
   final InternalNavigatorObserver routeObserver = InternalNavigatorObserver();
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
@@ -125,7 +125,7 @@ class _UIInternalPageState extends State<UIInternalPage>
     super.didChangeDependencies();
     this._parent = _UIInternalPageScope.of(context);
     ModalRoute route = ModalRoute.of(this.context);
-    if (route != null) UIHookWidget.routeObserver.subscribe(this, route);
+    if (route != null) UIValue.routeObserver.subscribe(this, route);
     this._parent?._addDidPushListener(this.didPush);
     this._parent?._addDidPopNextListener(this._didPopNextInternal);
     this._parent?._addDidPushNextListener(this.didPushNext);
@@ -137,7 +137,7 @@ class _UIInternalPageState extends State<UIInternalPage>
     this.widget._dispose?.call(context);
     this.widget.onDispose(context);
     WidgetsBinding.instance.removeObserver(this);
-    UIHookWidget.routeObserver.unsubscribe(this);
+    UIValue.routeObserver.unsubscribe(this);
     this._parent?._removeDidPushListener(this.didPush);
     this._parent?._removeDidPopNextListener(this._didPopNextInternal);
     this._parent?._removeDidPushNextListener(this.didPushNext);
