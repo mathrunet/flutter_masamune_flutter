@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 
 /// Builder to create widgets that allow you to switch to full screen.
 class FullScreenBuilder extends StatefulWidget {
+  /// Use media queries to determine orientation.
+  final bool useMediaQuery;
+
   /// The aspect ratio of the elements that make it full screen.
   final double aspectRatio;
 
@@ -34,10 +37,12 @@ class FullScreenBuilder extends StatefulWidget {
   /// [bottom]: Elements to be displayed when not in full screen.
   /// [defaultOrientations]: The orientation of the device under normal conditions.
   /// [fullscreenOrientations]: The orientation of the device while in full screen.
+  /// [useMediaQuery]: Use media queries to determine orientation.
   FullScreenBuilder(
       {this.aspectRatio = 1,
       this.backgroundColor,
       @required this.foreground,
+      this.useMediaQuery = false,
       this.defaultOrientations = const [
         DeviceOrientation.landscapeLeft,
         DeviceOrientation.landscapeRight,
@@ -61,6 +66,9 @@ class _FullStreenBuilderState extends State<FullScreenBuilder> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, oriantation) {
+        if (this.widget.useMediaQuery) {
+          oriantation = MediaQuery.of(context).orientation;
+        }
         bool fullscreen = oriantation == Orientation.landscape;
         return Column(children: [
           Container(

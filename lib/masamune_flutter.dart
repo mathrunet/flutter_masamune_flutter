@@ -61,4 +61,5 @@ part 'route/uirouteobserver.dart';
 part 'animation/uianimatorscenario.dart';
 part 'animation/uianimatorunit.dart';
 
-part 'hooks/uipagedocument.dart';
+part 'hooks/pagedocumenthook.dart';
+part 'hooks/pathhook.dart';
