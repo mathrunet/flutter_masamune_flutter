@@ -8,9 +8,9 @@ part of masamune.flutter;
 ///
 /// In that case, the value can be obtained instantly by using [value.text()] or [value.read())].
 abstract class UIWidget extends StatefulWidget {
-  final BuildEvent _init;
-  final BuildEvent _didInit;
+  final BuildEvent _didLoad;
   final BuildEvent _load;
+  final BuildEvent _hook;
   final BuildEvent _dispose;
   final WidgetBuilder _child;
   final BuildEvent _pause;
@@ -33,6 +33,8 @@ abstract class UIWidget extends StatefulWidget {
   ///
   /// [key]: Widget key.
   /// [load]: Callback for widget loading.
+  /// [didLoad]: Callback for widget loaded.
+  /// [hook]: Callback for widget hooking.
   /// [unload]: Callback for Widget unloading.
   /// [child]: Callback when creating a widget.
   /// [pause]: Callback for Application paused.
@@ -48,13 +50,13 @@ abstract class UIWidget extends StatefulWidget {
   /// [validateOnLoad]: Verification callback before loading.
   const UIWidget(
       {Key key,
-      BuildEvent init,
-      BuildEvent didInit,
+      BuildEvent didLoad,
       BuildEvent load,
       BuildEvent dispose,
       BuildEvent pause,
       BuildEvent unpause,
       BuildEvent quit,
+      BuildEvent hook,
       BuildEvent didPop,
       BuildEvent didPush,
       BuildEvent didPopNext,
@@ -62,9 +64,9 @@ abstract class UIWidget extends StatefulWidget {
       ValidateEvent validateOnLoad,
       bool rebuildable(BuildContext context),
       WidgetBuilder child})
-      : this._init = init,
-        this._didInit = didInit,
+      : this._didLoad = didLoad,
         this._load = load,
+        this._hook = hook,
         this._dispose = dispose,
         this._pause = pause,
         this._unpause = unpause,
@@ -93,24 +95,6 @@ abstract class UIWidget extends StatefulWidget {
   @protected
   Widget build(BuildContext context) => null;
 
-  /// Executed when the widget is initialized.
-  ///
-  /// Override and use.
-  ///
-  /// [context]: Build context.
-  @protected
-  @mustCallSuper
-  void onInit(BuildContext context) {}
-
-  /// Executed after the widget is initialized.
-  ///
-  /// Override and use.
-  ///
-  /// [context]: Build context.
-  @protected
-  @mustCallSuper
-  void onDidInit(BuildContext context) {}
-
   /// Executed when the widget is loaded.
   ///
   /// Override and use.
@@ -119,6 +103,24 @@ abstract class UIWidget extends StatefulWidget {
   @protected
   @mustCallSuper
   void onLoad(BuildContext context) {}
+
+  /// Executed after the widget is initialized.
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @protected
+  @mustCallSuper
+  void onDidLoad(BuildContext context) {}
+
+  /// Executed when the widget is hooking.
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @protected
+  @mustCallSuper
+  void onHook(BuildContext context) {}
 
   /// Executed when the widget is disposed.
   ///
@@ -217,18 +219,6 @@ abstract class UIWidget extends StatefulWidget {
 /// Normally not used,
 /// but if you want to use it with UIWidget inheritance, inherit it and use it.
 class UIWidgetState<T extends UIWidget> extends State<T> {
-  /// Executed when the widget is initialized.
-  ///
-  /// Override and use.
-  ///
-  /// [context]: Build context.
-  @protected
-  @mustCallSuper
-  void onInit(BuildContext context) {
-    if (this.widget._init != null) this.widget._init(context);
-    this.widget.onInit(context);
-  }
-
   /// Executed after the widget is initialized.
   ///
   /// Override and use.
@@ -236,9 +226,9 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
   /// [context]: Build context.
   @protected
   @mustCallSuper
-  void onDidInit(BuildContext context) {
-    if (this.widget._didInit != null) this.widget._didInit(context);
-    this.widget.onDidInit(context);
+  void onDidLoad(BuildContext context) {
+    if (this.widget._didLoad != null) this.widget._didLoad(context);
+    this.widget.onDidLoad(context);
   }
 
   /// Executed when the widget is loaded.
@@ -251,6 +241,18 @@ class UIWidgetState<T extends UIWidget> extends State<T> {
   void onLoad(BuildContext context) {
     if (this.widget._load != null) this.widget._load(context);
     this.widget.onLoad(context);
+  }
+
+  /// Executed when the widget is hooking.
+  ///
+  /// Override and use.
+  ///
+  /// [context]: Build context.
+  @protected
+  @mustCallSuper
+  void onHook(BuildContext context) {
+    if (this.widget._hook != null) this.widget._hook(context);
+    this.widget.onHook(context);
   }
 
   /// Executed when the widget is disposed.
@@ -491,12 +493,7 @@ class _UIWidgetContainerState extends State<_UIWidgetContainer>
   @override
   Widget build(BuildContext context) {
     if (!this._parent._loaded) return Container();
-    this._parent.onLoad(this.context);
-    String error = this._parent.validateOnLoad(this.context);
-    if (isNotEmpty(error)) {
-      UIDialog.show(this.context, text: error);
-      return Container();
-    }
+    this._parent.onHook(this.context);
     return this._parent._build(context);
   }
 
@@ -504,16 +501,20 @@ class _UIWidgetContainerState extends State<_UIWidgetContainer>
   void initState() {
     super.initState();
     this._parent._value._container = this;
-    this._parent.onInit(this.context);
+    this._parent.onLoad(this.context);
     this._parent._loaded = true;
-    if (this._parent.onLoad != null) this._parent.onLoad(this.context);
     if (this._parent.onPause != null ||
         this._parent.onUnpause != null ||
         this._parent.onQuit != null) {
       WidgetsBinding.instance.addObserver(this);
     }
     WidgetsBinding.instance.addPostFrameCallback((duration) {
-      this._parent.onDidInit(this.context);
+      String error = this._parent.validateOnLoad(this.context);
+      if (isNotEmpty(error)) {
+        UIDialog.show(this.context, text: error);
+        return;
+      }
+      this._parent.onDidLoad(this.context);
     });
   }
 

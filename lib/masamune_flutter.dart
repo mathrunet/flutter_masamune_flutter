@@ -52,6 +52,7 @@ part 'component/uiinternalpage.dart';
 part 'key/uivaluekey.dart';
 part 'key/uipagestoragekey.dart';
 
+part 'route/dataconfig.dart';
 part 'route/extensions.dart';
 part 'route/routeconfig.dart';
 part 'route/uipageroute.dart';
