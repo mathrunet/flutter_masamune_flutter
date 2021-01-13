@@ -18,29 +18,27 @@ class UIScope extends UIWidget {
   /// In that case, the value can be obtained instantly by using [value.text()] or [value.read())].
   ///
   /// [load]: Callback for widget loading.
+  /// [hook]: Callback for widget hooking.
+  /// [didLoad]: Callback for widget loaded.
   /// [dispose]: Callback for Widget unloading.
   /// [child]: Callback when creating a widget.
   /// [pause]: Callback for Application paused.
   /// [unpause]: Callback for Application unpaused.
   /// [quit]: Callback for Application quit.
-  /// [provider]: Save the object to UIValue.
-  /// The saved value is getting by [context.consume<T>].
   /// [rebuildable]: Callback to determine if build is possible.
   const UIScope(
       {BuildEvent load,
-      BuildEvent init,
-      BuildEvent didInit,
+      BuildEvent didLoad,
+      BuildEvent hook,
       BuildEvent dispose,
       BuildEvent pause,
       BuildEvent unpause,
       BuildEvent quit,
-      List provider(BuildContext context),
       bool rebuildable(BuildContext context),
       @required WidgetBuilder child})
       : super(
             load: load,
-            init: init,
-            didInit: didInit,
+            didLoad: didLoad,
             dispose: dispose,
             pause: pause,
             unpause: unpause,

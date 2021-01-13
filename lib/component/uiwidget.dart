@@ -477,19 +477,19 @@ class _UIWidgetScope extends InheritedWidget {
   }
 }
 
-class _UIWidgetContainer extends StatefulHookWidget {
-  final UIWidgetState _parent;
-  _UIWidgetContainer(UIWidgetState parent) : this._parent = parent;
+class _UIWidgetContainer<T extends UIWidgetState> extends StatefulHookWidget {
+  final T _parent;
+  _UIWidgetContainer(T parent) : this._parent = parent;
   @override
   State<StatefulWidget> createState() {
-    return _UIWidgetContainerState(this._parent);
+    return _UIWidgetContainerState<T>(this._parent);
   }
 }
 
-class _UIWidgetContainerState extends State<_UIWidgetContainer>
-    with WidgetsBindingObserver, RouteAware {
-  final UIWidgetState _parent;
-  _UIWidgetContainerState(UIWidgetState parent) : this._parent = parent;
+class _UIWidgetContainerState<T extends UIWidgetState>
+    extends State<_UIWidgetContainer> with WidgetsBindingObserver, RouteAware {
+  final T _parent;
+  _UIWidgetContainerState(T parent) : this._parent = parent;
   @override
   Widget build(BuildContext context) {
     if (!this._parent._loaded) return Container();

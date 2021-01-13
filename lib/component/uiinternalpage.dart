@@ -91,147 +91,28 @@ abstract class UIInternalPage extends UIPage {
   }
 }
 
-class _UIInternalPageState extends State<UIInternalPage>
-    with WidgetsBindingObserver, RouteAware {
-  /// True if the widget is valid.
+class _UIInternalPageState extends UIWidgetState<UIInternalPage> {
+  @override
   bool get enabled => this._enabled && (this._parent?.enabled ?? true);
-  bool _enabled = true;
-  bool _markRebuild = false;
   _UIInternalPageState _parent;
   List<void Function()> _didPushListener = [];
   List<void Function()> _didPopNextListener = [];
   List<void Function()> _didPushNextListener = [];
-  @override
-  void initState() {
-    super.initState();
-    this.widget._init?.call(this.context);
-    this.widget.onInit(this.context);
-    String error = this._validateOnLoad(this.context);
-    if (isNotEmpty(error)) {
-      UIDialog.show(this.context, text: error);
-      return;
-    }
-    WidgetsBinding.instance.addObserver(this);
-  }
 
-  String _validateOnLoad(BuildContext context) {
-    String error = this.widget._validateOnLoad?.call(context);
-    if (isNotEmpty(error)) return error;
-    return this.widget.validateOnLoad(this.context);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    this._parent = _UIInternalPageScope.of(context);
-    ModalRoute route = ModalRoute.of(this.context);
-    if (route != null) UIValue.routeObserver.subscribe(this, route);
-    this._parent?._addDidPushListener(this.didPush);
-    this._parent?._addDidPopNextListener(this._didPopNextInternal);
-    this._parent?._addDidPushNextListener(this.didPushNext);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    this.widget._dispose?.call(context);
-    this.widget.onDispose(context);
-    WidgetsBinding.instance.removeObserver(this);
-    UIValue.routeObserver.unsubscribe(this);
-    this._parent?._removeDidPushListener(this.didPush);
-    this._parent?._removeDidPopNextListener(this._didPopNextInternal);
-    this._parent?._removeDidPushNextListener(this.didPushNext);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.detached:
-        this.widget._quit?.call(this.context);
-        this.widget.onQuit(this.context);
-        break;
-      case AppLifecycleState.paused:
-        this.widget._pause?.call(this.context);
-        this.widget.onPause(this.context);
-        break;
-      case AppLifecycleState.resumed:
-        this.widget._unpause?.call(this.context);
-        this.widget.onUnpause(this.context);
-        break;
-      default:
-        break;
-    }
-  }
-
-  @override
-  void didPop() {
-    this.widget._didPop?.call(this.context);
-    this.widget.didPop(this.context);
-  }
-
-  @override
-  void didPopNext() {
-    this._enabled = true;
-    if (this._markRebuild) {
-      this.setState(() {});
-      this._markRebuild = false;
-    }
-    this._didPopNextListener.forEach((element) => element?.call());
-    this.widget._didPopNext?.call(this.context);
-    this.widget.didPopNext(this.context);
-  }
-
-  void _didPopNextInternal() {
-    this.didPopNext();
-    ModalRoute route = ModalRoute.of(this.context);
-    final data = route?.settings?.arguments;
-    if (data is IDataDocument) {
-      final document = DataDocument(DefaultPath.pageData);
-      document.clear();
-      for (MapEntry<String, IDataField> tmp in data.entries) {
-        if (isEmpty(tmp.key) || tmp.value == null || tmp.value.data == null)
-          continue;
-        document[tmp.key] = tmp.value.data;
-        PathTag.set(tmp.key, tmp.value.data.toString());
-      }
-    }
-  }
-
-  @override
-  void didPushNext() {
-    this._enabled = false;
-    this._didPushNextListener.forEach((element) => element?.call());
-    this.widget._didPushNext?.call(this.context);
-    this.widget.didPushNext(this.context);
-  }
-
-  @override
-  void didPush() {
-    this._enabled = true;
-    this._didPushListener.forEach((element) => element?.call());
-    this.widget._didPush?.call(this.context);
-    this.widget.didPush(this.context);
-  }
-
+  /// Callback for building.
+  ///
+  /// Do not override this method.
+  /// Please use [body] instead.
+  ///
+  /// [context]: Build context.
   @override
   Widget build(BuildContext context) {
-    this.widget._load?.call(this.context);
-    this.widget.onLoad(this.context);
-    String error = this._validateOnLoad(this.context);
-    if (isNotEmpty(error)) {
-      UIDialog.show(this.context, text: error);
-      return Container();
-    }
-    if (!this.enabled) this._markRebuild = true;
-    if (this.widget._child != null) {
-      return _UIInternalPageScope(
+    return _UIWidgetScope(
+      target: this,
+      child: _UIInternalPageScope(
         state: this,
-        child: this.widget._child(context),
-      );
-    }
-    return _UIInternalPageScope(
-      state: this,
-      child: this.widget.build(context),
+        child: _UIInternalWidgetContainer(this),
+      ),
     );
   }
 
@@ -263,6 +144,53 @@ class _UIInternalPageState extends State<UIInternalPage>
   void _removeDidPushNextListener(void Function() callback) {
     if (!this._didPushNextListener.contains(callback)) return;
     this._didPushNextListener.remove(callback);
+  }
+}
+
+class _UIInternalWidgetContainer
+    extends _UIWidgetContainer<_UIInternalPageState> {
+  _UIInternalWidgetContainer(_UIInternalPageState parent) : super(parent);
+  @override
+  State<StatefulWidget> createState() {
+    return _UIInternalWidgetContainerState(this._parent);
+  }
+}
+
+class _UIInternalWidgetContainerState
+    extends _UIWidgetContainerState<_UIInternalPageState> {
+  _UIInternalWidgetContainerState(_UIInternalPageState parent) : super(parent);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    this._parent?._parent = _UIInternalPageScope.of(context);
+    this._parent?._parent?._addDidPushListener(this.didPush);
+    this._parent?._parent?._addDidPopNextListener(this._didPopNextInternal);
+    this._parent?._parent?._addDidPushNextListener(this.didPushNext);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    this._parent?._parent?._removeDidPushListener(this.didPush);
+    this._parent?._parent?._removeDidPopNextListener(this._didPopNextInternal);
+    this._parent?._parent?._removeDidPushNextListener(this.didPushNext);
+  }
+
+  void _didPopNextInternal() {
+    this.didPopNext();
+    ModalRoute route = ModalRoute.of(this.context);
+    final data = route?.settings?.arguments;
+    if (data is IDataDocument) {
+      final document = DataDocument(DefaultPath.pageData);
+      document.clear();
+      for (MapEntry<String, IDataField> tmp in data.entries) {
+        if (isEmpty(tmp.key) || tmp.value == null || tmp.value.data == null)
+          continue;
+        document[tmp.key] = tmp.value.data;
+        PathTag.set(tmp.key, tmp.value.data.toString());
+      }
+    }
   }
 }
 

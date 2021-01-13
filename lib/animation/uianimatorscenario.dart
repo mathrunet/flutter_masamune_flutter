@@ -7,6 +7,9 @@ part of masamune.flutter;
 class UIAnimatorScenario extends TaskCollection<UIAnimatorUnit>
     implements TickerProvider {
   Ticker _ticker;
+  bool _playOnStart;
+  bool _playReverse;
+  bool _playRepeat;
 
   /// Create a Completer that matches the class.
   ///
@@ -60,8 +63,17 @@ class UIAnimatorScenario extends TaskCollection<UIAnimatorUnit>
   ///
   /// [path]: Animation path.
   /// [animation]: List of animations to save initially.
+  /// [playOnStart]: Play on start.
+  /// [playReverse]: Play reverse,
+  /// it will not be enabled unless [playOnStart] is enabled.
+  /// [playRepeat]: Play repeat,
+  /// it will not be enabled unless [playOnStart] is enabled.
   factory UIAnimatorScenario(
-      {String path, Iterable<UIAnimatorUnit> animation}) {
+      {String path,
+      bool playOnStart = false,
+      bool playReverse = false,
+      bool playRepeat = false,
+      Iterable<UIAnimatorUnit> animation}) {
     path = path?.applyTags();
     UIAnimatorScenario collection;
     if (isNotEmpty(path)) {
@@ -71,22 +83,42 @@ class UIAnimatorScenario extends TaskCollection<UIAnimatorUnit>
         return collection;
       }
     }
-    collection =
-        UIAnimatorScenario._(path: path, animation: animation ?? const []);
+    collection = UIAnimatorScenario._(
+        path: path,
+        playOnStart: playOnStart,
+        playReverse: playReverse,
+        playRepeat: playRepeat,
+        animation: animation ?? const []);
     return collection;
   }
   UIAnimatorScenario._(
       {String path,
+      bool playOnStart = false,
+      bool playReverse = false,
+      bool playRepeat = false,
       Iterable<UIAnimatorUnit> animation,
       bool isTemporary = false})
-      : super(
+      : this._playOnStart = playOnStart,
+        this._playReverse = playReverse,
+        this._playRepeat = playRepeat,
+        super(
             path: path,
             children: animation,
             isTemporary: isEmpty(path) || isTemporary,
             group: 0,
             order: 10) {
     this._rebuild();
-    this.done();
+    if (this._playOnStart) {
+      if (this._playReverse) {
+        this.playReverse();
+      } else if (this._playRepeat) {
+        this.playRepeat();
+      } else {
+        this.play();
+      }
+    } else {
+      this.done();
+    }
   }
   void _setInternal(Iterable<UIAnimatorUnit> children) {
     if (children != null) {
