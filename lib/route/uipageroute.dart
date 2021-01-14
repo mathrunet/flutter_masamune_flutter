@@ -10,27 +10,25 @@ class UIPageRoute extends PageRouteBuilder {
   /// [path]: Route path.
   /// [builder]: Widget builder.
   /// [settings]: Route settings.
-  /// [fullscreenDialog]: Modal display.
-  /// [transitionType]: Transition type.
+  /// [transition]: Transition type.
   UIPageRoute(
       {this.path,
       WidgetBuilder builder,
-      bool fullscreenDialog = false,
+      PageTransition transition = PageTransition.initial,
       RouteSettings settings,
-      bool immediately = false,
       TransitionType transitionType})
       : super(
           settings: settings,
           pageBuilder: (context, animation, secondaryAnimation) {
             return builder(context);
           },
-          fullscreenDialog: fullscreenDialog,
+          fullscreenDialog: transition == PageTransition.fullscreen,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            if (immediately) {
+            if (transition == PageTransition.none) {
               return child;
             }
             if (Config.isWeb) {
-              if (fullscreenDialog) {
+              if (transition == PageTransition.fullscreen) {
                 return SlideTransition(
                     position: Tween<Offset>(
                       begin: const Offset(0, 1),
@@ -47,15 +45,21 @@ class UIPageRoute extends PageRouteBuilder {
               }
             }
             if (transitionType == null) {
-              if (fullscreenDialog) {
-                return SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(0, 1),
-                      end: Offset.zero,
-                    ).animate(animation),
-                    child: child);
+              switch (transition) {
+                case PageTransition.fullscreen:
+                  return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 1),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child);
+                case PageTransition.fade:
+                  transitionType = TransitionType.fade;
+                  break;
+                default:
+                  transitionType = TransitionType.slideToLeft;
+                  break;
               }
-              transitionType = TransitionType.slideToLeft;
             }
             switch (transitionType) {
               case TransitionType.none:

@@ -116,6 +116,7 @@ class FormItemDateTimeField extends StatefulWidget implements FormItem {
 }
 
 class _FormItemDateTimeFieldState extends State<FormItemDateTimeField> {
+  TextEditingController _controller;
   @override
   void initState() {
     super.initState();
@@ -127,6 +128,26 @@ class _FormItemDateTimeFieldState extends State<FormItemDateTimeField> {
     } else {
       this.widget.controller.text = Const.empty;
     }
+    this._controller = TextEditingController(text: this.widget.controller.text);
+    this._controller.addListener(this._listenerInside);
+    this.widget.controller.addListener(this._listenerOutside);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    this._controller?.removeListener(this._listenerInside);
+    this.widget.controller?.removeListener(this._listenerOutside);
+  }
+
+  void _listenerOutside() {
+    if (this._controller.text == this.widget.controller.text) return;
+    this._controller.text = this.widget.controller.text;
+  }
+
+  void _listenerInside() {
+    if (this._controller.text == this.widget.controller.text) return;
+    this.widget.controller.text = this._controller.text;
   }
 
   @override
@@ -136,7 +157,7 @@ class _FormItemDateTimeFieldState extends State<FormItemDateTimeField> {
             ? const EdgeInsets.all(0)
             : const EdgeInsets.symmetric(vertical: 10),
         child: DateTimeTextFormField(
-          controller: this.widget.controller,
+          controller: this._controller,
           keyboardType: TextInputType.text,
           initialValue: this.widget.initialDateTime,
           maxLength: this.widget.maxLength,

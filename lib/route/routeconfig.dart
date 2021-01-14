@@ -8,8 +8,8 @@ class RouteConfig {
   /// True to launch in full screen.
   final bool fullScreen;
 
-  /// Transition without animation.
-  final bool immediately;
+  /// Transition animation.
+  final PageTransition transition;
 
   /// Parameter to add when switching pages.
   final Map<String, dynamic> parameters;
@@ -42,14 +42,14 @@ class RouteConfig {
   /// [builder]: Route builder.
   /// [fullScreen]: True to launch in full screen.
   /// [reroute]: Map for rerouting according to conditions.
-  /// [immediately]: Transition without animation.
+  /// [transition]: Transition animation.
   /// [platform]: Route definitions by platform.
   /// [additional]: True for pages that add new elements.
   /// [parameters]: Parameter to add when switching pages.
   RouteConfig(this.builder,
       {this.fullScreen = false,
       this.parameters = const {},
-      this.immediately = false,
+      this.transition = PageTransition.initial,
       this.additional = false,
       this.reroute = const {},
       this.platform = const {}});
@@ -90,8 +90,18 @@ class RouteConfig {
       query._data?.forEach((key, value) {
         document[key] = value;
       });
-      if (query._fullscreen) document["fullscreen"] = true;
-      if (query._immediately) document["immediately"] = true;
+      switch (query._transition) {
+        case PageTransition.none:
+        case PageTransition.fade:
+          document["transition"] = query._transition.index;
+          break;
+        case PageTransition.fullscreen:
+          document["fullscreen"] = true;
+          document["transition"] = query._transition.index;
+          break;
+        default:
+          break;
+      }
     } else {
       document = TemporaryDocument();
       document.clear();
@@ -149,8 +159,18 @@ class RouteConfig {
         query._data?.forEach((key, value) {
           document[key] = value;
         });
-        if (query._fullscreen) document["fullscreen"] = true;
-        if (query._immediately) document["immediately"] = true;
+        switch (query._transition) {
+          case PageTransition.none:
+          case PageTransition.fade:
+            document["transition"] = query._transition.index;
+            break;
+          case PageTransition.fullscreen:
+            document["fullscreen"] = true;
+            document["transition"] = query._transition.index;
+            break;
+          default:
+            break;
+        }
       } else {
         document = TemporaryDocument();
         document.clear();
@@ -196,14 +216,28 @@ class RouteConfig {
         }
       }
       return UIPageRoute(
-          builder: builder,
-          settings: settings.copyWith(name: settings.name, arguments: document),
-          fullscreenDialog:
-              document.containsKey("fullscreen") || tmp.value.fullScreen,
-          immediately:
-              document.containsKey("immediately") || tmp.value.immediately);
+        builder: builder,
+        settings: settings.copyWith(name: settings.name, arguments: document),
+        transition: _transitionType(document, tmp.value),
+      );
     }
     return null;
+  }
+
+  static PageTransition _transitionType(
+      IDataDocument document, RouteConfig config) {
+    if (document.containsKey("fullscreen") ||
+        config.fullScreen ||
+        config.transition == PageTransition.fullscreen)
+      return PageTransition.fullscreen;
+    else if (document.getInt("transition") == PageTransition.none.index ||
+        config.transition == PageTransition.none)
+      return PageTransition.none;
+    else if (document.getInt("transition") == PageTransition.fade.index ||
+        config.transition == PageTransition.fade)
+      return PageTransition.fade;
+    else
+      return PageTransition.initial;
   }
 }
 

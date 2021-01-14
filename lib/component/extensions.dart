@@ -41,6 +41,15 @@ extension BuildContextExtension on BuildContext {
     return value.read<T>(path, defaultValue: defaultValue, filter: filter);
   }
 
+  /// Get model from pathmap in conjunction with UIWidget.
+  ///
+  /// [model]: The model to get.
+  T watchModel<T extends Model>(T model) {
+    UIValue value = UIValue.of(this);
+    if (value == null) return model;
+    return value.watchModel<T>(model);
+  }
+
   /// Get text from pathmap in conjunction with UIWidget.
   ///
   /// Displays anything as long as Path is Unit and can be converted to text.

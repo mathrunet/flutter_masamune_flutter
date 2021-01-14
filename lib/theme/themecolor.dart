@@ -217,7 +217,10 @@ class ThemeColor {
             platform: TargetPlatform.iOS,
             colorScheme: colorScheme,
             buttonColor: this.primary,
+            textTheme: ThemeData.light().textTheme.apply(
+                bodyColor: this.onBackground, displayColor: this.onBackground),
             buttonTheme: ThemeData.dark().buttonTheme.copyWith(
+                textTheme: ThemeData.dark().buttonTheme.textTheme,
                 buttonColor: this.primary,
                 disabledColor: this.disabled,
                 colorScheme: colorScheme),
@@ -273,6 +276,8 @@ class ThemeColor {
             platform: TargetPlatform.iOS,
             colorScheme: colorScheme,
             buttonColor: this.primary,
+            textTheme: ThemeData.light().textTheme.apply(
+                bodyColor: this.onBackground, displayColor: this.onBackground),
             buttonTheme: ThemeData.light().buttonTheme.copyWith(
                 buttonColor: this.primary,
                 disabledColor: this.disabled,

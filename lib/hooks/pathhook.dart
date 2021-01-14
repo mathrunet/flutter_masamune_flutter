@@ -1,11 +1,11 @@
 part of masamune.flutter;
 
-/// You can use the Collection only within HookWidget.
+/// Use this when you want to use a pathmap object.
 ///
-/// It is possible to specify an initial value by specifying [initialData].
+/// [T] can be a primitive object or a class that inherits from [IPath].
 ///
-/// You can sort by specifying [orderBy], [orderByKey].
-/// You can also specify [thenBy] and [thenByKey] to further sort the elements in the same order in the first sort.
+/// Enter the path of the object you want to retrieve in [path],
+/// and specify a default value if the object is not found in [defaultValue].
 T usePath<T extends Object>(String path, [T defaultValue]) {
   BuildContext context = useContext();
   return context?.watch<T>(path, defaultValue: defaultValue);

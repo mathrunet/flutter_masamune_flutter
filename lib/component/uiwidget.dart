@@ -80,6 +80,10 @@ abstract class UIWidget extends StatefulWidget {
         this._rebuildable = rebuildable,
         super(key: key);
 
+  /// Build context.
+  @protected
+  BuildContext get context => useContext();
+
   /// Create a state.
   ///
   /// Do not use from outside.

@@ -90,6 +90,15 @@ class UIValue {
         : (PathMap.get<T>(path) ?? defaultValue);
   }
 
+  /// Get model from pathmap in conjunction with UIWidget.
+  ///
+  /// [model]: The model to get.
+  T watchModel<T extends Model>(T model) {
+    if (model == null) return model;
+    this.watch<dynamic>(model.path);
+    return model;
+  }
+
   /// Get text from pathmap in conjunction with UIWidget.
   ///
   /// Displays anything as long as Path is Unit and can be converted to text.
