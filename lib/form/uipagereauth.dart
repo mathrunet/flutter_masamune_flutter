@@ -31,7 +31,7 @@ class UIPageReAuth extends UIPageForm {
       ),
       SizedBox(height: 20),
       FormItemTextField(
-        controller: textEditingController(),
+        controller: useTextEditingController(),
         hintText: "Please enter a password".localize(),
         labelText: "Password".localize(),
         keyboardType: TextInputType.visiblePassword,

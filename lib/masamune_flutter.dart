@@ -20,13 +20,19 @@ import 'package:masamune_core/masamune_core.dart';
 import 'package:flutter_widget_model/flutter_widget_model.dart';
 import 'widget/dialog.dart';
 import 'widget/mixin.dart';
+import 'package:riverpod/src/framework.dart';
+import 'package:meta/meta.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 export 'package:masamune_core/masamune_core.dart';
 export 'package:flutter_hooks/flutter_hooks.dart';
+export 'package:riverpod/riverpod.dart';
+export 'package:flutter_riverpod/flutter_riverpod.dart';
+export 'package:hooks_riverpod/hooks_riverpod.dart';
 export 'widget/dialog.dart';
 export 'widget/mixin.dart';
 export 'widget/template.dart';
 export 'widget/widget.dart';
-export 'package:flutter/material.dart' hide Path;
+export 'package:flutter/material.dart' hide Path, Listener;
 export 'form/form.dart';
 export 'list/list.dart';
 export 'package:intl/intl.dart' show DateFormat;
@@ -39,11 +45,11 @@ part 'core/bootstrap.dart';
 part 'theme/themecolor.dart';
 
 part 'component/uimaterialapp.dart';
-part 'component/widgetdata.dart';
 part 'component/uipage.dart';
 part 'component/extensions.dart';
 part 'component/uiwidget.dart';
-part 'component/uivalue.dart';
+// part 'component/widgetdata.dart';
+// part 'component/uivalue.dart';
 
 // part 'component/uihookwidget.dart';
 // part 'component/uihookpage.dart';
@@ -63,4 +69,11 @@ part 'animation/uianimatorscenario.dart';
 part 'animation/uianimatorunit.dart';
 
 part 'hooks/pagedocumenthook.dart';
-part 'hooks/pathhook.dart';
+// part 'hooks/pathhook.dart';
+
+part 'provider/pathprovider.dart';
+part 'provider/datafieldprovider.dart';
+part 'provider/runtimedocumentprovider.dart';
+part 'provider/runtimecollectionprovider.dart';
+part 'provider/localdocumentprovider.dart';
+part 'provider/localcollectionprovider.dart';

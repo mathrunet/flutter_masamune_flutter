@@ -40,9 +40,8 @@ class UIConnectDialog {
       bool showBackButton = true,
       bool disableBackKey = false}) async {
     if (context == null) return;
-    String _title =
-        context.read(dialogTitlePath, defaultValue: title?.localize());
-    String _text = context.read(dialogTextPath, defaultValue: text?.localize());
+    String _title = (PathMap.get<String>(dialogTitlePath) ?? title)?.localize();
+    String _text = (PathMap.get<String>(dialogTextPath) ?? text)?.localize();
     if (_title == null || _text == null) return;
     bool clicked = false;
     OverlayState overlay = context.navigator.overlay;
@@ -58,8 +57,9 @@ class UIConnectDialog {
                   content: SingleChildScrollView(child: Text(_text)),
                   actions: <Widget>[
                     FlatButton(
-                      child: Text(context.read(dialogRetryTextPath,
-                          defaultValue: retryText?.localize())),
+                      child: Text((PathMap.get<String>(dialogRetryTextPath) ??
+                              retryText)
+                          ?.localize()),
                       onPressed: () {
                         PathMap.removeAllPath([
                           dialogTitlePath,
@@ -70,14 +70,16 @@ class UIConnectDialog {
                           dialogBackActionPath
                         ]);
                         Navigator.of(context, rootNavigator: true).pop();
-                        context.readAction(dialogRetryActionPath,
-                            defaultAction: onRetry)();
+                        (PathMap.get<VoidAction>(dialogRetryActionPath) ??
+                                onRetry)
+                            ?.call();
                       },
                     ),
                     if (showBackButton)
                       FlatButton(
-                        child: Text(context.read(dialogBackTextPath,
-                            defaultValue: backText?.localize())),
+                        child: Text((PathMap.get<String>(dialogBackTextPath) ??
+                                backText)
+                            ?.localize()),
                         onPressed: () {
                           PathMap.removeAllPath([
                             dialogTitlePath,
@@ -88,8 +90,9 @@ class UIConnectDialog {
                             dialogBackActionPath
                           ]);
                           Navigator.of(context, rootNavigator: true).pop();
-                          context.readAction(dialogBackActionPath,
-                              defaultAction: onBack)();
+                          (PathMap.get<VoidAction>(dialogBackActionPath) ??
+                                  onBack)
+                              ?.call();
                           clicked = true;
                         },
                       )

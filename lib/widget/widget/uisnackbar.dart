@@ -17,7 +17,7 @@ class UISnackBar {
   /// [onSubmit]: Default submit button action.
   /// [text]: Default text.
   /// [willShowRepetition]: True if the dialog will continue to be displayed unless you press the regular close button.
-  static Future show(
+  static Future show(BuildContext context,
       {String dialogTextPath = DefaultPath.dialogText,
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
@@ -25,21 +25,18 @@ class UISnackBar {
       String text,
       VoidAction onSubmit,
       bool willShowRepetition = false}) async {
-    BuildContext context = UIPage.current?.context;
     if (context == null) return;
-    String _text = context.read(dialogTextPath, defaultValue: text);
+    String _text = PathMap.get<String>(dialogTextPath) ?? text;
     if (_text == null) return;
     bool clicked = false;
     do {
-      context = UIPage.current?.context;
-      ScaffoldState scaffold =
-          (UIPage.current?.widget as UIPageScaffold)?.scaffold;
+      ScaffoldState scaffold = Scaffold.of(context);
+      if (scaffold == null) return;
       await scaffold
           .showSnackBar(SnackBar(
               content: Text(_text),
               action: SnackBarAction(
-                label: context.read(dialogSubmitTextPath,
-                    defaultValue: submitText),
+                label: PathMap.get<String>(dialogSubmitTextPath) ?? submitText,
                 onPressed: () {
                   PathMap.removeAllPath([
                     dialogTextPath,
@@ -47,8 +44,8 @@ class UISnackBar {
                     dialogSubmitActionPath,
                     dialogSubmitTextPath
                   ]);
-                  context.readAction(dialogSubmitActionPath,
-                      defaultAction: onSubmit)();
+                  (PathMap.get<VoidAction>(dialogSubmitActionPath) ?? onSubmit)
+                      ?.call();
                   clicked = true;
                 },
               )))

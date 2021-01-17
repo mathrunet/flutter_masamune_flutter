@@ -27,7 +27,7 @@ class UISelectDialog {
       bool popOnPress = true,
       bool willShowRepetition = false}) async {
     if (context == null || selectors == null) return;
-    String _title = context.read(dialogTitlePath, defaultValue: title);
+    String _title = PathMap.get<String>(dialogTitlePath) ?? title;
     if (_title == null) return;
     bool clicked = false;
     try {

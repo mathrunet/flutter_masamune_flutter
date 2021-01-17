@@ -20,11 +20,12 @@ class LoadNext extends StatelessWidget {
   /// [BuildContext]: Build Context.
   @override
   Widget build(BuildContext context) {
-    if (!context.canNext(this.path)) return Container();
+    if (!(PathMap.get<IDataCollection>(this.path)?.canNext() ?? false))
+      return Container();
     return Center(
         child: FlatButton.icon(
             onPressed: () {
-              context.read<IDataCollection>(this.path)?.next();
+              PathMap.get<IDataCollection>(this.path)?.next();
             },
             icon: const Icon(Icons.refresh),
             label: Text(this.label)));

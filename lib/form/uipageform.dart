@@ -1,7 +1,7 @@
 part of masamune.form;
 
 /// Template for creating form pages.
-abstract class UIPageForm extends UIPageScaffold with UIPageFormMixin {
+abstract class UIPageForm extends UIPageScaffold with UIFormMixin {
   /// Creating a floating action button.
   ///
   /// [context]: Build context.

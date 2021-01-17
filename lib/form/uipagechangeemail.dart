@@ -36,7 +36,7 @@ class UIPageChangeEmail extends UIPageForm {
       ),
       SizedBox(height: 20),
       FormItemTextField(
-        controller: textEditingController(this.email),
+        controller: useTextEditingController(text: this.email),
         hintText: "Please enter a email address".localize(),
         labelText: "Email".localize(),
         keyboardType: TextInputType.emailAddress,

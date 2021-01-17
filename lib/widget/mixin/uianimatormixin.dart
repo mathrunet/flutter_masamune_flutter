@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Mixins for using animation on pages.
-mixin UIAnimatorMixin on UIWidget {
+mixin UIAnimatorMixin on UIPage {
   /// Create a new animation.
   ///
   /// Please use it during [onLoad].

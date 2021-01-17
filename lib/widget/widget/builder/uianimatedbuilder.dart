@@ -45,7 +45,7 @@ class UIAnimatedBuilder extends UIWidget {
   Widget build(BuildContext context) {
     UIAnimatorScenario sequence;
     if (isNotEmpty(this.path))
-      sequence = context.read<UIAnimatorScenario>(this.path);
+      sequence = PathMap.get<UIAnimatorScenario>(this.path);
     if (this.animator != null) sequence = this.animator;
     if (this.builder == null || sequence == null)
       return this.child ?? Container();

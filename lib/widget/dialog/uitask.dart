@@ -35,8 +35,8 @@ class _UITask {
       }
     }
     if (isShowDialog) {
-      String _title = context.read(dialogTitlePath, defaultValue: title);
-      String _text = context.read(dialogTextPath, defaultValue: text);
+      String _title = PathMap.get<String>(dialogTitlePath) ?? title;
+      String _text = PathMap.get<String>(dialogTextPath) ?? text;
       if (task == null) {
         _title = errorTitle;
         _text = "This data is invalid.".localize();
@@ -79,8 +79,8 @@ class _UITask {
               content: SingleChildScrollView(child: Text(_text)),
               actions: <Widget>[
                 FlatButton(
-                  child: Text(context.read(dialogSubmitTextPath,
-                      defaultValue: submitText)),
+                  child: Text(
+                      PathMap.get<String>(dialogSubmitTextPath) ?? submitText),
                   onPressed: () {
                     PathMap.removeAllPath([
                       dialogTitlePath,
@@ -89,8 +89,9 @@ class _UITask {
                       dialogSubmitActionPath
                     ]);
                     Navigator.of(context, rootNavigator: true).pop();
-                    context.readAction(dialogSubmitActionPath,
-                        defaultAction: onSubmit)();
+                    (PathMap.get<VoidAction>(dialogSubmitActionPath) ??
+                            onSubmit)
+                        ?.call();
                   },
                 ),
               ],

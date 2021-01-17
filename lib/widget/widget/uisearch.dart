@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Provides a search box.
-class UISearch extends UIWidget {
+class UISearch extends StatefulHookWidget {
   final String hintText;
   final String searchPath;
   final IconData icon;
@@ -17,24 +17,18 @@ class UISearch extends UIWidget {
       this.onChanged,
       this.onSubmitted});
 
-  /// Executed when the widget is unloaded.
-  ///
-  /// Override and use.
-  ///
-  /// [context]: Build context.
   @override
-  @mustCallSuper
-  void onDispose(BuildContext context) {
-    super.onDispose(context);
-    if (isEmpty(this.searchPath)) return;
-    DataField(this.searchPath, Const.empty);
+  State<StatefulWidget> createState() => _UISearchState();
+}
+
+class _UISearchState extends State<UISearch> {
+  @protected
+  void dispose() {
+    super.dispose();
+    if (isEmpty(this.widget.searchPath)) return;
+    DataField(this.widget.searchPath, Const.empty);
   }
 
-  /// Callback for building.
-  ///
-  /// Override and use.
-  ///
-  /// [context]: Build context.
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,15 +37,17 @@ class UISearch extends UIWidget {
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(15),
               border: const OutlineInputBorder(),
-              prefixIcon: Icon(this.icon),
-              hintText: this.hintText),
+              prefixIcon: Icon(this.widget.icon),
+              hintText: this.widget.hintText),
           onChanged: (text) {
-            if (isNotEmpty(this.searchPath)) DataField(this.searchPath, text);
-            if (this.onChanged != null) this.onChanged(text);
+            if (isNotEmpty(this.widget.searchPath))
+              DataField(this.widget.searchPath, text);
+            if (this.widget.onChanged != null) this.widget.onChanged(text);
           },
           onSubmitted: (text) {
-            if (isNotEmpty(this.searchPath)) DataField(this.searchPath, text);
-            if (this.onSubmitted != null) this.onSubmitted(text);
+            if (isNotEmpty(this.widget.searchPath))
+              DataField(this.widget.searchPath, text);
+            if (this.widget.onSubmitted != null) this.widget.onSubmitted(text);
           },
         ));
   }

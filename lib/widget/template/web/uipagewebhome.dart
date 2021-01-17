@@ -38,102 +38,115 @@ abstract class UIPageWebHome extends UIPageWebPage {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraint) {
-      Widget featureText = this.featureText(context);
-      Widget featureImage = this.featureImage(context);
-      EdgeInsetsGeometry padding =
-          context.mediaQuery.size.width >= this.thresholdWidth
-              ? const EdgeInsets.all(10)
-              : const EdgeInsets.all(0);
-      List<ResponsiveGridCol> children = ListPool.get();
-      if (featureImage != null) {
-        children.add(ResponsiveGridCol(
-            md: 12,
-            child: Container(
-                decoration: BoxDecoration(
-                  color: context.theme.secondaryHeaderColor,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.75),
-                        spreadRadius: 0,
-                        blurRadius: 5.0,
-                        offset: Offset(0, 2.0))
-                  ],
-                ),
-                margin: padding,
-                child: featureText != null
-                    ? ResponsiveGridRow(children: [
-                        ResponsiveGridCol(
-                            md: 6,
-                            child: Container(
-                                constraints: BoxConstraints(
-                                    minHeight: this.elementMinHeight),
-                                child: this.featureImage(context))),
-                        ResponsiveGridCol(
-                            md: 6,
-                            child: Container(
-                                alignment: Alignment.center,
-                                constraints: BoxConstraints(
-                                    minHeight: this.elementMinHeight),
-                                child: featureText))
-                      ])
-                    : Container(
-                        alignment: Alignment.center,
-                        constraints:
-                            BoxConstraints(minHeight: this.elementMinHeight),
-                        child: this.featureImage(context)))));
-      }
+      return _UIPageWebHomeContainer(this, constraint);
+    });
+  }
+}
+
+class _UIPageWebHomeContainer extends HookWidget {
+  final UIPageWebHome parent;
+  final BoxConstraints constraints;
+  _UIPageWebHomeContainer(this.parent, this.constraints);
+
+  @override
+  Widget build(BuildContext context) {
+    Widget featureText = this.parent.featureText(context);
+    Widget featureImage = this.parent.featureImage(context);
+    EdgeInsetsGeometry padding =
+        context.mediaQuery.size.width >= this.parent.thresholdWidth
+            ? const EdgeInsets.all(10)
+            : const EdgeInsets.all(0);
+    List<ResponsiveGridCol> children = ListPool.get();
+    if (featureImage != null) {
       children.add(ResponsiveGridCol(
-          md: 9,
+          md: 12,
+          child: Container(
+              decoration: BoxDecoration(
+                color: context.theme.secondaryHeaderColor,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.75),
+                      spreadRadius: 0,
+                      blurRadius: 5.0,
+                      offset: Offset(0, 2.0))
+                ],
+              ),
+              margin: padding,
+              child: featureText != null
+                  ? ResponsiveGridRow(children: [
+                      ResponsiveGridCol(
+                          md: 6,
+                          child: Container(
+                              constraints: BoxConstraints(
+                                  minHeight: this.parent.elementMinHeight),
+                              child: this.parent.featureImage(context))),
+                      ResponsiveGridCol(
+                          md: 6,
+                          child: Container(
+                              alignment: Alignment.center,
+                              constraints: BoxConstraints(
+                                  minHeight: this.parent.elementMinHeight),
+                              child: featureText))
+                    ])
+                  : Container(
+                      alignment: Alignment.center,
+                      constraints: BoxConstraints(
+                          minHeight: this.parent.elementMinHeight),
+                      child: this.parent.featureImage(context)))));
+    }
+    children.add(ResponsiveGridCol(
+        md: 9,
+        child: Container(
+            alignment: Alignment.topCenter,
+            constraints:
+                BoxConstraints(minHeight: this.parent.elementMinHeight),
+            padding: padding,
+            child: this.parent.body(context))));
+    if (context.mediaQuery.size.width >= this.parent.thresholdWidth) {
+      children.add(ResponsiveGridCol(
+          md: 3,
           child: Container(
               alignment: Alignment.topCenter,
-              constraints: BoxConstraints(minHeight: this.elementMinHeight),
+              constraints:
+                  BoxConstraints(minHeight: this.parent.elementMinHeight),
               padding: padding,
-              child: this.body(context))));
-      if (context.mediaQuery.size.width >= this.thresholdWidth) {
-        children.add(ResponsiveGridCol(
-            md: 3,
-            child: Container(
-                alignment: Alignment.topCenter,
-                constraints: BoxConstraints(minHeight: this.elementMinHeight),
-                padding: padding,
-                child: this.sideBar(context))));
-      }
-      return Scaffold(
-          key: this.scaffoldKey,
-          appBar: this.appBar(context),
-          body: GestureDetector(
-              onTap: () => context.unfocus(),
-              child: this.applySafeArea
-                  ? SafeArea(
-                      child: Scrollbar(
-                          controller: this.scrollController,
-                          child: SingleChildScrollView(
-                              controller: this.scrollController,
-                              padding: padding,
-                              child: ResponsiveGridRow(children: children))))
-                  : Scrollbar(
-                      controller: this.scrollController,
-                      child: SingleChildScrollView(
-                          controller: this.scrollController,
-                          padding: padding,
-                          child: ResponsiveGridRow(children: children)))),
-          floatingActionButton: this.floatingActionButton(context),
-          floatingActionButtonLocation: this.floatingActionButtonLocation,
-          floatingActionButtonAnimator: this.floatingActionButtonAnimator,
-          persistentFooterButtons: this.persistentFooterButtons(context),
-          drawer: this.drawer(context),
-          endDrawer: this.endDrawer(context),
-          bottomNavigationBar: this.bottomNavigationBar(context),
-          bottomSheet: this.bottomSheet(context),
-          backgroundColor: this.backgroundColor,
-          resizeToAvoidBottomPadding: this.resizeToAvoidBottomPadding,
-          resizeToAvoidBottomInset: this.resizeToAvoidBottomInset,
-          primary: this.primary,
-          drawerDragStartBehavior: this.drawerDragStartBehavior,
-          extendBody: this.extendBody,
-          extendBodyBehindAppBar: this.extendBodyBehindAppBar,
-          drawerScrimColor: this.drawerScrimColor,
-          drawerEdgeDragWidth: this.drawerEdgeDragWidth);
-    });
+              child: this.parent.sideBar(context))));
+    }
+    return Scaffold(
+        key: this.parent.scaffoldKey,
+        appBar: this.parent.appBar(context),
+        body: GestureDetector(
+            onTap: () => context.unfocus(),
+            child: this.parent.applySafeArea
+                ? SafeArea(
+                    child: Scrollbar(
+                        controller: this.parent.scrollController,
+                        child: SingleChildScrollView(
+                            controller: this.parent.scrollController,
+                            padding: padding,
+                            child: ResponsiveGridRow(children: children))))
+                : Scrollbar(
+                    controller: this.parent.scrollController,
+                    child: SingleChildScrollView(
+                        controller: this.parent.scrollController,
+                        padding: padding,
+                        child: ResponsiveGridRow(children: children)))),
+        floatingActionButton: this.parent.floatingActionButton(context),
+        floatingActionButtonLocation: this.parent.floatingActionButtonLocation,
+        floatingActionButtonAnimator: this.parent.floatingActionButtonAnimator,
+        persistentFooterButtons: this.parent.persistentFooterButtons(context),
+        drawer: this.parent.drawer(context),
+        endDrawer: this.parent.endDrawer(context),
+        bottomNavigationBar: this.parent.bottomNavigationBar(context),
+        bottomSheet: this.parent.bottomSheet(context),
+        backgroundColor: this.parent.backgroundColor,
+        resizeToAvoidBottomPadding: this.parent.resizeToAvoidBottomPadding,
+        resizeToAvoidBottomInset: this.parent.resizeToAvoidBottomInset,
+        primary: this.parent.primary,
+        drawerDragStartBehavior: this.parent.drawerDragStartBehavior,
+        extendBody: this.parent.extendBody,
+        extendBodyBehindAppBar: this.parent.extendBodyBehindAppBar,
+        drawerScrimColor: this.parent.drawerScrimColor,
+        drawerEdgeDragWidth: this.parent.drawerEdgeDragWidth);
   }
 }

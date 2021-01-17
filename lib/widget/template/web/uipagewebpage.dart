@@ -106,126 +106,136 @@ abstract class UIPageWebPage extends UIPageScaffold {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraint) {
-      EdgeInsetsGeometry padding =
-          context.mediaQuery.size.width >= this.thresholdWidth
-              ? this.padding
-              : this.paddingOnMobile;
-      List<Widget> children = ListPool.get();
-      if (this.sidebarPosition == UIPageWebPageSidebarPosition.left &&
-          context.mediaQuery.size.width >= this.thresholdWidth) {
-        children.add(this.sidebarType == UIPageWebPageSidebarType.flexible
-            ? ResponsiveGridCol(
-                md: this.sidebarWidth,
-                child: Container(
-                    alignment: Alignment.topCenter,
-                    constraints: this.elementMinHeight == null
-                        ? constraint
-                        : BoxConstraints(minHeight: this.elementMinHeight),
-                    padding: padding,
-                    child: this.sideBar(context)))
-            : SizedBox(
-                width: this.sidebarWidth.toDouble(),
-                child: Container(
-                    alignment: Alignment.topCenter,
-                    constraints: this.elementMinHeight == null
-                        ? constraint
-                        : BoxConstraints(minHeight: this.elementMinHeight),
-                    padding: padding,
-                    child: this.sideBar(context))));
-      }
-      children.add(this.sidebarType == UIPageWebPageSidebarType.flexible
-          ? ResponsiveGridCol(
-              md: 12 - this.sidebarWidth,
-              child: Container(
-                  alignment: Alignment.topCenter,
-                  constraints: this.elementMinHeight == null
-                      ? constraint
-                      : BoxConstraints(minHeight: this.elementMinHeight),
-                  padding: padding,
-                  child: this.body(context)))
-          : Expanded(
-              child: Container(
-                  alignment: Alignment.topCenter,
-                  constraints: this.elementMinHeight == null
-                      ? constraint
-                      : BoxConstraints(minHeight: this.elementMinHeight),
-                  padding: padding,
-                  child: this.body(context))));
-      if (this.sidebarPosition == UIPageWebPageSidebarPosition.right &&
-          context.mediaQuery.size.width >= this.thresholdWidth) {
-        children.add(this.sidebarType == UIPageWebPageSidebarType.flexible
-            ? ResponsiveGridCol(
-                md: this.sidebarWidth,
-                child: Container(
-                    alignment: Alignment.topCenter,
-                    constraints: this.elementMinHeight == null
-                        ? constraint
-                        : BoxConstraints(minHeight: this.elementMinHeight),
-                    padding: padding,
-                    child: this.sideBar(context)))
-            : SizedBox(
-                width: this.sidebarWidth.toDouble(),
-                child: Container(
-                    alignment: Alignment.topCenter,
-                    constraints: this.elementMinHeight == null
-                        ? constraint
-                        : BoxConstraints(minHeight: this.elementMinHeight),
-                    padding: padding,
-                    child: this.sideBar(context))));
-      }
-      return Scaffold(
-          key: this.scaffoldKey,
-          appBar: this.appBar(context),
-          body: GestureDetector(
-              onTap: () => context.unfocus(),
-              child: this.applySafeArea
-                  ? SafeArea(
-                      child: Scrollbar(
-                          controller: this.scrollController,
-                          child: SingleChildScrollView(
-                              controller: this.scrollController,
-                              padding: padding,
-                              child: this.sidebarType ==
-                                      UIPageWebPageSidebarType.flexible
-                                  ? ResponsiveGridRow(children: children)
-                                  : Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: children))))
-                  : Scrollbar(
-                      controller: this.scrollController,
-                      child: SingleChildScrollView(
-                          controller: this.scrollController,
-                          padding: padding,
-                          child: this.sidebarType ==
-                                  UIPageWebPageSidebarType.flexible
-                              ? ResponsiveGridRow(children: children)
-                              : Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: children)))),
-          floatingActionButton: this.floatingActionButton(context),
-          floatingActionButtonLocation: this.floatingActionButtonLocation,
-          floatingActionButtonAnimator: this.floatingActionButtonAnimator,
-          persistentFooterButtons: this.persistentFooterButtons(context),
-          drawer: this.drawer(context),
-          endDrawer: this.endDrawer(context),
-          bottomNavigationBar: this.bottomNavigationBar(context),
-          bottomSheet: this.bottomSheet(context),
-          backgroundColor: this.backgroundColor,
-          resizeToAvoidBottomPadding: this.resizeToAvoidBottomPadding,
-          resizeToAvoidBottomInset: this.resizeToAvoidBottomInset,
-          primary: this.primary,
-          drawerDragStartBehavior: this.drawerDragStartBehavior,
-          extendBody: this.extendBody,
-          extendBodyBehindAppBar: this.extendBodyBehindAppBar,
-          drawerScrimColor: this.drawerScrimColor,
-          drawerEdgeDragWidth: this.drawerEdgeDragWidth);
+      return _UIPageWebPageContainer(this, constraint);
     });
+  }
+}
+
+class _UIPageWebPageContainer extends HookWidget {
+  final UIPageWebPage parent;
+  final BoxConstraints constraints;
+  _UIPageWebPageContainer(this.parent, this.constraints);
+
+  @override
+  Widget build(BuildContext context) {
+    EdgeInsetsGeometry padding =
+        context.mediaQuery.size.width >= this.parent.thresholdWidth
+            ? this.parent.padding
+            : this.parent.paddingOnMobile;
+    List<Widget> children = ListPool.get();
+    if (this.parent.sidebarPosition == UIPageWebPageSidebarPosition.left &&
+        context.mediaQuery.size.width >= this.parent.thresholdWidth) {
+      children.add(this.parent.sidebarType == UIPageWebPageSidebarType.flexible
+          ? ResponsiveGridCol(
+              md: this.parent.sidebarWidth,
+              child: Container(
+                  alignment: Alignment.topCenter,
+                  constraints: this.parent.elementMinHeight == null
+                      ? this.constraints
+                      : BoxConstraints(minHeight: this.parent.elementMinHeight),
+                  padding: padding,
+                  child: this.parent.sideBar(context)))
+          : SizedBox(
+              width: this.parent.sidebarWidth.toDouble(),
+              child: Container(
+                  alignment: Alignment.topCenter,
+                  constraints: this.parent.elementMinHeight == null
+                      ? this.constraints
+                      : BoxConstraints(minHeight: this.parent.elementMinHeight),
+                  padding: padding,
+                  child: this.parent.sideBar(context))));
+    }
+    children.add(this.parent.sidebarType == UIPageWebPageSidebarType.flexible
+        ? ResponsiveGridCol(
+            md: 12 - this.parent.sidebarWidth,
+            child: Container(
+                alignment: Alignment.topCenter,
+                constraints: this.parent.elementMinHeight == null
+                    ? this.constraints
+                    : BoxConstraints(minHeight: this.parent.elementMinHeight),
+                padding: padding,
+                child: this.parent.body(context)))
+        : Expanded(
+            child: Container(
+                alignment: Alignment.topCenter,
+                constraints: this.parent.elementMinHeight == null
+                    ? this.constraints
+                    : BoxConstraints(minHeight: this.parent.elementMinHeight),
+                padding: padding,
+                child: this.parent.body(context))));
+    if (this.parent.sidebarPosition == UIPageWebPageSidebarPosition.right &&
+        context.mediaQuery.size.width >= this.parent.thresholdWidth) {
+      children.add(this.parent.sidebarType == UIPageWebPageSidebarType.flexible
+          ? ResponsiveGridCol(
+              md: this.parent.sidebarWidth,
+              child: Container(
+                  alignment: Alignment.topCenter,
+                  constraints: this.parent.elementMinHeight == null
+                      ? this.constraints
+                      : BoxConstraints(minHeight: this.parent.elementMinHeight),
+                  padding: padding,
+                  child: this.parent.sideBar(context)))
+          : SizedBox(
+              width: this.parent.sidebarWidth.toDouble(),
+              child: Container(
+                  alignment: Alignment.topCenter,
+                  constraints: this.parent.elementMinHeight == null
+                      ? this.constraints
+                      : BoxConstraints(minHeight: this.parent.elementMinHeight),
+                  padding: padding,
+                  child: this.parent.sideBar(context))));
+    }
+    return Scaffold(
+        key: this.parent.scaffoldKey,
+        appBar: this.parent.appBar(context),
+        body: GestureDetector(
+            onTap: () => context.unfocus(),
+            child: this.parent.applySafeArea
+                ? SafeArea(
+                    child: Scrollbar(
+                        controller: this.parent.scrollController,
+                        child: SingleChildScrollView(
+                            controller: this.parent.scrollController,
+                            padding: padding,
+                            child: this.parent.sidebarType ==
+                                    UIPageWebPageSidebarType.flexible
+                                ? ResponsiveGridRow(children: children)
+                                : Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: children))))
+                : Scrollbar(
+                    controller: this.parent.scrollController,
+                    child: SingleChildScrollView(
+                        controller: this.parent.scrollController,
+                        padding: padding,
+                        child: this.parent.sidebarType ==
+                                UIPageWebPageSidebarType.flexible
+                            ? ResponsiveGridRow(children: children)
+                            : Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
+                                children: children)))),
+        floatingActionButton: this.parent.floatingActionButton(context),
+        floatingActionButtonLocation: this.parent.floatingActionButtonLocation,
+        floatingActionButtonAnimator: this.parent.floatingActionButtonAnimator,
+        persistentFooterButtons: this.parent.persistentFooterButtons(context),
+        drawer: this.parent.drawer(context),
+        endDrawer: this.parent.endDrawer(context),
+        bottomNavigationBar: this.parent.bottomNavigationBar(context),
+        bottomSheet: this.parent.bottomSheet(context),
+        backgroundColor: this.parent.backgroundColor,
+        resizeToAvoidBottomPadding: this.parent.resizeToAvoidBottomPadding,
+        resizeToAvoidBottomInset: this.parent.resizeToAvoidBottomInset,
+        primary: this.parent.primary,
+        drawerDragStartBehavior: this.parent.drawerDragStartBehavior,
+        extendBody: this.parent.extendBody,
+        extendBodyBehindAppBar: this.parent.extendBodyBehindAppBar,
+        drawerScrimColor: this.parent.drawerScrimColor,
+        drawerEdgeDragWidth: this.parent.drawerEdgeDragWidth);
   }
 }
 
