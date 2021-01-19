@@ -17,6 +17,8 @@ class UIDialog {
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [submitText]: Default submit button text.
   /// [onSubmit]: Default submit button action.
+  /// [backgroundColor]: Background color.
+  /// [color]: Text color.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [disableBackKey]: True to disable the back key.
@@ -29,6 +31,8 @@ class UIDialog {
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
       String submitText = "OK",
+      Color backgroundColor,
+      Color color,
       String title = "ERROR",
       String text = "This data is invalid.",
       VoidAction onSubmit,
@@ -44,6 +48,8 @@ class UIDialog {
             dialogSubmitActionPath: dialogSubmitActionPath,
             dialogSubmitTextPath: dialogSubmitTextPath,
             submitText: submitText,
+            backgroundColor: backgroundColor,
+            color: color,
             title: title,
             text: text,
             onSubmit: onSubmit ?? () => context.navigator.pop(),
@@ -62,6 +68,8 @@ class UIDialog {
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [submitText]: Default submit button text.
   /// [onSubmit]: Default submit button action.
+  /// [backgroundColor]: Background color.
+  /// [color]: Text color.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [disableBackKey]: True to disable the back key.
@@ -73,6 +81,8 @@ class UIDialog {
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
       String submitText = "OK",
+      Color backgroundColor,
+      Color color,
       String title,
       String text,
       VoidAction onSubmit,
@@ -93,8 +103,14 @@ class UIDialog {
             return WillPopScope(
                 onWillPop: disableBackKey ? () async => null : null,
                 child: AlertDialog(
-                  title: Text(_title),
-                  content: SingleChildScrollView(child: Text(_text)),
+                  title: Text(_title,
+                      style: TextStyle(
+                          color: color ?? context.theme.colorScheme.onSurface)),
+                  content: SingleChildScrollView(
+                      child: UIText(_text,
+                          color: color ?? context.theme.colorScheme.onSurface)),
+                  backgroundColor:
+                      backgroundColor ?? context.theme.colorScheme.surface,
                   actions: <Widget>[
                     FlatButton(
                       child: Text(PathMap.get<String>(dialogSubmitTextPath) ??

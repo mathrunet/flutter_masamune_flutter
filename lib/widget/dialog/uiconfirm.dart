@@ -24,6 +24,8 @@ class UIConfirm {
   /// [cancelText]: Default cancel button text.
   /// [onSubmit]: Default submit button action.
   /// [onCancel]: Default cancel button action.
+  /// [backgroundColor]: Background color.
+  /// [color]: Text color.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [popOnPress]: True if the dialog should be closed together when the button is pressed.
@@ -35,6 +37,8 @@ class UIConfirm {
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
       String dialogCancelTextPath = DefaultPath.dialogCancelText,
       String dialogCancelActionPath = DefaultPath.dialogCancelAction,
+      Color backgroundColor,
+      Color color,
       String submitText = "Yes",
       String cacnelText = "No",
       String title,
@@ -55,8 +59,14 @@ class UIConfirm {
           barrierDismissible: false,
           builder: (context) {
             return AlertDialog(
-              title: Text(_title),
-              content: SingleChildScrollView(child: Text(_text)),
+              title: Text(_title,
+                  style: TextStyle(
+                      color: color ?? context.theme.colorScheme.onSurface)),
+              content: SingleChildScrollView(
+                  child: UIText(_text,
+                      color: color ?? context.theme.colorScheme.onSurface)),
+              backgroundColor:
+                  backgroundColor ?? context.theme.colorScheme.surface,
               actions: <Widget>[
                 FlatButton(
                   child: Text(

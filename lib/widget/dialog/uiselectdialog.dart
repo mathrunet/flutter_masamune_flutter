@@ -13,6 +13,8 @@ class UISelectDialog {
   ///
   /// [context]: Build context.
   /// [dialogTitlePath]: Dialog title path.
+  /// [backgroundColor]: Background color.
+  /// [color]: Text color.
   /// [title]: Default title.
   /// [selected]: The element that is selected.
   /// [disableBackKey]: True to disable the back key.
@@ -20,6 +22,8 @@ class UISelectDialog {
   /// [willShowRepetition]: True if the dialog will continue to be displayed unless you press the regular close button.
   static Future show(BuildContext context,
       {String dialogTitlePath = DefaultPath.dialogTitle,
+      Color backgroundColor,
+      Color color,
       String title,
       String selected,
       @required Map<String, VoidAction> selectors,
@@ -44,6 +48,7 @@ class UISelectDialog {
               },
               child: Text(selector.key?.localize(),
                   style: TextStyle(
+                      color: color ?? context.theme.colorScheme.onSurface,
                       fontWeight:
                           selected == selector.key ? FontWeight.bold : null))));
         }
@@ -53,7 +58,15 @@ class UISelectDialog {
             builder: (context) {
               return WillPopScope(
                   onWillPop: disableBackKey ? () async => null : null,
-                  child: SimpleDialog(title: Text(title), children: options));
+                  child: SimpleDialog(
+                    title: Text(title,
+                        style: TextStyle(
+                            color:
+                                color ?? context.theme.colorScheme.onSurface)),
+                    children: options,
+                    backgroundColor:
+                        backgroundColor ?? context.theme.colorScheme.surface,
+                  ));
             });
       } while (willShowRepetition && !clicked);
     } catch (e) {

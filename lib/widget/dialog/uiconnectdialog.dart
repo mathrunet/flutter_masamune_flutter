@@ -20,6 +20,8 @@ class UIConnectDialog {
   /// [onRetry]: Default retry button action.
   /// [backText]: Default back button text.
   /// [onBack]: Default back button action.
+  /// [backgroundColor]: Background color.
+  /// [color]: Text color.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [showBackButton]: If true, the back button is displayed.
@@ -33,6 +35,8 @@ class UIConnectDialog {
       String dialogBackActionPath = DefaultPath.dialogCancelAction,
       String retryText = "Retry",
       String backText = "Back",
+      Color backgroundColor,
+      Color color,
       String title = "Error",
       String text = "Unable to connect to the network.",
       VoidAction onRetry,
@@ -53,8 +57,14 @@ class UIConnectDialog {
             return WillPopScope(
                 onWillPop: disableBackKey ? () async => null : null,
                 child: AlertDialog(
-                  title: Text(_title),
-                  content: SingleChildScrollView(child: Text(_text)),
+                  title: Text(_title,
+                      style: TextStyle(
+                          color: color ?? context.theme.colorScheme.onSurface)),
+                  content: SingleChildScrollView(
+                      child: UIText(_text,
+                          color: color ?? context.theme.colorScheme.onSurface)),
+                  backgroundColor:
+                      backgroundColor ?? context.theme.colorScheme.surface,
                   actions: <Widget>[
                     FlatButton(
                       child: Text((PathMap.get<String>(dialogRetryTextPath) ??

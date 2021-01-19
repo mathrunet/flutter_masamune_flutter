@@ -11,7 +11,7 @@ import 'package:masamune_flutter/masamune_flutter.dart';
 /// Run [validate(context)] at the time of applying the changes to check if the values are correct.
 ///
 /// Finally, save all changes to the specified document by running [save()].
-mixin UIPageFormMixin on UIWidget {
+mixin UIPageFormMixin on UIPage {
   /// Key for form.
   final formKey = GlobalKey<FormState>();
 

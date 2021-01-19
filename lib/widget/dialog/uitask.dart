@@ -11,6 +11,8 @@ class _UITask {
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
       String submitText = "OK",
+      Color backgroundColor,
+      Color color,
       String title,
       String text,
       VoidAction onSubmit,
@@ -75,8 +77,14 @@ class _UITask {
           barrierDismissible: false,
           builder: (context) {
             return AlertDialog(
-              title: Text(_title),
-              content: SingleChildScrollView(child: Text(_text)),
+              title: Text(_title,
+                  style: TextStyle(
+                      color: color ?? context.theme.colorScheme.onSurface)),
+              content: SingleChildScrollView(
+                  child: UIText(_text,
+                      color: color ?? context.theme.colorScheme.onSurface)),
+              backgroundColor:
+                  backgroundColor ?? context.theme.colorScheme.surface,
               actions: <Widget>[
                 FlatButton(
                   child: Text(
@@ -123,6 +131,8 @@ extension UITaskExtension<T extends IPath> on Future<T> {
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [submitText]: Default submit button text.
   /// [onSubmit]: Default submit button action.
+  /// [backgroundColor]: Background color.
+  /// [color]: Text color.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [errorTitle]: Title at the end of error.
@@ -136,6 +146,8 @@ extension UITaskExtension<T extends IPath> on Future<T> {
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
       String submitText = "OK",
+      Color backgroundColor,
+      Color color,
       String title,
       String text,
       VoidAction onSubmit,
@@ -151,6 +163,8 @@ extension UITaskExtension<T extends IPath> on Future<T> {
             dialogTextPath: dialogTextPath,
             dialogSubmitTextPath: dialogSubmitTextPath,
             dialogSubmitActionPath: dialogSubmitActionPath,
+            backgroundColor: backgroundColor,
+            color: color,
             title: title,
             text: text,
             onSubmit: onSubmit ?? () => context.navigator.pop(),
@@ -182,6 +196,8 @@ extension UITaskPathListExtension<T extends IPath> on Future<List<T>> {
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [submitText]: Default submit button text.
   /// [onSubmit]: Default submit button action.
+  /// [backgroundColor]: Background color.
+  /// [color]: Text color.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [errorTitle]: Title at the end of error.
@@ -195,6 +211,8 @@ extension UITaskPathListExtension<T extends IPath> on Future<List<T>> {
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
       String submitText = "OK",
+      Color backgroundColor,
+      Color color,
       String title,
       String text,
       VoidAction onSubmit,
@@ -210,6 +228,8 @@ extension UITaskPathListExtension<T extends IPath> on Future<List<T>> {
             dialogTextPath: dialogTextPath,
             dialogSubmitTextPath: dialogSubmitTextPath,
             dialogSubmitActionPath: dialogSubmitActionPath,
+            backgroundColor: backgroundColor,
+            color: color,
             title: title,
             text: text,
             onSubmit: onSubmit,
@@ -241,6 +261,8 @@ extension UITaskTaskListExtension<T extends ITask> on Future<List<T>> {
   /// [dialogSubmitActionPath]: The path of action when the submit button of the dialog is pressed.
   /// [submitText]: Default submit button text.
   /// [onSubmit]: Default submit button action.
+  /// [backgroundColor]: Background color.
+  /// [color]: Text color.
   /// [title]: Default title.
   /// [text]: Default text.
   /// [errorTitle]: Title at the end of error.
@@ -254,6 +276,8 @@ extension UITaskTaskListExtension<T extends ITask> on Future<List<T>> {
       String dialogSubmitTextPath = DefaultPath.dialogSubmitText,
       String dialogSubmitActionPath = DefaultPath.dialogSubmitAction,
       String submitText = "OK",
+      Color backgroundColor,
+      Color color,
       String title,
       String text,
       VoidAction onSubmit,
@@ -269,6 +293,8 @@ extension UITaskTaskListExtension<T extends ITask> on Future<List<T>> {
             dialogTextPath: dialogTextPath,
             dialogSubmitTextPath: dialogSubmitTextPath,
             dialogSubmitActionPath: dialogSubmitActionPath,
+            backgroundColor: backgroundColor,
+            color: color,
             title: title,
             text: text,
             onSubmit: onSubmit,

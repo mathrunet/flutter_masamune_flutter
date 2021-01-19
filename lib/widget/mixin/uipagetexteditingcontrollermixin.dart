@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Mix-in that provides the ability to handle a text controller.
-mixin UIPageTextEditingControllerMixin on UIWidget {
+mixin UIPageTextEditingControllerMixin on UIPage {
   /// Define the controller.
   ///
   /// You can enter an initial value in [initialText].

@@ -26,7 +26,7 @@ class UISimpleFormDialog {
     if (builder == null) return;
     final GlobalKey<FormState> key = GlobalKey<FormState>();
     final OverlayState overlay = context.navigator.overlay;
-    final IDataDocument form = TemporaryDocument();
+    final IDataDocument form = TempDocument();
     await showDialog(
       context: overlay.context,
       builder: (context) {

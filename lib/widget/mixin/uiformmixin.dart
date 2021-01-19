@@ -2,10 +2,25 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
-/// Mixins for using forms on pages.
-mixin UIFormMixin on Widget {
+/// Mix-in that provides the ability to handle forms.
+///
+/// Pass a [formKey] as the key to the [Form] widget.
+///
+/// Use [controller()] to get the controller of the form and store all changed values in [form].
+///
+/// Run [validate(context)] at the time of applying the changes to check if the values are correct.
+///
+/// Finally, save all changes to the specified document by running [save()].
+mixin UIFormMixin on UIWidget {
   /// Key for form.
   final formKey = GlobalKey<FormState>();
+
+  /// Define the controller.
+  ///
+  /// You can enter an initial value in [initialText].
+  TextEditingController textEditingController([String initialText]) {
+    return useTextEditingController(text: initialText);
+  }
 
   /// Data for the form.
   IDataDocument get form => this._form;
