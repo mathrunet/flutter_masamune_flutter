@@ -15,11 +15,4 @@ export 'template/app/uipagesliverlist.dart';
 export 'template/app/uipagephotoview.dart';
 export 'template/app/uipagephotogallery.dart';
 export 'template/app/uipagesearch.dart';
-
-export 'template/uihookboot.dart';
-export 'template/uihookpagescaffold.dart';
 export 'template/uiinternalpagescaffold.dart';
-export 'template/uihookpagetabscaffold.dart';
-export 'template/app/uihookpagesliverlist.dart';
-export 'template/app/uihookpagesearch.dart';
-// export 'template/app/uihookpagedetail.dart';

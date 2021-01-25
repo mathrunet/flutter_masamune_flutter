@@ -173,9 +173,13 @@ class _SearchBuilderState<T extends Object>
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(
-              child: LoadingBouncingGrid.square(
-                  backgroundColor: this.widget.indicatorColor ??
-                      Theme.of(context).disabledColor));
+              child: context.widgetTheme.loadingIndicator(
+                      context,
+                      this.widget.indicatorColor ??
+                          Theme.of(context).disabledColor) ??
+                  LoadingBouncingGrid.square(
+                      backgroundColor: this.widget.indicatorColor ??
+                          Theme.of(context).disabledColor));
         } else {
           if (snapshot.data == null || snapshot.data.length <= 0) {
             if (this.widget.emptyWidget != null) return this.widget.emptyWidget;

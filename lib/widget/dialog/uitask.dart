@@ -31,8 +31,10 @@ class _UITask {
               return WillPopScope(
                   onWillPop: () async => false,
                   child: Center(
-                      child: LoadingBouncingGrid.square(
-                          backgroundColor: Colors.white.withOpacity(0.5))));
+                      child: context.widgetTheme.loadingIndicator(
+                              context, Colors.white.withOpacity(0.5)) ??
+                          LoadingBouncingGrid.square(
+                              backgroundColor: Colors.white.withOpacity(0.5))));
             });
       }
     }

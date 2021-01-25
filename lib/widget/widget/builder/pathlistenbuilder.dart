@@ -125,9 +125,10 @@ class _PathListenBuilderState<T extends IPath>
       if (widget != null) return widget;
     }
     return Center(
-        child: LoadingBouncingGrid.square(
-            backgroundColor:
-                this.widget.indicatorColor ?? context.theme.disabledColor));
+        child: context.widgetTheme.loadingIndicator ??
+            LoadingBouncingGrid.square(
+                backgroundColor:
+                    this.widget.indicatorColor ?? context.theme.disabledColor));
   }
 
   Widget _buildInternal(BuildContext context, [AsyncSnapshot<T> snapshot]) {
@@ -137,18 +138,21 @@ class _PathListenBuilderState<T extends IPath>
         if (widget != null) return widget;
       }
       return Center(
-          child: LoadingBouncingGrid.square(
-              backgroundColor:
-                  this.widget.indicatorColor ?? context.theme.disabledColor));
+          child: context.widgetTheme.loadingIndicator ??
+              LoadingBouncingGrid.square(
+                  backgroundColor: this.widget.indicatorColor ??
+                      context.theme.disabledColor));
     } else if (snapshot.connectionState != ConnectionState.done) {
       if (this.widget.waiting != null) {
         Widget widget = this.widget.waiting(context, snapshot.data);
         if (widget != null) return widget;
       }
       return Center(
-          child: LoadingBouncingGrid.square(
-              backgroundColor:
-                  this.widget.indicatorColor ?? context.theme.disabledColor));
+          child: context.widgetTheme.loadingIndicator(context,
+                  this.widget.indicatorColor ?? context.theme.disabledColor) ??
+              LoadingBouncingGrid.square(
+                  backgroundColor: this.widget.indicatorColor ??
+                      context.theme.disabledColor));
     } else {
       return this.widget.builder(context, snapshot.data);
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masamune/masamune.dart';
 import 'package:loading_animations/loading_animations.dart';
 
 class _UIFuture {
@@ -15,8 +16,10 @@ class _UIFuture {
           return WillPopScope(
               onWillPop: () async => false,
               child: Center(
-                  child: LoadingBouncingGrid.square(
-                      backgroundColor: Colors.white.withOpacity(0.5))));
+                  child: context.widgetTheme.loadingIndicator(
+                          context, Colors.white.withOpacity(0.5)) ??
+                      LoadingBouncingGrid.square(
+                          backgroundColor: Colors.white.withOpacity(0.5))));
         });
     if (actionOnFinish != null) actionOnFinish(val);
     return val;
