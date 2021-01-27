@@ -8,6 +8,7 @@ import 'package:masamune_flutter/masamune_flutter.dart';
 ///
 /// Put the text in the ValueKey for each widget.
 /// You can search within that text.
+@deprecated
 class SearchableWidget with ListMixin<Widget> implements List<Widget> {
   List<Widget> _list = ListPool.get();
 

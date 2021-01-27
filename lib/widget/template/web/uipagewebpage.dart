@@ -81,8 +81,8 @@ abstract class UIPageWebPage extends UIPageScaffold {
   @override
   @protected
   Widget appBar(BuildContext context) {
-    return UIAppBar(
-        title: (context) => this.title(context),
+    return AppBar(
+        title: this.title(context),
         actions: context.mediaQuery.size.width >= this.thresholdWidth
             ? this.actions(context)
             : null);

@@ -3,6 +3,7 @@ import 'package:loading_animations/loading_animations.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Builder widget for searching.
+@deprecated
 class FilteredSearchBuilder<T extends Object> extends StatefulWidget {
   /// The filtered widget.
   final Widget Function(String tag, void Function(String tag) filter)

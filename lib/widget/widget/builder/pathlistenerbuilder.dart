@@ -5,7 +5,7 @@ import 'package:loading_animations/loading_animations.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
 /// Widget that displays loading if no data has been loaded.
-class PathListenBuilder<T extends IPath> extends StatefulWidget {
+class PathListenerBuilder<T extends IPath> extends StatefulWidget {
   /// Task path.
   final String path;
 
@@ -32,7 +32,7 @@ class PathListenBuilder<T extends IPath> extends StatefulWidget {
   /// [waiting]: Builder when waiting for a task.
   /// [indicatorColor]: Loading indicator color.
   /// [child]: Builder when the task is completed.
-  PathListenBuilder(
+  PathListenerBuilder(
       {this.path,
       this.task,
       this.empty,
@@ -41,47 +41,47 @@ class PathListenBuilder<T extends IPath> extends StatefulWidget {
       @required this.builder});
 
   @override
-  State<StatefulWidget> createState() => _PathListenBuilderState<T>();
+  State<StatefulWidget> createState() => _PathListenerBuilderState<T>();
 }
 
-class _PathListenBuilderState<T extends IPath>
-    extends State<PathListenBuilder<T>> {
+class _PathListenerBuilderState<T extends IPath>
+    extends State<PathListenerBuilder<T>> {
   @override
   void initState() {
     super.initState();
     this._listen(this.widget);
   }
 
-  void _listen(PathListenBuilder<T> widget) {
+  void _listen(PathListenerBuilder<T> widget) {
     if (widget.task != null) {
       FutureOr<T> task = widget.task;
       if (task is Future<T>) {
-        task.listen(this._listener);
+        task.watch(this._listener);
       } else if (task is T) {
-        task.listen(this._listener);
+        task.watch(this._listener);
       }
     } else if (widget.path != null) {
       T task = PathMap.get<IPath>(widget.path);
-      task?.listen(this._listener);
+      task?.watch(this._listener);
     }
   }
 
-  void _unlisten(PathListenBuilder<T> widget) {
+  void _unlisten(PathListenerBuilder<T> widget) {
     if (this.widget.task != null) {
       FutureOr<T> task = this.widget.task;
       if (task is Future<T>) {
-        task.unlisten(this._listener);
+        task.unwatch(this._listener);
       } else if (task is T) {
-        task.unlisten(this._listener);
+        task.unwatch(this._listener);
       }
     } else if (this.widget.path != null) {
       T task = PathMap.get<IPath>(this.widget.path);
-      task?.unlisten(this._listener);
+      task?.unwatch(this._listener);
     }
   }
 
   @override
-  void didUpdateWidget(covariant PathListenBuilder<T> oldWidget) {
+  void didUpdateWidget(covariant PathListenerBuilder<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.path != this.widget.path) {
       this._unlisten(oldWidget);

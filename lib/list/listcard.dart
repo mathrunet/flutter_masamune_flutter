@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:masamune_flutter/masamune_flutter.dart';
+part of masamune.list;
 
 class ListCard extends StatelessWidget {
   final Function onTap;

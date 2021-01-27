@@ -22,6 +22,7 @@ part 'imageheadline.dart';
 part 'subheadline.dart';
 part 'smallheadline.dart';
 part 'indent.dart';
+part 'listcard.dart';
 part 'listbutton.dart';
 part 'listitem.dart';
 part 'listtext.dart';

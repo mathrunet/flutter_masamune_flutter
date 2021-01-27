@@ -6,9 +6,10 @@
 ///
 /// [mathru.net]: https://mathru.net
 /// [YouTube]: https://www.youtube.com/c/mathrunetchannel
-export 'dialog/uiconfirm.dart';
-export 'dialog/uidialog.dart';
-export 'dialog/uifuture.dart';
-export 'dialog/uitask.dart';
-export 'dialog/uiselectdialog.dart';
-export 'dialog/uiconnectdialog.dart';
+export 'dialog/internal/uifuture.dart';
+export 'dialog/internal/uitask.dart';
+
+export 'dialog/component/uiconfirm.dart';
+export 'dialog/component/uidialog.dart';
+export 'dialog/component/uiselectdialog.dart';
+export 'dialog/component/uiconnectdialog.dart';

@@ -17,6 +17,8 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:masamune_flutter/masamune_flutter.dart';
 
+part 'formitemlabel.dart';
+part 'formitemcheckbox.dart';
 part 'formbuilder.dart';
 part 'formitem.dart';
 part 'formitemchipsfield.dart';

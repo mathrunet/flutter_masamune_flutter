@@ -32,6 +32,9 @@ abstract class UIBoot extends UIPage {
   /// If you register it, this is the only one displayed.
   Widget get featureWidget => null;
 
+  /// Background color.
+  Color get backgroundColor => null;
+
   /// Creating a body.
   ///
   /// [context]: Build context.
@@ -46,7 +49,7 @@ abstract class UIBoot extends UIPage {
     ImageProvider image = this.featureImage;
     if (image != null) {
       return Container(
-        color: context.theme.backgroundColor,
+        color: this.backgroundColor ?? context.theme.backgroundColor,
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -61,13 +64,13 @@ abstract class UIBoot extends UIPage {
     Widget widget = this.featureWidget;
     if (widget != null) {
       return Container(
-        color: context.theme.backgroundColor,
+        color: this.backgroundColor ?? context.theme.backgroundColor,
         alignment: Alignment.center,
         child: widget,
       );
     }
     return Container(
-        color: context.theme.backgroundColor,
+        color: this.backgroundColor ?? context.theme.backgroundColor,
         child: UIAnimatedBuilder(
             animator: UIAnimatorScenario(animation: [
               UIAnimatorUnit(

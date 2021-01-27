@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:masamune_core/masamune_core.dart';
@@ -19,6 +21,12 @@ class NetworkOrAsset {
     }
     if (uri.startsWith("http")) {
       return CachedNetworkImageProvider(uri);
+    } else if (uri.startsWith("device:") || uri.startsWith("local:")) {
+      File file = File(uri.replaceAll(RegExp(r"(device|local):(//)?"),
+          "${Config.documentDirectory.path}/"));
+      return FileImage(file);
+    } else if (uri.startsWith("resource:")) {
+      return AssetImage(uri.replaceAll(RegExp(r"resource:(//)?"), ""));
     } else {
       return AssetImage(uri);
     }
