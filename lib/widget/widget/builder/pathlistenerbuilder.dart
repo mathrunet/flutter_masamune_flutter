@@ -125,7 +125,8 @@ class _PathListenerBuilderState<T extends IPath>
       if (widget != null) return widget;
     }
     return Center(
-        child: context.widgetTheme.loadingIndicator ??
+        child: context.widgetTheme?.loadingIndicator?.call(context,
+                this.widget.indicatorColor ?? context.theme.disabledColor) ??
             LoadingBouncingGrid.square(
                 backgroundColor:
                     this.widget.indicatorColor ?? context.theme.disabledColor));
@@ -138,7 +139,8 @@ class _PathListenerBuilderState<T extends IPath>
         if (widget != null) return widget;
       }
       return Center(
-          child: context.widgetTheme.loadingIndicator ??
+          child: context.widgetTheme?.loadingIndicator?.call(context,
+                  this.widget.indicatorColor ?? context.theme.disabledColor) ??
               LoadingBouncingGrid.square(
                   backgroundColor: this.widget.indicatorColor ??
                       context.theme.disabledColor));
@@ -148,7 +150,7 @@ class _PathListenerBuilderState<T extends IPath>
         if (widget != null) return widget;
       }
       return Center(
-          child: context.widgetTheme.loadingIndicator(context,
+          child: context.widgetTheme?.loadingIndicator?.call(context,
                   this.widget.indicatorColor ?? context.theme.disabledColor) ??
               LoadingBouncingGrid.square(
                   backgroundColor: this.widget.indicatorColor ??

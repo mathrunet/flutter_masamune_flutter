@@ -79,6 +79,7 @@ class _UITextState extends State<UIText> {
       this.widget.autoLocalize
           ? this.widget.text?.localize()
           : this.widget.text,
+      scrollPhysics: const NeverScrollableScrollPhysics(),
       key: this.widget.key,
       style: this.widget.style?.copyWith(
               fontSize: this.widget.fontSize,

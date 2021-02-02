@@ -108,7 +108,7 @@ class _SearchBuilderState<T extends Object> extends State<SearchBuilder<T>> {
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(
-              child: context.widgetTheme.loadingIndicator(
+              child: context.widgetTheme?.loadingIndicator?.call(
                       context,
                       this.widget.indicatorColor ??
                           Theme.of(context).disabledColor) ??

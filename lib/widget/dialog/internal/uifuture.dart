@@ -16,8 +16,8 @@ class _UIFuture {
           return WillPopScope(
               onWillPop: () async => false,
               child: Center(
-                  child: context.widgetTheme.loadingIndicator(
-                          context, Colors.white.withOpacity(0.5)) ??
+                  child: context.widgetTheme?.loadingIndicator
+                          ?.call(context, Colors.white.withOpacity(0.5)) ??
                       LoadingBouncingGrid.square(
                           backgroundColor: Colors.white.withOpacity(0.5))));
         });
